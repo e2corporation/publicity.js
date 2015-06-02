@@ -7,9 +7,7 @@ Ground rules:
 * Must be worked on outside of core hours
 * Use current github examples as a template for showcasing your widget
 
-
 ## Technology Stack
-
 
 * NPM
 * Node.JS + Express.js
@@ -20,6 +18,28 @@ Ground rules:
 * MongoDB (http://)
 * Jade Template lang
 * Stylus CSS Preprocessor
+* React.js (https://facebook.github.io/react/)
+
+
+## Package Contents
+
+```
+shogun:Publicity Julien$ ls -la
+total 48
+drwxr-xr-x  12 Julien  staff    408 Jun  2 12:09 .
+drwxr-xr-x  67 Julien  staff   2278 Jun  2 12:09 ..
+drwxr-xr-x  13 Julien  staff    442 Jun  2 13:00 .git
+-rw-r--r--   1 Julien  staff     27 Jun  2 12:09 .gitignore
+drwxr-xr-x   8 Julien  staff    272 Jun  2 12:09 .idea
+-rw-r--r--   1 Julien  staff   3929 Jun  2 12:59 README.md
+drwxr-xr-x   7 Julien  staff    238 Jun  2 12:09 bower_components
+drwxr-xr-x   5 Julien  staff    170 Jun  2 12:09 build
+drwxr-xr-x   4 Julien  staff    136 Jun  2 12:09 fonts
+-rw-r--r--   1 Julien  staff  10734 Jun  2 12:54 index.html
+-rw-r--r--   1 Julien  staff   1382 Jun  2 12:09 intro.html
+drwxr-xr-x   5 Julien  staff    170 Jun  2 12:09 src
+
+```
 
 
 ### Derby
@@ -89,3 +109,62 @@ After successfully starting the index gateway with Node, the app will be availab
 ```
 node server.js
 ```
+
+
+
+# Poster Card
+
+The Poster card is the fundamental component of Publicity, it is a structured React Component broken down into several sub-components for better html modeling of an advertisement.
+
+```
+            // PosterCard Main Component (Ad Unit)
+            Publicity.PosterCard = React.createClass({
+                render: function () {
+                    return (
+                        <div className="card left" data-count={this.state.internal_count} data-offset={this.state.internal_offset} data-sp-count={this.state.sponsored_count} data-sp-offset={this.state.sponsored_offset} >
+                            <span className="card-icon restore-card">
+                                <i className="oi" data-glyph="arrow-circle-top"></i>
+                            </span>
+
+                            <span className="card-icon snooze-card">
+                                <i className="oi" data-glyph="timer"></i>
+                            </span>
+
+                            <Publicity.PosterCard.Close />
+
+                            <Publicity.PosterCard.Loader />
+
+                            <Publicity.PosterCard.Dismissal />
+
+                            <Publicity.PosterCard.Action data={this.state.data} />
+
+                        </div>
+                        );
+                });
+```
+
+
+## Close Component
+The close component is the "x" icon that is responsible for starting the ad dismissal process.
+
+```
+            // Close Trigger Sub-component (Calls Dismissal)
+            Publicity.PosterCard.Close = React.createClass({
+                render: function () {
+                    return (
+                        <span className="card-icon close-card">&times;</span>
+                        );
+                }
+            });
+```
+## Loader Component
+
+## Dismissal Component
+
+## Action Component
+
+### Link
+
+### Headline
+
+### Image (Creative)

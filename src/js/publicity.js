@@ -1,12 +1,17 @@
 /**
  * Publicity.js
+ * ---
  * Built on React and JSX
  *
- * @filesource publicity.js
- * @author     Julien Chinapen <julien@revcontent.com>
- * @version    1.0.0
- * @todo       Compile JSX For Production!!
- * @todo       How to handle user-level component extensions?
+ * @filesource  publicity.js
+ * @author      Julien Chinapen <julien@revcontent.com>
+ * @version     1.0.0
+ * @category    pi-contest
+ * @package     publicity
+ * @subpackage  javascripts
+ * @license     Private, Copyright (c) Julien Chinapen
+ * @todo        Compile JSX For Production!!
+ * @todo        How to handle user-level component extensions?
  */
 
 (function ($, window, document, React, undefined) {
@@ -27,6 +32,8 @@
     // Publicity
     var Publicity = {
         stack: [],
+        cardClass: 'publicity-card',
+        gridClass: 'publicity-arrangement',
         internal_count: 1,
         internal_offset: 1,
         sponsored_count: 1,
@@ -34,12 +41,13 @@
 
         init: function () {
 
+            // Build React Components and Subcomponents
             Publicity.createComponents();
 
             // Build Example Poster Card
             Publicity.buildCard(document.getElementById('example_card'));
 
-            // Build Arrangements
+            // Build Example Arrangement
             Publicity.buildArrangement(document.getElementById('example_grid'));
 
             // Apply Bindings + Post processing
@@ -134,7 +142,12 @@
 
                     if (ad_response.length > 0) {
 
-                        Publicity.stack.push(ad_response[0]);
+                        //if(ad_response.length == 1) {
+                            Publicity.stack.push(ad_response[0]);
+                        //}
+                        //else {
+                        //    Publicity.stack.push(ad_response);
+                        //}
 
                         // Setup Component State/Properties
                         if(typeof posterComponent == 'object'){

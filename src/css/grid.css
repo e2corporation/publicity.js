@@ -1,4 +1,28 @@
+/**
+ * Publicity Grids CSS
+ * ---
+ * Grid structure and wrapper elements
+ *
+ * @filesource  grid.css
+ * @author      Julien Chinapen <julien@revcontent.com>
+ * @version     1.0.0
+ * @category    pi-contest
+ * @package     publicity
+ * @subpackage  stylesheets
+ * @license     Private, Copyright (c) Julien Chinapen
+ * @todo        Minify and Compress
+ */
 
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+   padding: 0;
+
+}
 
 .wrapper {
     max-width: 1112px;

@@ -1,7 +1,23 @@
+/**
+ * Publicity App CSS
+ * ---
+ * Showcase and Presentation styles
+ *
+ * @filesource  app.css
+ * @author      Julien Chinapen <julien@revcontent.com>
+ * @version     1.0.0
+ * @category    pi-contest
+ * @package     publicity
+ * @subpackage  stylesheets
+ * @license     Private, Copyright (c) Julien Chinapen
+ * @todo        Minify and Compress
+ */
+
 #nav {
     display: block;
     width: 100%;
 }
+
 #nav.headroom.headroom--pinned.headroom--top {
 
 }
@@ -37,6 +53,10 @@
     -moz-transition: all 0.5s ease;
 
     padding: 18px 5px;
+}
+
+#navbar a {
+    color: #ffffff;
 }
 
 

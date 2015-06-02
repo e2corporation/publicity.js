@@ -2,6 +2,63 @@ body {
     font-family: "azo-sans-web", sans-serif;
 }
 
+@font-face {
+    font-family: 'BLOKKNeue-Regular';
+    src: url('../fonts/BLOKK_BLOKKNeue/BLOKKNeue-Regular/webfonts/BLOKKNeue-Regular.eot');
+}
+
+@font-face {
+    font-family: 'BLOKKNeue-Regular';
+    src: url('../fonts/BLOKK_BLOKKNeue/BLOKKNeue-Regular/webfonts/BLOKKNeue-Regular.woff') format('woff'), url('../fonts/BLOKK_BLOKKNeue/BLOKKNeue-Regular/webfonts/BLOKKNeue-Regular.svg#BLOKKNeue-Regular') format('svg');
+}
+
+@font-face {
+    font-family: 'BLOKKRegular';
+    src: url('../fonts/BLOKK_BLOKKNeue/BLOKKRegular/webfonts/BLOKKRegular.eot');
+}
+
+@font-face {
+    font-family: 'BLOKKRegular';
+    src: url('../fonts/BLOKK_BLOKKNeue/BLOKKRegular/webfonts/BLOKKRegular.woff') format('woff'), url('../fonts/BLOKK_BLOKKNeue/BLOKKRegular/webfonts/BLOKKRegular.svg#BLOKKRegular') format('svg');
+}
+
+h1.mockup {
+    font-family: "BLOKKNeue-Regular", serif
+}
+
+h2.mockup {
+    font-family: "BLOKKNeue-Regular", serif
+}
+
+h3.mockup {
+    font-family: "BLOKKNeue-Regular", serif
+}
+
+h4.mockup {
+    font-family: "BLOKKNeue-Regular", serif
+}
+
+h5.mockup {
+    font-family: "BLOKKNeue-Regular", serif
+}
+
+h6.mockup {
+    font-family: "BLOKKNeue-Regular", serif
+}
+
+.developer-notice {
+    font-family: "fira-sans-2", sans-serif !important;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.mockup {
+    font-family: "BLOKKNeue-Regular", serif;
+    font-size: inherit;
+    font-weight: normal;
+    margin-bottom: 18px;
+}
+
 h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding: 0;

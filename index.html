@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Flyout Example</title>
+    <title>Publicity.js™</title>
     <!-- Meta Configuration-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -12,10 +12,10 @@
     <link type="text/css" rel="stylesheet" href="bower_components/open-iconic/font/css/open-iconic.min.css"
           media="screen,projection"/>
 
-    <link type="text/css" rel="stylesheet" href="src/css/full.css" media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="src/css/typography.css" media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="src/css/grid.css" media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="src/css/cards.css" media="screen,projection"/>
+    <!-- Publicity.CSS: Typography -->
+    <link type="text/css" rel="stylesheet" href="src/css/publicity.css" media="screen,projection"/>
+
+    <!-- App/Showcase CSS -->
     <link type="text/css" rel="stylesheet" href="src/css/app.css" media="screen,projection"/>
 
     <script type="text/javascript" src="src/js/jquery.js"></script>
@@ -38,7 +38,7 @@
             <h1>
                 <img src="src/img/rev-logo.png" alt="RevContent™" style="margin-bottom:36px;"/><br/>
 
-                API Example: "<strong>Publicity.js</strong>"
+                API Contest: <strong>Publicity.js</strong>
             </h1>
 
             <p>Intelligent Ad cards that lets you place ads semanticly without worrying about looks. Built with <strong>React.js</strong>, each card is a stateful component.</p>
@@ -51,12 +51,14 @@
         <div class="wrapper">
 
             <div class="right">
-                <a href="#" class="btn btn-pill btn-primary btn-small">NEXT EXAMPLE</a>
+                <a href="#" class="btn btn-pill btn-inverse btn-small"><i class="oi left" data-glyph="hard-drive" style="font-weight:100;font-size:10px;margin-top:3px"></i>&nbsp; GIT REPOSITORY</a>
+                <a href="#" class="btn btn-pill btn-primary btn-small">NEXT EXAMPLE &nbsp; &rarr;</a>
 
             </div>
             <div class="left">
-                <a href="#" class="btn btn-pill btn-small disabled">PREVIOUS EXAMPLE</a>
+                <a href="#" class="btn btn-pill btn-small disabled">&larr; &nbsp; PREVIOUS EXAMPLE</a>
             </div>
+            <div style="text-align:center">Publicity.js</div>
             <div class="cf"></div>
 
         </div>
@@ -149,7 +151,7 @@
 
 
                 <!-- An Arrangement: 3x4 -->
-                <div id="example_grid" data-rows="3" data-cols="4"></div>
+                <div id="example_grid" data-rows="3" data-cols="3"></div>
 
 
                 <p class="mockup">
@@ -223,34 +225,12 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
 
+<!-- jQuery Headroom -->
 <script src="src/js/jQuery.headroom.js"></script>
 <script src="src/js/headroom.min.js"></script>
+
+<!-- Publicity.js (Powered by RevContent API) -->
 <script type="text/jsx" src="src/js/publicity.js"></script>
 
-<script type="text/javascript">
-    ;
-    (function ($, window, document, Headroom, undefined) {
-     var App = {
-            init: function () {
-
-
-                $('#footer').headroom();
-                $('#nav').headroom({
-                    offset: 800
-                });
-            }
-
-        };
-
-
-        $(window).load(App.init);
-
-
-    }(jQuery, window, document, Headroom));
-
-
-</script>
-
-
-</body>
-</html>
+<!-- App JS (Showcase/UI) -->
+<script type="text/javascript" src="src/js/app.js"></script>
