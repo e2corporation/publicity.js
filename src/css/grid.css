@@ -20,7 +20,8 @@ html, body {
 
 body {
     margin: 0;
-   padding: 0;
+    padding: 0;
+    line-height: 1.2
 
 }
 
@@ -38,6 +39,14 @@ body {
     float: right;
 }
 
+.mr {
+    margin-right: 8px;
+}
+
+.ml {
+    margin-left: 8px;
+}
+
 .section {
     margin: 0;
     display: block;
@@ -53,8 +62,6 @@ body {
 .section.centered {
     text-align: center;
 }
-
-
 
 /**
  * For modern browsers

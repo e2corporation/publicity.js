@@ -12,6 +12,11 @@
     <link type="text/css" rel="stylesheet" href="bower_components/open-iconic/font/css/open-iconic.min.css"
           media="screen,projection"/>
 
+    <!-- Highlight.js (Code Syntaxing) -->
+    <link type="text/css" class="codestyle" rel="alternate stylesheet"  href="src/css/hljs/solarized_light.css" media="screen,projection"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
+
     <!-- Publicity.CSS: Typography -->
     <link type="text/css" rel="stylesheet" href="src/css/publicity.css" media="screen,projection"/>
 
@@ -20,7 +25,7 @@
 
     <script type="text/javascript" src="src/js/jquery.js"></script>
     <script type="text/javascript" src="src/js/jquery-ui.js"></script>
-    <script src="bower_components/react/react.js"></script>
+    <script src="bower_components/react/react-with-addons.js"></script>
     <script src="bower_components/react/JSXTransformer.js"></script>
 
 
@@ -41,7 +46,8 @@
                 API Contest: <strong>Publicity.js</strong>
             </h1>
 
-            <p>Intelligent Ad cards that lets you place ads semanticly without worrying about looks. Built with <strong>React.js</strong>, each card is a stateful component.</p>
+            <p>Intelligent Ad cards that lets you place ads semanticly without worrying about looks. Built with <strong>React.js</strong>, each card is a stateful and flexible advertisement component.</p>
+            <p><a href="#" class="btn btn-pill btn-small btn-readme"><i class="oi left mr" data-glyph="info"></i> <strong>View Readme</strong> 1.0.0</a></p>
         </div>
     </div>
     <div class="wall"></div>
@@ -51,7 +57,7 @@
         <div class="wrapper">
 
             <div class="right">
-                <a href="#" class="btn btn-pill btn-inverse btn-small"><i class="oi left" data-glyph="hard-drive" style="font-weight:100;font-size:10px;margin-top:3px"></i>&nbsp; GIT REPOSITORY</a>
+                <a href="#" class="btn btn-pill btn-inverse btn-small mr"><i class="oi left" data-glyph="fork" style="font-weight:100;font-size:10px;margin-top:3px"></i>&nbsp; GIT REPOSITORY</a>
                 <a href="#" class="btn btn-pill btn-primary btn-small">NEXT EXAMPLE &nbsp; &rarr;</a>
 
             </div>
@@ -149,9 +155,33 @@
                 </p>
 
 
-
+                <h2><strong>3x3 Grid</strong> Widget</h2>
+                <p class="leading">Creating a set of poster cards is as easy as specifying the rows and columns you want using <strong>data-*</strong> attributes.</p>
                 <!-- An Arrangement: 3x4 -->
-                <div id="example_grid" data-rows="3" data-cols="3"></div>
+                <pre>
+                <code class="html">
+                    &lt;!-- An Arrangement: 3x4 --&gt;
+                    &lt;div id="example_grid" data-rows="3" data-cols="3"&gt;&lt;/div&gt;
+                </code>
+                </pre>
+                <pre>
+                <code class="javascript">
+                    /**
+                    * Build a Poster Card
+                    * @param {String} cardNode to attach rendered card to
+                    */
+                    buildCard: function (cardNode) {
+
+                    React.render(
+                    &lt;Publicity.PosterCard pollInterval={15000} /&gt;,
+                    cardNode
+                    );
+
+
+                    }
+                </code>
+                </pre>
+                <div id="example_grid" class="publicity-arrangement" data-rows="4" data-cols="3" data-flush="false"></div>
 
 
                 <p class="mockup">

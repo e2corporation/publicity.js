@@ -30,6 +30,7 @@
 }
 #nav.headroom.headroom--pinned.headroom--not-top .wrapper {
     padding: 8px 5px;
+    font-size: 13px;
 }
 
 #nav.headroom.headroom--unpinned.headroom--not-top {
@@ -46,6 +47,7 @@
     transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
+    font-size: 14px;
 }
 #navbar .wrapper {
     transition: all 0.5s ease;
@@ -59,6 +61,13 @@
     color: #ffffff;
 }
 
+
+.btn.btn-readme {
+    font-weight: 200;
+    color: #ffffff;
+    background-color:#2aa198;
+    font-size: 24px;
+}
 
 #s1.section {
     margin: 0;

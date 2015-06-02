@@ -12,6 +12,7 @@
  * @license     Private, Copyright (c) Julien Chinapen
  * @todo        Compile JSX For Production!!
  * @todo        How to handle user-level component extensions?
+ * @todo        Apply Unique IDs to Card Components
  */
 
 (function ($, window, document, React, undefined) {
@@ -31,6 +32,7 @@
 
     // Publicity
     var Publicity = {
+        ReactCSSTransitionGroup: React.addons.CSSTransitionGroup,
         stack: [],
         cardClass: 'publicity-card',
         gridClass: 'publicity-arrangement',
@@ -125,14 +127,14 @@
                     Publicity.activateLoader($card);
 
 
-                    if(typeof posterComponent == 'object'){
+                    /*if(typeof posterComponent == 'object'){
                         posterComponent.setState({
                             internal_count: Publicity.internal_count,
                             internal_offset: Publicity.internal_offset,
                             sponsored_count: Publicity.sponsored_count,
                             sponsored_offset: Publicity.sponsored_offset
                         });
-                    }
+                    }*/
 
                 },
                 success: function (ad_response) {
@@ -145,27 +147,27 @@
                         //if(ad_response.length == 1) {
                             Publicity.stack.push(ad_response[0]);
                         //}
-                        //else {
+                      // else {
                         //    Publicity.stack.push(ad_response);
-                        //}
+                       //}
 
                         // Setup Component State/Properties
+
                         if(typeof posterComponent == 'object'){
-                            posterComponent.setState({
-                                data: Publicity.stack.shift(),
-                                internal_count: Publicity.internal_count,
-                                internal_offset: Publicity.internal_offset,
-                                sponsored_count: Publicity.sponsored_count,
-                                sponsored_offset: Publicity.sponsored_offset
-                            });
+                            if(posterComponent.isMounted()) {
+                                posterComponent.setState({
+                                        data: Publicity.stack.shift(),
+                                        internal_count: Publicity.internal_count,
+                                        internal_offset: Publicity.internal_offset,
+                                        sponsored_count: Publicity.sponsored_count,
+                                        sponsored_offset: Publicity.sponsored_offset
+                                    });
+
+                                    Publicity.deactivateLoader($(posterComponent.getDOMNode()));
+                            }
+
                         }
 
-
-                        /*$(card).attr({'data-offset': Publicity.internal_offset});
-                        $(card).attr({'data-count': Publicity.internal_count});
-                        $(card).attr({'data-sp-offset': Publicity.sponsored_offset});
-                        $(card).attr({'data-sp-count': Publicity.sponsored_count});*/
-                        //console.log(Publicity);
                     }
 
                     if(ad_response.length > 0){
@@ -182,9 +184,7 @@
                         $card.attr({'data-offset': next_offset});
 
                     }*/
-                    setTimeout(function () {
-                        Publicity.deactivateLoader($card);
-                    }, 1500);
+
                 },
                 error: function (response) {
 
@@ -214,8 +214,8 @@
         },
         deactivateLoader: function (card) {
             card.find('.overlay').css({'backgroundColor': 'rgba(0,0,0,0.1)'});
-            card.find('.loader').animate({'top': '-500px', 'padding': '18px'}, 1600, 'easeOutExpo', function () {
-                $(this).addClass('deactivated').removeClass('activated').animate({}, 600, 'easeInQuad');
+            card.find('.loader').animate({'top': '-50px', 'padding': '18px'}, 900, 'easeOutQuint', function () {
+                $(this).addClass('deactivated').removeClass('activated').animate({}, 500, 'easeInQuad');
             });
 
             return this;
@@ -303,24 +303,28 @@
             Publicity.PosterCard = React.createClass({
                 render: function () {
                     return (
-                        <div className="card left" data-count={this.state.internal_count} data-offset={this.state.internal_offset} data-sp-count={this.state.sponsored_count} data-sp-offset={this.state.sponsored_offset} >
-                            <span className="card-icon restore-card">
-                                <i className="oi" data-glyph="arrow-circle-top"></i>
-                            </span>
+                        /*<Publicity.ReactCSSTransitionGroup transitionName="example">*/
+                        <div className="card-zone left">
+                            <div className="card" data-count={this.state.internal_count} data-offset={this.state.internal_offset} data-sp-count={this.state.sponsored_count} data-sp-offset={this.state.sponsored_offset} >
+                                <span className="card-icon restore-card">
+                                    <i className="oi" data-glyph="arrow-circle-top"></i>
+                                </span>
 
-                            <span className="card-icon snooze-card">
-                                <i className="oi" data-glyph="timer"></i>
-                            </span>
+                                <span className="card-icon snooze-card">
+                                    <i className="oi" data-glyph="timer"></i>
+                                </span>
 
-                            <Publicity.PosterCard.Close />
+                                <Publicity.PosterCard.Close />
 
-                            <Publicity.PosterCard.Loader />
+                                <Publicity.PosterCard.Loader />
 
-                            <Publicity.PosterCard.Dismissal />
+                                <Publicity.PosterCard.Dismissal />
 
-                            <Publicity.PosterCard.Action data={this.state.data} />
+                                <Publicity.PosterCard.Action data={this.state.data} />
 
+                            </div>
                         </div>
+                        /*</Publicity.ReactCSSTransitionGroup>*/
                         );
                 },
                 getInitialState: function(){
@@ -336,17 +340,15 @@
                     return initial_state;
                 },
                 componentDidMount: function() {
-                    this.refreshCard();
+                    this.refreshCard(this);
                     //setInterval(this.refreshCard, this.props.pollInterval);
-                    if (this.isMounted()) {
-                        Publicity.deactivateLoader($(this.getDOMNode()));
-                    }
                 },
-                refreshCard: function(){
+                refreshCard: function(component){
 
                     // NOTE: The PosterCard Component is injected here as last argument...
                     // $(this.getDOMNode()).attr('data-offset'), $(this.getDOMNode()).attr('data-count'), $(this.getDOMNode()).attr('data-sp-offset') , $(this.getDOMNode()).attr('data-sp-count')
-                    Publicity.fetchCard($(this.getDOMNode()), null, null, null, null, this);
+
+                    Publicity.fetchCard($(this.getDOMNode()), null, null, null, null, component);
                 }
             });
 
@@ -355,7 +357,6 @@
                 render: function () {
                     return (
                         <div className="loader">
-                            <div className="card-spinner"></div>
                             <div className="loading">
                                 <h2>think bigger ...</h2>
                                 <span></span>

@@ -13,7 +13,7 @@
  */
 
 ;
-(function ($, window, document, Headroom, undefined) {
+(function ($, window, document, Headroom, hljs, undefined) {
 
 
     var App = {
@@ -24,6 +24,9 @@
             $('#nav').headroom({
                 offset: 800
             });
+
+
+            hljs.initHighlightingOnLoad();
         }
 
     };
@@ -32,4 +35,4 @@
     $(document).ready(App.init);
 
 
-}(jQuery, window, document, Headroom));
+}(jQuery, window, document, Headroom, hljs));
