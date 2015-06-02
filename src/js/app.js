@@ -5,7 +5,7 @@
  * @filesource  app.js
  * @author      Julien Chinapen <julien@revcontent.com>
  * @version     1.0.0
- * @category    pi-contest
+ * @category    api-contest
  * @package     publicity
  * @subpackage  javascripts
  * @license     Private, Copyright (c) Julien Chinapen

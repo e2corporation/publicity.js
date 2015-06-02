@@ -77,10 +77,10 @@ bower install
 ### Grunt Packages
 
 ```
-npm install grunt-contrib-uglify
-npm install grunt-contrib-cssmin
-npm install grunt-contrib-imagemin
-npm install grunt-contrib-sass
+npm install grunt-contrib-uglify --save-dev
+npm install grunt-contrib-cssmin --save-dev
+npm install grunt-contrib-imagemin --save-dev
+npm install grunt-contrib-sass --save-dev
 
 ```
 

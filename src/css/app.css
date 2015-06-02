@@ -11,6 +11,7 @@
  * @subpackage  stylesheets
  * @license     Private, Copyright (c) Julien Chinapen
  * @todo        Minify and Compress
+ * @todo        Responsive enhancements
  */
 
 #nav {
@@ -72,9 +73,7 @@
 #s1.section {
     margin: 0;
     background-color: #111111;
-
-    font-size: 2.3em;
-
+    font-size: 1.5em;
 }
 
 #s1.section .wall {
@@ -113,7 +112,7 @@
 }
 
 #s1.section h1 {
-    margin: 200px 0 0 0;
+    margin: 80px 0 0 0;
 }
 
 #s1.section p {
@@ -225,12 +224,21 @@
 
 /* iPads (landscape) ----------- */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
-    /* Styles */
+    #s1.section h1 {
+        margin: 130px 0 0 0;
+    }
 }
 
 /* iPads (portrait) ----------- */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
-    /* Styles */
+    #s1.section h1 {
+        margin: 250px 0 0 0;
+    }
+    #footer {
+        font-size: 9px;
+    }
+
+
 }
 /**********
 iPad 3
@@ -242,6 +250,20 @@ iPad 3
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) and (-webkit-min-device-pixel-ratio : 2) {
     /* Styles */
 }
+
+
+@media only screen  and (min-width : 1025px) {
+    #s1.section {
+        margin: 0;
+        background-color: #111111;
+        font-size: 1.8em;
+    }
+
+    #s1.section h1 {
+        margin: 200px 0 0 0;
+    }
+}
+
 /* Desktops and laptops ----------- */
 @media only screen  and (min-width : 1224px) {
     /* Styles */
@@ -251,6 +273,12 @@ iPad 3
     }
     .card .image img {
         width: 100%;
+    }
+
+    #s1.section {
+        margin: 0;
+        background-color: #111111;
+        font-size: 2.2em;
     }
 }
 

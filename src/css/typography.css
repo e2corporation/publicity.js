@@ -1,3 +1,19 @@
+/**
+ * Publicty Typography CSS
+ * ---
+ * Local Environment Styles
+ *
+ * @filesource  typography.css
+ * @author      Julien Chinapen <julien@revcontent.com>
+ * @version     1.0.0
+ * @category    api-contest
+ * @package     publicity
+ * @subpackage  stylesheets
+ * @license     Private, Copyright (c) Julien Chinapen
+ * @todo        Minify and Compress
+ */
+
+
 body {
     font-family: "azo-sans-web", sans-serif;
 }
