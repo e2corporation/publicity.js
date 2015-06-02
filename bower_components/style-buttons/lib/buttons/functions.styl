@@ -1,0 +1,20 @@
+buttons-helper($button-color)
+  &,
+  &.{buttons-class-name}.disabled,
+  &.{buttons-class-name}[disabled],
+  fieldset[disabled] &.{buttons-class-name}
+    background-color: $button-color
+  &:hover,
+  &:active,
+  &.active
+    background-color: darken($button-color, 12%)
+  // Action links
+  &.{buttons-class-name}-link,
+  &.{buttons-class-name}-link.disabled,
+  &.{buttons-class-name}-link[disabled],
+  fieldset[disabled] &.{buttons-class-name}-link
+    color: $button-color
+  &.{buttons-class-name}-link:hover,
+  &.{buttons-class-name}-link:focus,
+  &.{buttons-class-name}-link:active
+    color: darken($button-color, 10%)

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flyout Example</title>
+    <!-- Meta Configuration-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <!-- Import Stylesheets -->
+    <!--     <link type="text/css" rel="stylesheet" href="bower_components/reset-css/reset.css" media="screen,projection" /> -->
+    <link type="text/css" rel="stylesheet" href="bower_components/style-buttons/buttons.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="bower_components/open-iconic/font/css/open-iconic.min.css"
+          media="screen,projection"/>
+
+    <link type="text/css" rel="stylesheet" href="src/css/full.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="src/css/typography.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="src/css/grid.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="src/css/cards.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="src/css/app.css" media="screen,projection"/>
+
+    <script type="text/javascript" src="src/js/jquery.js"></script>
+    <script type="text/javascript" src="src/js/jquery-ui.js"></script>
+    <script src="bower_components/react/react.js"></script>
+    <script src="bower_components/react/JSXTransformer.js"></script>
+
+
+    <script src="//use.typekit.net/lqt7exc.js"></script>
+    <script>try {
+        Typekit.load();
+    } catch (e) {
+    }</script>
+</head>
+
+<body>
+<div class="section centered" id="s1">
+    <div class="display">
+        <div class="wrapper">
+            <h1>
+                <img src="src/img/rev-logo.png" alt="RevContent™" style="margin-bottom:36px;"/><br/>
+
+                API Example: "<strong>Publicity.js</strong>"
+            </h1>
+
+            <p>Intelligent Ad cards that lets you place ads semanticly without worrying about looks. Built with <strong>React.js</strong>, each card is a stateful component.</p>
+        </div>
+    </div>
+    <div class="wall"></div>
+</div>
+<div id="nav">
+    <div id="navbar">
+        <div class="wrapper">
+
+            <div class="right">
+                <a href="#" class="btn btn-pill btn-primary btn-small">NEXT EXAMPLE</a>
+
+            </div>
+            <div class="left">
+                <a href="#" class="btn btn-pill btn-small disabled">PREVIOUS EXAMPLE</a>
+            </div>
+            <div class="cf"></div>
+
+        </div>
+    </div>
+</div>
+<div class="section" id="s2">
+    <div class="padder">
+        <div class="wrapper">
+
+
+            <h1 style="font-size:52px">Publicity.js</h1>
+
+            <div class="developer-notice">
+                THIS EXAMPLE FEATURES SOME REALLY COOL STUFF THAT IS BEING DEVELOPED.
+            </div>
+
+            <h2 class="mockup">Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula,
+                porttitor eu,
+                consequat vitae,
+                eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. </h2>
+
+            <p class="leading">
+                Synth literally fashion axe, DIY plaid YOLO Marfa raw denim farm-to-table Bushwick artisan Shoreditch.
+                Sustainable authentic Tumblr, <strong>DIY tofu</strong> keffiyeh jean shorts tilde. Bushwick forage
+                tattooed,
+                roof party pork
+                belly fingerstache Schlitz you probably haven't heard of them. Pug jean shorts pop-up tattooed Godard.
+                Put a
+                bird on it swag salvia, artisan forage disrupt hoodie health goth kogi Banksy. Pop-up fanny pack Vice
+                bitters
+                brunch. Meditation photo <strong>booth readymade</strong>, fanny pack selfies synth heirloom tousled
+                cronut High
+                Life narwhal
+                twee irony beard polaroid.
+
+
+            </p>
+
+            <!-- A Single Poster Card -->
+            <div id="example_card"></div>
+
+            <div id="lipsum">
+
+                <h2><strong>Literally cardigan single-origin coffee.</strong></h2>
+
+                <p>
+                    IMHO cray squid Shoreditch, meggings keytar heirloom selfies freegan Austin stumptown hashtag
+                    cornhole.
+                    Tattooed
+                    literally health goth, artisan sartorial sustainable Thundercats Shoreditch church-key. Polaroid
+                    meditation
+                    <strong>Brooklyn</strong>, quinoa meggings sriracha shabby chic whatever XOXO selfies Austin beard.
+                    <br/><br/>Mustache
+                    seitan Etsy
+                    asymmetrical actually. Tofu seitan blog Banksy. Pork belly fashion axe tousled cold-pressed drinking
+                    vinegar
+                    direct trade stumptown, actually flexitarian Pinterest gluten-free lumbersexual Marfa mustache.
+                    <strong>Sriracha
+                        gluten-free sustainable distillery</strong> banjo four loko trust fund, semiotics Carles occupy
+                    fap scenester
+                    Truffaut.
+
+
+                </p>
+
+                <p class="mockup">
+                    Nullam vel nibh vel erat maximus sollicitudin finibus sit amet mauris. Mauris magna mi, posuere id
+                    risus
+                    nec, aliquet mattis lorem. Suspendisse elementum scelerisque ex ac euismod. Integer consectetur eget
+                    libero
+                    eget mollis. Proin arcu orci, suscipit in velit vel, pretium feugiat sapien. Vestibulum vitae velit
+                    eu odio
+                    sollicitudin egestas at a purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra,
+                    per
+                    inceptos himenaeos. Integer elit urna, auctor ut malesuada sit amet, luctus id est.
+                </p>
+
+                <p class="mockup">
+                    In nec nisi efficitur, mollis nunc at, tempor mauris. Curabitur iaculis odio porttitor felis
+                    suscipit, nec
+                    dignissim metus ultricies. Vivamus sed volutpat diam, ac ultricies felis. Cum sociis natoque
+                    penatibus et
+                    magnis dis parturient montes, nascetur ridiculus mus. Suspendisse eu elit quis quam dignissim
+                    luctus. Cras
+                    luctus nec enim quis lobortis. Phasellus vitae nisl convallis nunc rhoncus consequat. Aenean non
+                    elementum
+                    lectus.
+                </p>
+
+
+
+                <!-- An Arrangement: 3x4 -->
+                <div id="example_grid" data-rows="3" data-cols="4"></div>
+
+
+                <p class="mockup">
+                    Pellentesque condimentum augue vel justo vehicula sollicitudin. Aliquam sed est leo. Maecenas
+                    volutpat
+                    feugiat lorem eu vulputate. Nunc auctor turpis sit amet enim efficitur interdum. Nullam euismod mi a
+                    odio
+                    pretium ornare. Praesent ut arcu eu tellus finibus blandit a sit amet metus. Nam laoreet erat id
+                    lacus
+                    consequat tempus.
+                </p></div>
+
+            <p>Chia bespoke lo-fi, butcher ugh sriracha literally cardigan single-origin coffee. PBR pickled Wes
+                Anderson
+                cornhole small batch. Squid retro fanny pack chillwave Godard, cray scenester Portland selvage wayfarers
+                four
+                dollar toast vegan brunch. Sustainable trust fund butcher, umami selvage Godard Austin mixtape vinyl art
+                party
+                iPhone. Health goth Pitchfork 3 wolf moon artisan, master cleanse retro seitan. Skateboard small batch
+                Neutra
+                selvage ethical cronut actually, gentrify roof party Vice. Messenger bag photo booth cold-pressed
+                meditation,
+                food truck asymmetrical flexitarian pug slow-carb brunch.</p>
+
+            <p>Sustainable direct trade locavore sriracha meggings, put a bird on it twee mlkshk flexitarian literally
+                cred
+                migas. Meggings Schlitz paleo post-ironic narwhal Bushwick. Tofu sriracha tilde whatever, narwhal Echo
+                Park
+                direct trade ugh next level. Deep v seitan single-origin coffee, 90's photo booth Echo Park keffiyeh
+                American
+                Apparel salvia gluten-free next level. Listicle narwhal scenester direct trade blog. Sustainable lo-fi
+                mlkshk
+                scenester, squid Blue Bottle DIY brunch irony 90's farm-to-table normcore gastropub tattooed. Brooklyn
+                Truffaut
+                roof party Portland cold-pressed.</p>
+
+            <p>Craft beer Kickstarter McSweeney's direct trade polaroid. Sustainable jean shorts drinking vinegar Godard
+                chia,
+                authentic food truck pork belly blog readymade. Cred Schlitz readymade hella disrupt. Mustache sartorial
+                tote
+                bag bitters raw denim. Asymmetrical meh vegan whatever, Vice occupy normcore quinoa. Asymmetrical
+                cardigan
+                biodiesel Vice 8-bit cold-pressed, authentic artisan aesthetic plaid Williamsburg leggings Pitchfork.
+                McSweeney's sustainable post-ironic VHS Pitchfork flannel, fashion axe organic Odd Future four loko
+                iPhone
+                Banksy gluten-free YOLO listicle. </p>
+
+<pre id="card_response">
+
+</pre>
+
+
+        </div>
+    </div>
+</div>
+
+<div id="footer" class="footer">
+    <div class="wrapper">
+        <div class="east">
+            <p>Copyright &copy; <strong>SHOGUN.IO</strong>™ &middot;&middot;&middot; &lt; julien@revcontent.com /&gt;
+            </p>
+        </div>
+        <div class="west">
+            <p>API-CONTEST 2015<br/>
+                Powered by THE <strong>RevContent™ API</strong></p>
+        </div>
+    </div>
+</div>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
+
+<script src="src/js/jQuery.headroom.js"></script>
+<script src="src/js/headroom.min.js"></script>
+<script type="text/jsx" src="src/js/publicity.js"></script>
+
+<script type="text/javascript">
+    ;
+    (function ($, window, document, Headroom, undefined) {
+     var App = {
+            init: function () {
+
+
+                $('#footer').headroom();
+                $('#nav').headroom({
+                    offset: 800
+                });
+            }
+
+        };
+
+
+        $(window).load(App.init);
+
+
+    }(jQuery, window, document, Headroom));
+
+
+</script>
+
+
+</body>
+</html>

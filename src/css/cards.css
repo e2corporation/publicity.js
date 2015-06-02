@@ -1,0 +1,332 @@
+.card-grid {
+
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+    width: 320px;
+    -webkit-box-shadow: 0px 0px 7px 0px rgba(194, 194, 194, 1);
+    -moz-box-shadow: 0px 0px 7px 0px rgba(194, 194, 194, 1);
+    box-shadow: 0px 0px 7px 0px rgba(194, 194, 194, 1);
+    height: 240px;
+    font-family: "proxima-nova-extra-condensed", sans-serif;
+}
+
+.card.left {
+    float: left;
+    margin-right: 18px;
+    margin-bottom: 18px;
+}
+
+.card.right {
+    float: left;
+    margin-right: 18px;
+    margin-bottom: 18px;
+}
+
+.card.fixed {
+    position: fixed;
+    bottom: 0;
+    left: 200px;
+    z-index: 1000;
+
+}
+
+.card.fixed.docked {
+    margin-bottom: -500px;
+    opacity: 0.0;
+}
+
+.card .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.5);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+    z-index: 150;
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+
+}
+
+.card .dismissal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: rgba(0, 0, 0, 1.8);
+    background-image: linear-gradient(to bottom right, #333333, #000000);
+    z-index: 800;
+    /*transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;*/
+    padding: 18px;
+    color: #ffffff;
+    font-size: 16px;
+    font-family: 'fira-sans-2', sans-serif;
+    font-weight: 600;
+}
+
+.card .dismissal.on {
+    display: block;
+    margin-top: 0;
+
+}
+
+.card .dismissal.off {
+    margin-top: -600px;
+
+}
+
+.card .dismissal .btn {
+    font-size: 10px;
+    padding: 0px 12px;
+    height: 24px;
+    line-height: 22px;
+    margin-right: 6px;
+    border-radius: 24px;
+    -moz-border-radius: 24px;
+    -webkit-border-radius: 24px;
+    font-weight: 600;
+    border: 2px solid #ffffff;
+    letter-spacing: 2px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+
+}
+
+.card .dismissal .btn-secondary {
+    opacity: 0.6
+}
+
+.card .dismissal .btn-primary {
+    font-weight: 800;
+}
+
+.card .dismissal .btn:hover {
+    background-color: rgba(255, 255, 255, 1.0);
+    color: #000000;
+}
+
+.card .dismissal ul {
+    margin: 1rem 0 2rem 0;
+    padding: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+}
+
+.card .dismissal ul > li {
+    margin: 0;
+    padding: 0;
+    line-height: 150%;
+    cursor: pointer;
+}
+
+.card .dismissal ul > li.selected {
+    font-weight: 800;
+
+}
+
+.card .dismissal ul > li.selected:before {
+    content: " ✓ ";
+    color: limegreen;
+    padding-right: 10px;
+}
+
+.card .dismissal ul > li:before {
+    content: " • ";
+    color: #777777;
+    padding-right: 10px;
+}
+
+.card.dismissal ul > li > a {
+
+}
+
+.card .card-icon {
+    opacity: 1.0;
+    color: #ffffff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+    font-weight: 500;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    line-height: 28px;
+    padding: 0 0;
+    position: absolute;
+    right: auto;
+    top: 0;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    margin-top: 0px;
+    z-index: 300;
+    transition: all 0.6s ease;
+    -webkit-transition: all 0.6s ease;
+}
+
+.card .loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 18px;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: rgba(90, 100, 142, 0.9);
+    background-image: linear-gradient(to bottom right, #123740, #60BF78);
+    letter-spacing: 2px;
+    color: #ffffff;
+    z-index: 150;
+    transition: all 1s ease;
+    z-index: 500;
+    font-size: 12px;
+    font-family: 'proxima-nova-extra-condensed', sans-serif;
+    font-weight: 800;
+    /*-webkit-transition: all 1s ease;*/
+}
+
+.card .loader.activated {
+    top: 0;
+    padding: 18px;
+    display: block;
+}
+
+.card .loader.deactivated {
+    top: -500px;
+    display: none;
+    padding: 18px;
+
+}
+
+.card:hover {
+    -webkit-box-shadow: 0px 0px 7px 0px rgba(100, 100, 100, 1);
+    -moz-box-shadow: 0px 0px 7px 0px rgba(100, 100, 100, 1);
+    box-shadow: 0px 0px 7px 0px rgba(100, 100, 100, 1);
+}
+
+.card:hover .overlay {
+    /*background-color: rgba(0,0,0,0.1); */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7));
+}
+
+.card:hover .close-card {
+    opacity: 1.0;
+    margin-top: 0;
+}
+
+.card:hover .headline {
+    color: rgba(255, 255, 255, 1.0);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 1.0);
+}
+
+.card .headline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 1px 1px 1px rgba(50, 50, 50, 0.4);
+    padding: 10px 18px;
+    text-overflow: "ellipsis";
+    z-index: 160;
+    transition: all 0.6s ease;
+    -webkit-transition: all 0.6s ease;
+}
+
+.card .restore-card {
+    left: 28px;
+    line-height: 32px;
+}
+
+.card .close-card {
+    opacity: 0.0;
+    margin-top: -50px;
+    right: 0;
+    font-size: 28px;
+    line-height: 32px;
+    /*color: #ffffff;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+    font-weight: 500;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    margin-top: -50px;
+    z-index: 300;
+    transition: all 0.6s ease;
+    -webkit-transition: all 0.6s ease;*/
+}
+
+/* Card Loader */
+.loading h2 {
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.loading span {
+    display: inline-block;
+    vertical-align: middle;
+    width: .6em;
+    height: .6em;
+    margin: .2em;
+    background: #007DB6;
+    border-radius: .6em;
+    -webkit-animation: loading 1s infinite alternate;
+}
+
+.loading span:nth-of-type(2) {
+    background: #008FB2;
+    -webkit-animation-delay: 0.2s;
+}
+
+.loading span:nth-of-type(3) {
+    background: #009B9E;
+    -webkit-animation-delay: 0.4s;
+}
+
+.loading span:nth-of-type(4) {
+    background: #00A77D;
+    -webkit-animation-delay: 0.6s;
+}
+
+.loading span:nth-of-type(5) {
+    background: #00B247;
+    -webkit-animation-delay: 0.8s;
+}
+
+.loading span:nth-of-type(6) {
+    background: #5AB027;
+    -webkit-animation-delay: 1.0s;
+}
+
+.loading span:nth-of-type(7) {
+    background: #A0B61E;
+    -webkit-animation-delay: 1.2s;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+

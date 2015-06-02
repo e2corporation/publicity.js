@@ -1,0 +1,24 @@
+{
+  "name": "hydra-buttons",
+  "version": "0.1.1",
+  "description": "Flat CSS Button Components",
+  "main": "lib/buttons.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "stylus",
+    "css",
+    "buttons",
+    "flat"
+  ],
+  "author": "Blake Embrey",
+  "license": "MIT",
+  "readmeFilename": "Readme.md",
+  "devDependencies": {},
+  "peerDependencies": {
+    "stylus": "0.x"
+  },
+  "dependencies": {}
+}

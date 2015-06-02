@@ -1,0 +1,39 @@
+body {
+    font-family: "azo-sans-web", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+    font-weight: 100;
+}
+
+h1 {
+    font-size: 3.5em
+}
+
+h6 {
+    font-size: 1.4em;
+}
+
+h3 {
+
+}
+
+h3 strong {
+    font-weight: 400;
+}
+
+p {
+    margin: 0;
+    padding: 0 0 18px 0;
+    font-weight: 100;
+}
+
+.leading, p.leading {
+    font-size: 2.5rem;
+}
+
+strong {
+    font-weight: 400;
+}

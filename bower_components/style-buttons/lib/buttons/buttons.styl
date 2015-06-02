@@ -1,0 +1,125 @@
+@import "config"
+@import "functions"
+@import "../../components/stylus-type-utils"
+
+.{buttons-class-name}
+  display: inline-block
+  position: relative
+  padding: 0.3em 0.8em
+  border: 1px solid transparent
+  border-radius: buttons-border-radius
+  color: white
+  text-align: center
+  white-space: nowrap
+  line-height: buttons-line-height
+  text-decoration: none
+  cursor: pointer
+  user-select: none
+  vertical-align: middle
+  height: ((em(base-font-size) * em(@line-height)) + em(@padding[0] * 2) + em(@border[0] * 2))
+  -moz-box-sizing: border-box
+  box-sizing: border-box
+  buttons-helper(buttons-background)
+
+// Remove text-decoration for anchor tags
+.{buttons-class-name}:hover,
+.{buttons-class-name}:active,
+.{buttons-class-name}.active
+  text-decoration: none
+  border-color: rgba(0, 0, 0, 0.15)
+
+// Create a small indentation effect
+.{buttons-class-name}:active,
+.{buttons-class-name}.active
+  outline: 0
+  box-shadow: inset 0 1px 3px 1px rgba(0, 0, 0, 0.1)
+
+// Disabled styles
+.{buttons-class-name}.disabled,
+.{buttons-class-name}[disabled],
+fieldset[disabled] .{buttons-class-name}
+  cursor: default
+  opacity: 0.6
+  &:hover,
+  &:active,
+  &.active
+    border-color: transparent
+  &:active,
+  &.active
+    box-shadow: none
+
+// Rounded corners
+.btn-pill
+  border-radius: 9em
+
+// Cross-browser CSS support - thanks to normalize.css
+.{buttons-class-name}
+  margin: 0 // Address margins set differently in Firefox 4+, Safari 5, and Chrome
+  font-size: 100% // Correct font size not being inherited in all browsers
+  font-family: inherit // Correct font family not being inherited in all browsers
+  text-transform: none // Address inconsistent `text-transform` inheritance for `button`
+  // Remove inner padding and border in Firefox 4+
+  &::-moz-focus-inner
+    border: 0
+    padding: 0
+
+
+// Alternate sizes
+// --------------------------------------------------
+
+.btn-mini
+  font-size: 70%
+.btn-small
+  font-size: 90%
+.btn-large
+  font-size: 115%
+
+
+// Alternate colors
+// --------------------------------------------------
+
+.btn-inverse
+  buttons-helper(buttons-inverse-background)
+.btn-primary
+  buttons-helper(buttons-primary-background)
+.btn-success
+  buttons-helper(buttons-success-background)
+.btn-warning
+  buttons-helper(buttons-warning-background)
+.btn-danger
+  buttons-helper(buttons-danger-background)
+
+
+// Alternate buttons
+// --------------------------------------------------
+
+.{buttons-class-name}-link,
+.{buttons-class-name}-link:hover,
+.{buttons-class-name}-link:focus,
+.{buttons-class-name}-link:active,
+.{buttons-class-name}-link.active
+  font-weight: bold
+  text-shadow: none
+  box-shadow: none
+  border-color: transparent
+  border-radius: 0
+  background-color: transparent
+  background-image: none
+
+.{buttons-class-name}-link:hover
+  text-decoration: underline
+
+.{buttons-class-name}-link.disabled:hover,
+.{buttons-class-name}-link[disabled]:hover,
+fieldset[disabled] .{buttons-class-name}-link:hover
+  text-decoration: none
+
+
+// Block button
+// -------------------------
+
+.{buttons-class-name}-block
+  width: 100%
+  // Vertically space out any buttons after a block button
+  + .{buttons-class-name}-block
+    margin-top: em(base-line-height)

@@ -1,0 +1,10 @@
+{
+  "name": "hydra-buttons",
+  "version": "0.1.1",
+  "main": [
+    "./buttons.css"
+  ],
+  "dependencies": {
+    "stylus-type-utils": "latest"
+  }
+}

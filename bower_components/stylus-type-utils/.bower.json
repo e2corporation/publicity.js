@@ -1,0 +1,13 @@
+{
+  "name": "stylus-type-utils",
+  "homepage": "https://github.com/blakeembrey/stylus-type-utils",
+  "_release": "d266c462bd",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "d266c462bdb889756a9284e412564386ca570e93"
+  },
+  "_source": "git://github.com/blakeembrey/stylus-type-utils.git",
+  "_target": "*",
+  "_originalSource": "stylus-type-utils"
+}
