@@ -11,6 +11,7 @@
  * @subpackage  stylesheets
  * @license     Private, Copyright (c) Julien Chinapen
  * @todo        Minify and Compress
+ * @todo        Handle text-overflows with Card Headlines
  */
 
 
@@ -312,6 +313,13 @@
     z-index: 160;
     transition: all 0.6s ease;
     -webkit-transition: all 0.6s ease;
+    max-width: 100%;
+    white-space: pre-line;
+    vertical-align: text-top;
+    display: table-cell;
+    height: 2em;
+    margin-bottom: 1em;
+    overflow: hidden;
 }
 
 .card .restore-card {
