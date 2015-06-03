@@ -101,6 +101,13 @@
     height: 100%;
 }
 
+/* Poster Cards */
+
+.card-zone,
+.card-zone .card {
+
+}
+
 .card {
     position: relative;
     overflow: hidden;
