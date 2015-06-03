@@ -457,6 +457,19 @@
 }
 */
 
+/* Arrangement Loader */
+
+.load-more {
+    font-size: 14px;
+    line-height: 32px;
+}
+
+.load-more .spinner {
+    width: 120px;
+    height: 32px;
+    float: left;
+    background: transparent url("../img/Preloader_4.gif") 0 0 no-repeat;
+}
 
 .example-enter {
     opacity: 0.01;

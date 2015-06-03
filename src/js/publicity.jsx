@@ -13,6 +13,8 @@
  * @todo        Compile JSX For Production!!
  * @todo        How to handle user-level component extensions?
  * @todo        Apply Unique IDs to Card Components
+ * @todo        Add support for lazy loading cards for arrangement containers...
+ * @todo        Implement Duplicate Ad checking ability
  */
 
 (function ($, window, document, React, undefined) {
@@ -34,14 +36,20 @@
     var Publicity = {
         ReactCSSTransitionGroup: React.addons.CSSTransitionGroup,
         stack: [],
-        cardClass: 'publicity-card',
-        gridClass: 'publicity-arrangement',
+        foo: [],
+        options: {
+            cardClass: 'publicity-card',
+            gridClass: 'publicity-arrangement'
+        },
         internal_count: 1,
         internal_offset: 1,
         sponsored_count: 1,
         sponsored_offset: 1,
 
         init: function () {
+
+            // Merge Global Options
+            //Publicity.options = $.extend({}, Publicity.options, PUBLICITY_OPTIONS || {});
 
             // Build React Components and Subcomponents
             Publicity.createComponents();
@@ -146,7 +154,6 @@
 
                 },
                 success: function (ad_response) {
-                    console.log(ad_response);
                     //$('#card_response').text(JSON.stringify(ad_response));
 
 
@@ -293,6 +300,18 @@
              *  -- an arrangement consists of one or more poster cards
              */
             Publicity.PosterArrangement = React.createClass({
+                componentDidUpdate: function(){
+                    Publicity.configureCards();
+                },
+                loadMoreCards: function(){
+                    var more_cards = [];
+                    for(var i=0;i<this.props.loadCount;i++){
+                        more_cards.push({});
+                    }
+                    newData = this.props.data.concat(more_cards);
+                    //console.log(this.props.data.length, newData.length);
+                    this.setProps({data: newData});
+                },
                 render: function () {
                     var posterCards = this.props.data.map(function (card, cid) {
                         return (
@@ -301,10 +320,10 @@
                             );
                     });
                     return (
-                        <div className="card-arrangement">
+                        <div className="card-arrangement" ref="myArrangement" data-load-more={this.props.loadMore == true ? true: false} data-load-count={this.props.loadCount}>
                             {posterCards}
                             <div className="cf"></div>
-                            <Publicity.ArrangementLoader />
+                            {this.props.loadMore ? <Publicity.ArrangementLoader onClick={this.loadMoreCards}  /> : ''}
                         </div>
                         );
                 }
@@ -320,24 +339,47 @@
                     return {'load_more': false}
                 },
                 LoadCards: function(event){
+                    $(this.getDOMNode()).find('.spinner').fadeIn();
                     this.setState({'load_more': true});
                 },
                 componentDidMount: function(){
 
                 },
+
                 componentDidUpdate: function(){
                     if(this.state.load_more == true){
+
                         //var outlet = $($(this.getDOMNode()).find('.ad-portal'));
-                        //console.log(outlet);
-                        //Publicity.buildArrangement(outlet);
-                        Publicity.buildArrangement($(this.getDOMNode()).find('.ad-portal'));
+                        // Trigger Parent Component's Loading handler... (Routed through click event)
+                        if(this.isMounted()) {
+                            this.props.onClick();
+
+                            this.setState({load_more: false});
+                            $(this.getDOMNode()).find('.spinner').hide();
+                        }
+                        //if(this.isMounted()){
+                        //}
+                        //Publicity.buildArrangement(document.getElementById('adPortal'));
+                        //Publicity.buildArrangement();
+                        //this.props.arrangementData.push({});
+                        //this.props.arrangementData.push({});
+                       //console.log(this.props.arrangementData);
+                    } else {
+
                     }
                 },
                 render: function(){
+                    /*var moreCards = this.state.moreCards.map(function (card, cid) {
+                        return (
+                            <Publicity.PosterCard key={ cid } dataOrientation="left" dataSize="normal" />
 
+                        );
+                    });*/
                     return (
+
                         <div className="load-more">
-                            <div className="ad-portal"></div>
+                            <div className="spinner left" style={{display: "none"}}></div>
+                            <div id="adPortal" className="ad-portal"></div>
                             <a className="btn btn-small btn-pill right" style={{fontSize: '12px',margin: '18px 10px'}} onClick={this.LoadCards}>LOAD MORE</a>
                         </div>
 
@@ -351,7 +393,7 @@
             Publicity.PosterCard = React.createClass({
                 render: function () {
                     return (
-                        /*<Publicity.ReactCSSTransitionGroup transitionName="example">*/
+                        /*<Publicity.ReactCSSTransitionGroup transitionName="example" transitionAppear={true}>*/
                         <div className={(this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone' }>
                             <div className={((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal') } data-count={this.state.internal_count} data-offset={this.state.internal_offset} data-sp-count={this.state.sponsored_count} data-sp-offset={this.state.sponsored_offset} >
                                 <span className="card-icon restore-card">
@@ -385,8 +427,6 @@
                         orientation: 'left',
                         size: 'normal'
                     };
-                    console.log("INITIAL STATE :", initial_state);
-
                     return initial_state;
                 },
                 componentDidMount: function() {
@@ -396,7 +436,7 @@
                 componentDidUpdate: function(){
                     //$(this.getDOMNode()).height($(this).find('.image').height());
 
-                    console.log("Updated!", $(this.getDOMNode()));
+                    //console.log("Updated!", $(this.getDOMNode()));
                 },
                 refreshCard: function(component){
 
@@ -499,6 +539,8 @@
                 // Determine Matrix
                 var rows = parseInt($(gridNode).data('rows'));
                 var cols = parseInt($(gridNode).data('cols'));
+                var load_more = $(gridNode).data('load-more') == 'true' || $(gridNode).data('load-more') == true  ? true : false;
+                console.log($(gridNode).data('load-more'));
                 var poster_count = rows * cols;
                 var ads = [];
                 for(var i = 0; i < poster_count; i++){
@@ -506,8 +548,11 @@
                     ads.push({});
                 }
 
+                //Publicity.foo = ads;
+
+                // Render Arrangement
                 React.render(
-                    <Publicity.PosterArrangement data={ ads } />,
+                    <Publicity.PosterArrangement data={ ads } loadMore={load_more} loadCount={cols} />,
                     gridNode
                 );
 
@@ -519,7 +564,7 @@
 
     };
 
-
+    // Initialize Publicity
     Publicity.init();
 
 }(jQuery, window, document, React));
