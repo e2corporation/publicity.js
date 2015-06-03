@@ -1,6 +1,20 @@
 # API Contest for REV2
 
-Ground rules:
+
+From React's documentation, here are a couple key points about the React Framework. When you're ready to dabble with the code,
+checkout the *Getting Started* section to get up and running quickly http://facebook.github.io/react/docs/getting-started.html.
+
+#### Simple
+Simply express how your app should look at any given point in time, and React will automatically manage all UI updates when your underlying data changes.
+
+#### Declarative
+When the data changes, React conceptually hits the "refresh" button, and knows to only update the changed parts.
+
+#### Build Composable Components
+
+React is all about building reusable components. In fact, with React the only thing you do is build components. Since they're so encapsulated, components make code reuse, testing, and separation of concerns easy.
+
+## Contest Ground rules:
 * The primary thing we would be looking for is UI innovation, ways publishers can display our content that adds value to their users and site design. Remember most of our pubs like to place us below article.
 * Client side code is preferred method for calling the API
 * If you request ads, you must show them, per API terms - you cant make a request for 40 ads then only show 2 of them in your plugin/ui (this can be tricky).

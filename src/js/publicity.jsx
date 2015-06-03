@@ -47,10 +47,18 @@
             Publicity.createComponents();
 
             // Build Example Poster Card
-            Publicity.buildCard(document.getElementById('example_card'));
+            // Publicity.buildCard(document.getElementById('example_card'));
 
-            // Build Example Arrangement
+            // Build Publicity Cards
+            $.each($('.publicity-card'), function(cid, card){
+                Publicity.buildCard(card);
+            });
+
+            // Build Example Arrangement (4x3)
             Publicity.buildArrangement(document.getElementById('example_grid'));
+
+            // Build Example Arrangement (1x2)
+            Publicity.buildArrangement(document.getElementById('example_grid_1x2'));
 
             // Apply Bindings + Post processing
             Publicity.configureCards();
@@ -247,6 +255,10 @@
         },
         configureCards: function(){
             $.each($('.card'), function (cid, card) {
+
+
+
+
                 $(card).find('.dismissal').find('.close-dismissal').on('click', function () {
                     Publicity.hideDismissal($(card));
                 });
@@ -284,17 +296,53 @@
                 render: function () {
                     var posterCards = this.props.data.map(function (card, cid) {
                         return (
-                            <Publicity.PosterCard key={ cid } />
+                            <Publicity.PosterCard key={ cid } dataOrientation="left" dataSize="normal" />
 
                             );
                     });
                     return (
                         <div className="card-arrangement">
                             {posterCards}
+                            <div className="cf"></div>
+                            <Publicity.ArrangementLoader />
                         </div>
                         );
                 }
 
+            });
+
+            /**
+             * Load More Trigger (Lazy-load)
+             * @type {*}
+             */
+            Publicity.ArrangementLoader = React.createClass({
+                getInitialState: function(){
+                    return {'load_more': false}
+                },
+                LoadCards: function(event){
+                    this.setState({'load_more': true});
+                },
+                componentDidMount: function(){
+
+                },
+                componentDidUpdate: function(){
+                    if(this.state.load_more == true){
+                        //var outlet = $($(this.getDOMNode()).find('.ad-portal'));
+                        //console.log(outlet);
+                        //Publicity.buildArrangement(outlet);
+                        Publicity.buildArrangement($(this.getDOMNode()).find('.ad-portal'));
+                    }
+                },
+                render: function(){
+
+                    return (
+                        <div className="load-more">
+                            <div className="ad-portal"></div>
+                            <a className="btn btn-small btn-pill right" style={{fontSize: '12px',margin: '18px 10px'}} onClick={this.LoadCards}>LOAD MORE</a>
+                        </div>
+
+                        );
+                }
             });
 
             // ------------------------------------
@@ -304,8 +352,8 @@
                 render: function () {
                     return (
                         /*<Publicity.ReactCSSTransitionGroup transitionName="example">*/
-                        <div className="card-zone left">
-                            <div className="card" data-count={this.state.internal_count} data-offset={this.state.internal_offset} data-sp-count={this.state.sponsored_count} data-sp-offset={this.state.sponsored_offset} >
+                        <div className={(this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone' }>
+                            <div className={((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal') } data-count={this.state.internal_count} data-offset={this.state.internal_offset} data-sp-count={this.state.sponsored_count} data-sp-offset={this.state.sponsored_offset} >
                                 <span className="card-icon restore-card">
                                     <i className="oi" data-glyph="arrow-circle-top"></i>
                                 </span>
@@ -333,7 +381,9 @@
                         internal_count: 1,
                         internal_offset: 0,
                         sponsored_count: 1,
-                        sponsored_offset: 0
+                        sponsored_offset: 0,
+                        orientation: 'left',
+                        size: 'normal'
                     };
                     console.log("INITIAL STATE :", initial_state);
 
@@ -342,6 +392,11 @@
                 componentDidMount: function() {
                     this.refreshCard(this);
                     //setInterval(this.refreshCard, this.props.pollInterval);
+                },
+                componentDidUpdate: function(){
+                    //$(this.getDOMNode()).height($(this).find('.image').height());
+
+                    console.log("Updated!", $(this.getDOMNode()));
                 },
                 refreshCard: function(component){
 
@@ -384,7 +439,7 @@
                                 <li>Another reason here</li>
                                 <li>TV killed the Radio</li>
                             </ul>
-                            <a className="btn btn-small btn-danger btn-primary remove-ad">REMOVE?</a>
+                            <a className="btn btn-small btn-danger btn-primary remove-ad">REMOVE</a>
                             <a className="btn btn-small btn-success btn-secondary close-dismissal">CANCEL</a>
                         </div>
                         );
@@ -417,22 +472,24 @@
                         );
                 }
             });
+
+
         },
         /**
-         * Build a Poster Card
+         * Build a Poster Card (REACT)
          * @param {String} cardNode to attach rendered card to
          */
         buildCard: function (cardNode) {
-
-            React.render(
-                <Publicity.PosterCard pollInterval={15000} />,
-                cardNode
-            );
-
+            if(cardNode != ''){
+                React.render(
+                    <Publicity.PosterCard pollInterval={15000} dataOrientation={ $(cardNode).data('orientation') || 'left'} dataSize={$(cardNode).data('size') || 'normal'} />,
+                    cardNode
+                );
+            }
 
         },
         /**
-         * Build an Arragement of Poster Cards
+         * Build an Arragement of Poster Cards (REACT)
          * @param gridNode
          */
         buildArrangement: function(gridNode){
