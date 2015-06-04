@@ -311,7 +311,7 @@
     letter-spacing: 2px;
     color: #ffffff;
     z-index: 150;
-    transition: all 1s ease;
+    /*transition: all 1s ease;*/
     z-index: 500;
     font-size: 12px;
     font-family: 'proxima-nova-extra-condensed', sans-serif;
@@ -469,12 +469,31 @@
 .load-more {
     font-size: 14px;
     line-height: 32px;
+    min-height: 48px;
+    overflow: hidden;
+}
+
+.load-more .btn {
+    color: #ffffff;
+    transition: all 0.7s ease;
+    -webkit-transition: all 0.7s ease;
+    -moz-transition: all 0.7s ease;
+    -o-transition: all 0.7s ease;
+}
+
+.load-more .btn:hover {
+    background-color: #00A77D;
 }
 
 .load-more .spinner {
     width: 120px;
     height: 32px;
     float: left;
+    padding-left: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #cccccc;
+
     background: transparent url("../img/Preloader_4.gif") 0 0 no-repeat;
 }
 

@@ -58,7 +58,7 @@
             // Publicity.buildCard(document.getElementById('example_card'));
 
             // Build Publicity Cards
-            $.each($('.publicity-card'), function(cid, card){
+            $.each($('.publicity-card'), function (cid, card) {
                 Publicity.buildCard(card);
             });
 
@@ -125,7 +125,7 @@
                 url: RevContent.API.endpoint,
                 type: 'get',
                 dataType: RevContent.API.type,
-                cache:false,
+                cache: false,
                 data: {
                     'api_key': RevContent.API.api_key,
                     'pub_id': RevContent.API.pub_id,
@@ -144,13 +144,13 @@
 
 
                     /*if(typeof posterComponent == 'object'){
-                        posterComponent.setState({
-                            internal_count: Publicity.internal_count,
-                            internal_offset: Publicity.internal_offset,
-                            sponsored_count: Publicity.sponsored_count,
-                            sponsored_offset: Publicity.sponsored_offset
-                        });
-                    }*/
+                     posterComponent.setState({
+                     internal_count: Publicity.internal_count,
+                     internal_offset: Publicity.internal_offset,
+                     sponsored_count: Publicity.sponsored_count,
+                     sponsored_offset: Publicity.sponsored_offset
+                     });
+                     }*/
 
                 },
                 success: function (ad_response) {
@@ -160,45 +160,45 @@
                     if (ad_response.length > 0) {
 
                         //if(ad_response.length == 1) {
-                            Publicity.stack.push(ad_response[0]);
+                        Publicity.stack.push(ad_response[0]);
                         //}
-                      // else {
+                        // else {
                         //    Publicity.stack.push(ad_response);
-                       //}
+                        //}
 
                         // Setup Component State/Properties
 
-                        if(typeof posterComponent == 'object'){
-                            if(posterComponent.isMounted()) {
+                        if (typeof posterComponent == 'object') {
+                            if (posterComponent.isMounted()) {
                                 posterComponent.setState({
-                                        data: Publicity.stack.shift(),
-                                        internal_count: Publicity.internal_count,
-                                        internal_offset: Publicity.internal_offset,
-                                        sponsored_count: Publicity.sponsored_count,
-                                        sponsored_offset: Publicity.sponsored_offset
-                                    });
+                                    data: Publicity.stack.shift(),
+                                    internal_count: Publicity.internal_count,
+                                    internal_offset: Publicity.internal_offset,
+                                    sponsored_count: Publicity.sponsored_count,
+                                    sponsored_offset: Publicity.sponsored_offset
+                                });
 
-                                    Publicity.deactivateLoader($(posterComponent.getDOMNode()));
+                                //Publicity.deactivateLoader($(posterComponent.getDOMNode()));
                             }
 
                         }
 
                     }
 
-                    if(ad_response.length > 0){
+                    if (ad_response.length > 0) {
                         return ad_response;
                     }
 
                     /*if (typeof ad_response[0] == 'object') {
-                        $card.find('a.cta').attr({href: ad_response[0].url});
-                        $card.find('.headline').text(ad_response[0].headline);
-                        $card.find('.image img').attr({src: ad_response[0].image});
+                     $card.find('a.cta').attr({href: ad_response[0].url});
+                     $card.find('.headline').text(ad_response[0].headline);
+                     $card.find('.image img').attr({src: ad_response[0].image});
 
-                        Publicity.hideDismissal($card);
-                        var next_offset = offset + 1;
-                        $card.attr({'data-offset': next_offset});
+                     Publicity.hideDismissal($card);
+                     var next_offset = offset + 1;
+                     $card.attr({'data-offset': next_offset});
 
-                    }*/
+                     }*/
 
                 },
                 error: function (response) {
@@ -219,20 +219,58 @@
 
         },
         activateLoader: function (card) {
-            card.find('.overlay').css({'backgroundColor': 'rgba(0,0,0,0.9)'});
-            card.find('.loader').animate({'top': 0, 'padding': '18px'}, 800, 'easeOutExpo', function () {
+
+            /*card.find('.loader').animate({'marginTop': 0}, 400, 'easeOutSine', function () {
                 //$(this).find('.card-spinner').append(Publicity.createSpinner());
                 $(this).addClass('activated').removeClass('deactivated').animate({'padding': '18px'}, 600, 'easeInQuad');
+            }); */
+            card.find('.overlay').css({'backgroundColor': 'rgba(0,0,0,0.9)'});
+            card.find('.loader').transition({
+                //perspective: 100 + 'px'
+                /*perspective: '100px',
+                 rotate3d: '1,1,0,180deg', */
+                x: 0,
+                y: 0,
+                opacity: 1
+                /*rotateY: '180deg',*/
+
+            },800, 'easeOutQuad', function(){
+                card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.1)'}, 350, 'easeInOutCirc', function () {
+
+                });
+                $(this).addClass('activated').removeClass('deactivated')
+
             });
 
             return this;
         },
         deactivateLoader: function (card) {
-            card.find('.overlay').css({'backgroundColor': 'rgba(0,0,0,0.1)'});
-            card.find('.loader').animate({'top': '-50px', 'padding': '18px'}, 900, 'easeOutQuint', function () {
-                $(this).addClass('deactivated').removeClass('activated').animate({}, 500, 'easeInQuad');
-            });
 
+            $(card).find('.loader').transition({
+                //perspective: 100 + 'px'
+                /*perspective: '100px',
+                rotate3d: '1,1,0,180deg', */
+                x: -700,
+                y: -700,
+                opacity: 0
+                /*rotateY: '180deg',*/
+
+            },1000, 'easeOutQuad', function(){
+                card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.1)'}, 450, 'easeInOutCirc', function () {
+
+                });
+                //$(this).addClass('deactivated').removeClass('activated');
+
+            });
+            //card.find('.loader').animate({'marginTop': '-1600px', 'marginLeft': '-1000px'}, 1800, 'easeInExpo', function () {
+
+                //$(this).addClass('deactivated').removeClass('activated').animate({}, 500, 'easeInQuad');
+                //$(this).animate({'marginTop':'-600px','marginLeft': '-600px'}, 1500, 'easeOutQuart', function(){
+
+
+                //});
+
+            //});
             return this;
         },
         dockCard: function (card) {
@@ -260,10 +298,8 @@
         nextCard: function (card) {
             //Publicity.fetchCard(card);
         },
-        configureCards: function(){
+        configureCards: function () {
             $.each($('.card'), function (cid, card) {
-
-
 
 
                 $(card).find('.dismissal').find('.close-dismissal').on('click', function () {
@@ -293,19 +329,34 @@
 
             });
         },
-        createComponents: function(){
+        createComponents: function () {
 
             /**
              *  Poster Arrangement (Ad Grid)
              *  -- an arrangement consists of one or more poster cards
              */
             Publicity.PosterArrangement = React.createClass({
-                componentDidUpdate: function(){
+                componentDidUpdate: function () {
                     Publicity.configureCards();
+                    $(this.getDOMNode()).find('.spinner').css({'marginTop': 0, 'opacity': 1}).delay(2000).animate({'marginTop': '10px', 'opacity': 0}, 450, 'easeOutExpo', function () {
+
+                    });
+                    $(this.getDOMNode()).find('.load-btn').removeClass('disabled').delay(3000).animate({'opacity': 1}, 450, 'easeInQuad', function () {
+
+                    });
                 },
-                loadMoreCards: function(){
+                componentWillUpdate: function () {
+                    $(this.getDOMNode()).find('.load-btn').addClass('disabled').animate({'opacity': 0}, 250, 'easeOutQuad', function () {
+
+                    });
+                    $(this.getDOMNode()).find('.spinner').css({'marginTop': '10px', 'opacity': 0}).show().animate({'marginTop': 0, 'opacity': 1}, 650, 'easeOutExpo', function () {
+
+                    });
+
+                },
+                loadMoreCards: function () {
                     var more_cards = [];
-                    for(var i=0;i<this.props.loadCount;i++){
+                    for (var i = 0; i < this.props.loadCount; i++) {
                         more_cards.push({});
                     }
                     newData = this.props.data.concat(more_cards);
@@ -320,7 +371,7 @@
                             );
                     });
                     return (
-                        <div className="card-arrangement" ref="myArrangement" data-load-more={this.props.loadMore == true ? true: false} data-load-count={this.props.loadCount}>
+                        <div className="card-arrangement" ref="myArrangement" data-load-more={this.props.loadMore == true ? true : false} data-load-count={this.props.loadCount}>
                             {posterCards}
                             <div className="cf"></div>
                             {this.props.loadMore ? <Publicity.ArrangementLoader onClick={this.loadMoreCards}  /> : ''}
@@ -335,23 +386,23 @@
              * @type {*}
              */
             Publicity.ArrangementLoader = React.createClass({
-                getInitialState: function(){
+                getInitialState: function () {
                     return {'load_more': false}
                 },
-                LoadCards: function(event){
-                    $(this.getDOMNode()).find('.spinner').fadeIn();
+                LoadCards: function (event) {
+
                     this.setState({'load_more': true});
                 },
-                componentDidMount: function(){
+                componentDidMount: function () {
 
                 },
 
-                componentDidUpdate: function(){
-                    if(this.state.load_more == true){
+                componentDidUpdate: function () {
+                    if (this.state.load_more == true) {
 
                         //var outlet = $($(this.getDOMNode()).find('.ad-portal'));
                         // Trigger Parent Component's Loading handler... (Routed through click event)
-                        if(this.isMounted()) {
+                        if (this.isMounted()) {
                             this.props.onClick();
 
                             this.setState({load_more: false});
@@ -363,134 +414,137 @@
                         //Publicity.buildArrangement();
                         //this.props.arrangementData.push({});
                         //this.props.arrangementData.push({});
-                       //console.log(this.props.arrangementData);
+                        //console.log(this.props.arrangementData);
                     } else {
 
                     }
                 },
-                render: function(){
+                render: function () {
                     /*var moreCards = this.state.moreCards.map(function (card, cid) {
-                        return (
-                            <Publicity.PosterCard key={ cid } dataOrientation="left" dataSize="normal" />
+                     return (
+                     <Publicity.PosterCard key={ cid } dataOrientation="left" dataSize="normal" />
 
-                        );
-                    });*/
+                     );
+                     });*/
                     return (
 
                         <div className="load-more">
-                            <div className="spinner left" style={{display: "none"}}></div>
-                            <div id="adPortal" className="ad-portal"></div>
-                            <a className="btn btn-small btn-pill right" style={{fontSize: '12px',margin: '18px 10px'}} onClick={this.LoadCards}>LOAD MORE</a>
-                        </div>
+                            <div className="spinner left" style={{display: "none"}}>LOADING ...
+                                </div>
+                                    <div id="adPortal" className="ad-portal"></div>
+                                    <a className="load-btn btn btn-small btn-pill right" style={{fontSize: '12px', margin: '18px 10px'}} onClick={this.LoadCards}>LOAD MORE</a>
+                                    <div className="cf"></div>
+                                </div>
 
+                            );
+                            }
+                            });
+
+                            // ------------------------------------
+
+                            // PosterCard Main Component (Ad Unit)
+                            Publicity.PosterCard = React.createClass({
+                                render: function () {
+                                return (
+                                /*<Publicity.ReactCSSTransitionGroup transitionName="example" transitionAppear={true}>*/
+                                <div className={(this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone' }>
+                                    <div className={((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal') } data-count={this.state.internal_count} data-offset={this.state.internal_offset} data-sp-count={this.state.sponsored_count} data-sp-offset={this.state.sponsored_offset} >
+                                        <span className="card-icon restore-card">
+                                            <i className="oi" data-glyph="arrow-circle-top"></i>
+                                        </span>
+
+                                        <span className="card-icon snooze-card">
+                                            <i className="oi" data-glyph="timer"></i>
+                                        </span>
+
+                                        <Publicity.PosterCard.Close />
+
+                                        <Publicity.PosterCard.Loader />
+
+                                        <Publicity.PosterCard.Dismissal />
+
+                                        <Publicity.PosterCard.Action data={this.state.data} />
+
+                                    </div>
+                                </div>
+                            /*</Publicity.ReactCSSTransitionGroup>
+                        */
                         );
-                }
-            });
+                        },
+                        getInitialState: function(){
+                            var initial_state = {
+                            data: [],
+                            internal_count: 1,
+                            internal_offset: 0,
+                            sponsored_count: 1,
+                            sponsored_offset: 0,
+                            orientation: 'left',
+                            size: 'normal'
+                            };
+                        return initial_state;
+                        },
+                        componentDidMount: function() {
+                            this.refreshCard(this);
+                            //setInterval(this.refreshCard, this.props.pollInterval);
+                            },
+                        componentDidUpdate: function(){
+                            //$(this.getDOMNode()).height($(this).find('.image').height());
+                            Publicity.deactivateLoader($(this.getDOMNode()));
+                            //console.log("Updated!", $(this.getDOMNode()));
+                            },
+                        refreshCard: function(component){
 
-            // ------------------------------------
+                            // NOTE: The PosterCard Component is injected here as last argument...
+                            // $(this.getDOMNode()).attr('data-offset'), $(this.getDOMNode()).attr('data-count'), $(this.getDOMNode()).attr('data-sp-offset') , $(this.getDOMNode()).attr('data-sp-count')
 
-            // PosterCard Main Component (Ad Unit)
-            Publicity.PosterCard = React.createClass({
-                render: function () {
-                    return (
-                        /*<Publicity.ReactCSSTransitionGroup transitionName="example" transitionAppear={true}>*/
-                        <div className={(this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone' }>
-                            <div className={((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal') } data-count={this.state.internal_count} data-offset={this.state.internal_offset} data-sp-count={this.state.sponsored_count} data-sp-offset={this.state.sponsored_offset} >
-                                <span className="card-icon restore-card">
-                                    <i className="oi" data-glyph="arrow-circle-top"></i>
-                                </span>
+                            Publicity.fetchCard($(this.getDOMNode()), null, null, null, null, component);
+                            }
+                        });
 
-                                <span className="card-icon snooze-card">
-                                    <i className="oi" data-glyph="timer"></i>
-                                </span>
-
-                                <Publicity.PosterCard.Close />
-
-                                <Publicity.PosterCard.Loader />
-
-                                <Publicity.PosterCard.Dismissal />
-
-                                <Publicity.PosterCard.Action data={this.state.data} />
-
-                            </div>
-                        </div>
-                        /*</Publicity.ReactCSSTransitionGroup>*/
-                        );
-                },
-                getInitialState: function(){
-                    var initial_state = {
-                        data: [],
-                        internal_count: 1,
-                        internal_offset: 0,
-                        sponsored_count: 1,
-                        sponsored_offset: 0,
-                        orientation: 'left',
-                        size: 'normal'
-                    };
-                    return initial_state;
-                },
-                componentDidMount: function() {
-                    this.refreshCard(this);
-                    //setInterval(this.refreshCard, this.props.pollInterval);
-                },
-                componentDidUpdate: function(){
-                    //$(this.getDOMNode()).height($(this).find('.image').height());
-
-                    //console.log("Updated!", $(this.getDOMNode()));
-                },
-                refreshCard: function(component){
-
-                    // NOTE: The PosterCard Component is injected here as last argument...
-                    // $(this.getDOMNode()).attr('data-offset'), $(this.getDOMNode()).attr('data-count'), $(this.getDOMNode()).attr('data-sp-offset') , $(this.getDOMNode()).attr('data-sp-count')
-
-                    Publicity.fetchCard($(this.getDOMNode()), null, null, null, null, component);
-                }
-            });
-
-            // Preloader Sub-component
-            Publicity.PosterCard.Loader = React.createClass({
-                render: function () {
-                    return (
-                        <div className="loader">
+                        // Preloader Sub-component
+                        Publicity.PosterCard.Loader = React.createClass({
+                            render: function () {
+                            return (
+                            <div className="loader">
                             <div className="loading">
-                                <h2>think bigger ...</h2>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
+                            <h2>think bigger ...</h2>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
                             </div>
-                        </div>
-                        );
-                }
-            });
+                            </div>
+                            );
+                            }
+                        });
 
-            // Dismissal Sub-component
-            Publicity.PosterCard.Dismissal = React.createClass({
-                render: function () {
-                    return (
-                        <div className="dismissal off">
+                        // Dismissal Sub-component
+                        Publicity.PosterCard.Dismissal = React.createClass({
+                            render: function () {
+                            return (
+                            <div className="dismissal off">
                             <strong>PLEASE CHOOSE A REASON ...</strong>
                             <ul>
-                                <li className="selected">This ad is misleading</li>
-                                <li>I am unable to view it</li>
-                                <li>Another reason here</li>
-                                <li>TV killed the Radio</li>
+                            <li className="selected">This ad is misleading</li>
+                            <li>I am unable to view it</li>
+                            <li>Another reason here</li>
+                            <li>TV killed the Radio</li>
                             </ul>
                             <a className="btn btn-small btn-danger btn-primary remove-ad">REMOVE</a>
                             <a className="btn btn-small btn-success btn-secondary close-dismissal">CANCEL</a>
-                        </div>
-                        );
-                }
-            });
+                            </div>
+                            );
+                            }
+                        });
 
-            // Action Sub-component (CTA)
-            Publicity.PosterCard.Action = React.createClass({
-                render: function () {
-                    return (
-                        <a href={ this.props.data.url || '#' } className="cta">
+                        // Action Sub-component (CTA)
+                        Publicity.PosterCard.Action = React.createClass({
+                            render: function () {
+                            return (
+                            <a href={ this.props.data.url || '#' } className="cta">
 
                             <div className="image">
                                 <img className="image" src={ this.props.data.image || 'http://placehold.it/320x240' } />
@@ -520,7 +574,7 @@
          * @param {String} cardNode to attach rendered card to
          */
         buildCard: function (cardNode) {
-            if(cardNode != ''){
+            if (cardNode != '') {
                 React.render(
                     <Publicity.PosterCard pollInterval={15000} dataOrientation={ $(cardNode).data('orientation') || 'left'} dataSize={$(cardNode).data('size') || 'normal'} />,
                     cardNode
@@ -532,18 +586,18 @@
          * Build an Arragement of Poster Cards (REACT)
          * @param gridNode
          */
-        buildArrangement: function(gridNode){
+        buildArrangement: function (gridNode) {
 
-            if(gridNode != ''){
+            if (gridNode != '') {
 
                 // Determine Matrix
                 var rows = parseInt($(gridNode).data('rows'));
                 var cols = parseInt($(gridNode).data('cols'));
-                var load_more = $(gridNode).data('load-more') == 'true' || $(gridNode).data('load-more') == true  ? true : false;
+                var load_more = $(gridNode).data('load-more') == 'true' || $(gridNode).data('load-more') == true ? true : false;
                 console.log($(gridNode).data('load-more'));
                 var poster_count = rows * cols;
                 var ads = [];
-                for(var i = 0; i < poster_count; i++){
+                for (var i = 0; i < poster_count; i++) {
                     // Pushing empty object for now, state properties are setup after AJAX....
                     ads.push({});
                 }

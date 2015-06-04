@@ -178,6 +178,15 @@
     color: #626262;
 }
 
+.avatar-1 {
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+    border:3.0px solid #ffffff;
+    display: inline-block;
+    margin-right: 10px;
+    float: left;
+}
 
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
