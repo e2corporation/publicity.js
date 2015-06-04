@@ -15,6 +15,8 @@
  * @todo        Apply Unique IDs to Card Components
  * @todo        Add support for lazy loading cards for arrangement containers...
  * @todo        Implement Duplicate Ad checking ability
+ * @todo        Add Network Offline support
+ * @todo        Future: Enable Card Action Cloaking (URL Juggle )
  */
 
 (function ($, window, document, React, undefined) {
@@ -36,6 +38,9 @@
     var Publicity = {
         ReactCSSTransitionGroup: React.addons.CSSTransitionGroup,
         stack: [],
+        getStack: function () {
+            return this.stack;
+        },
         foo: [],
         options: {
             cardClass: 'publicity-card',
@@ -55,18 +60,18 @@
             Publicity.createComponents();
 
             // Build Example Poster Card
-            // Publicity.buildCard(document.getElementById('example_card'));
+            ///// Publicity.buildCard(document.getElementById('example_card'));
 
             // Build Publicity Cards
             $.each($('.publicity-card'), function (cid, card) {
-                Publicity.buildCard(card);
+                //Publicity.buildCard(card);
             });
 
             // Build Example Arrangement (4x3)
             Publicity.buildArrangement(document.getElementById('example_grid'));
 
             // Build Example Arrangement (1x2)
-            Publicity.buildArrangement(document.getElementById('example_grid_1x2'));
+            /////Publicity.buildArrangement(document.getElementById('example_grid_1x2'));
 
             // Apply Bindings + Post processing
             Publicity.configureCards();
@@ -206,6 +211,79 @@
                 }
             });
         },
+        advanceCounters: function (in_o, in_ct, sp_o, sp_ct) {
+            Publicity.internal_count = in_o || 1;
+            //Publicity.internal_offset = in_o + (in_ct || 1);
+            Publicity.internal_offset++;
+
+            Publicity.sponsored_count = sp_ct || 1;
+            //Publicity.sponsored_offset = sp_o + (sp_ct || 1);
+            Publicity.sponsored_offset++;
+        },
+        /**
+         * Retrieve Ads from REV2 API
+         *
+         * @param {Integer} sp_ct Count of sponsored items to retrieve
+         * @param {Integer} sp_o  sponsored offset
+         * @param {Integer} cols
+         * @param {Boolean} load_more
+         * @param gridNode
+         * @param {Function} callback
+         */
+        retrieveAds: function (sp_ct, sp_o, cols, load_more, gridNode, callback) {
+            //if(!stack){ var stack = []};
+            //return function(){
+            var ads = [];
+            var retrieve_ads = $.ajax({
+                url: RevContent.API.endpoint,
+                type: 'get',
+                dataType: RevContent.API.type,
+                cache: false,
+                data: {
+                    'api_key': RevContent.API.api_key,
+                    'pub_id': RevContent.API.pub_id,
+                    'widget_id': RevContent.API.widget_id,
+                    'type': RevContent.API.type,
+                    'domain': RevContent.API.domain,
+                    //'internal_count': 0,
+                    //'internal_offset': 0,
+                    'sponsored_count': sp_ct || Publicity.sponsored_count,
+                    'sponsored_offset': sp_o || Publicity.sponsored_offset
+                    //'user_ip': '',
+                    //'user_agent': '',
+                },
+                beforeSend: function () {
+
+
+                },
+                success: function (ad_response) {
+                    if (ad_response.length > 0) {
+                        console.log("Successs!", ad_response);
+
+                        Publicity.stack.concat(ad_response);
+                        console.log(typeof callback, callback);
+                        if (typeof callback == 'function') {
+                            Publicity.advanceCounters(sp_o, sp_ct, sp_o, sp_ct)
+                            callback(ad_response, load_more, cols, sp_o, gridNode);
+                        } else {
+
+                        }
+                    }
+                },
+                error: function () {
+                }
+
+            });
+            /*.done(function(){
+             console.log("Done!", ads);
+             return ads;
+
+             });*/
+
+
+            //}
+
+        },
         showDismissal: function (card) {
             card.find('.dismissal').animate({'margin-top': 0}, 700, 'easeOutQuart', function () {
                 $(this).addClass('on').removeClass('off');
@@ -221,9 +299,9 @@
         activateLoader: function (card) {
 
             /*card.find('.loader').animate({'marginTop': 0}, 400, 'easeOutSine', function () {
-                //$(this).find('.card-spinner').append(Publicity.createSpinner());
-                $(this).addClass('activated').removeClass('deactivated').animate({'padding': '18px'}, 600, 'easeInQuad');
-            }); */
+             //$(this).find('.card-spinner').append(Publicity.createSpinner());
+             $(this).addClass('activated').removeClass('deactivated').animate({'padding': '18px'}, 600, 'easeInQuad');
+             }); */
             card.find('.overlay').css({'backgroundColor': 'rgba(0,0,0,0.9)'});
             card.find('.loader').transition({
                 //perspective: 100 + 'px'
@@ -234,7 +312,7 @@
                 opacity: 1
                 /*rotateY: '180deg',*/
 
-            },800, 'easeOutQuad', function(){
+            }, 800, 'easeOutQuad', function () {
                 card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.1)'}, 350, 'easeInOutCirc', function () {
 
                 });
@@ -249,13 +327,13 @@
             $(card).find('.loader').transition({
                 //perspective: 100 + 'px'
                 /*perspective: '100px',
-                rotate3d: '1,1,0,180deg', */
+                 rotate3d: '1,1,0,180deg', */
                 x: -700,
                 y: -700,
                 opacity: 0
                 /*rotateY: '180deg',*/
 
-            },1000, 'easeOutQuad', function(){
+            }, 1000, 'easeOutQuad', function () {
                 card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.1)'}, 450, 'easeInOutCirc', function () {
 
                 });
@@ -264,11 +342,11 @@
             });
             //card.find('.loader').animate({'marginTop': '-1600px', 'marginLeft': '-1000px'}, 1800, 'easeInExpo', function () {
 
-                //$(this).addClass('deactivated').removeClass('activated').animate({}, 500, 'easeInQuad');
-                //$(this).animate({'marginTop':'-600px','marginLeft': '-600px'}, 1500, 'easeOutQuart', function(){
+            //$(this).addClass('deactivated').removeClass('activated').animate({}, 500, 'easeInQuad');
+            //$(this).animate({'marginTop':'-600px','marginLeft': '-600px'}, 1500, 'easeOutQuart', function(){
 
 
-                //});
+            //});
 
             //});
             return this;
@@ -287,13 +365,22 @@
             return this;
         },
         revealCard: function (card) {
-            card.animate({'margin-bottom': 0, 'opacity': 1, 'left': $('.wrapper').offset().left}, 900, 'easeOutExpo', function () {
+            card.animate({
+                'margin-bottom': 0,
+                'opacity': 1,
+                'left': $('.wrapper').offset().left
+            }, 900, 'easeOutExpo', function () {
                 $(this).removeClass('docked');
             });
             return this;
         },
         restoreCard: function (card) {
-            card.removeClass('fixed').removeClass('docked').animate({'margin-bottom': 0, 'opacity': 0.5, 'left': 0, 'opacity': 1.0});
+            card.removeClass('fixed').removeClass('docked').animate({
+                'margin-bottom': 0,
+                'opacity': 0.5,
+                'left': 0,
+                'opacity': 1.0
+            });
         },
         nextCard: function (card) {
             //Publicity.fetchCard(card);
@@ -338,10 +425,13 @@
             Publicity.PosterArrangement = React.createClass({displayName: "PosterArrangement",
                 componentDidUpdate: function () {
                     Publicity.configureCards();
-                    $(this.getDOMNode()).find('.spinner').css({'marginTop': 0, 'opacity': 1}).delay(2000).animate({'marginTop': '10px', 'opacity': 0}, 450, 'easeOutExpo', function () {
+                    $(this.getDOMNode()).find('.spinner').css({
+                        'marginTop': 0,
+                        'opacity': 1
+                    }).delay(2000).animate({'marginTop': '10px', 'opacity': 0}, 450, 'easeOutExpo', function () {
 
                     });
-                    $(this.getDOMNode()).find('.load-btn').removeClass('disabled').delay(3000).animate({'opacity': 1}, 450, 'easeInQuad', function () {
+                    $(this.getDOMNode()).find('.load-btn').removeClass('disabled').delay(1000).animate({'opacity': 1}, 450, 'easeInQuad', function () {
 
                     });
                 },
@@ -349,34 +439,74 @@
                     $(this.getDOMNode()).find('.load-btn').addClass('disabled').animate({'opacity': 0}, 250, 'easeOutQuad', function () {
 
                     });
-                    $(this.getDOMNode()).find('.spinner').css({'marginTop': '10px', 'opacity': 0}).show().animate({'marginTop': 0, 'opacity': 1}, 650, 'easeOutExpo', function () {
+                    $(this.getDOMNode()).find('.spinner').css({
+                        'marginTop': '10px',
+                        'opacity': 0
+                    }).show().animate({'marginTop': 0, 'opacity': 1}, 650, 'easeOutExpo', function () {
 
                     });
 
                 },
                 loadMoreCards: function () {
                     var more_cards = [];
-                    for (var i = 0; i < this.props.loadCount; i++) {
-                        more_cards.push({});
-                    }
-                    newData = this.props.data.concat(more_cards);
-                    //console.log(this.props.data.length, newData.length);
-                    this.setProps({data: newData});
+                    var existing_cards = this.props.data;
+                    var arrangement = this;
+                    /*for (var i = 0; i < this.props.loadCount; i++) {
+                     more_cards.push({});
+                     }
+                     newData = this.props.data.concat(more_cards);
+                     //console.log(this.props.data.length, newData.length);
+                     this.setProps({data: newData});*/
+
+                    var load_more_ads = $.ajax({
+                        url: RevContent.API.endpoint,
+                        type: 'get',
+                        dataType: RevContent.API.type,
+                        cache: false,
+                        data: {
+                            'api_key': RevContent.API.api_key,
+                            'pub_id': RevContent.API.pub_id,
+                            'widget_id': RevContent.API.widget_id,
+                            'type': RevContent.API.type,
+                            'domain': RevContent.API.domain,
+                            //'internal_count': 0,
+                            //'internal_offset': 0,
+                            'sponsored_count': this.props.loadCount || Publicity.sponsored_count,
+                            'sponsored_offset': parseInt($(this.getDOMNode()).find('.card-zone:last').find('.card').attr('data-offset')) || 0
+                            //'user_ip': '',
+                            //'user_agent': '',
+                        },
+                        beforeSend: function () {
+
+
+                        },
+                        success: function (more_cards) {
+                            arrangement.setProps({data: existing_cards.concat(more_cards)});
+
+                        }
+
+                    });
+
                 },
                 render: function () {
                     var posterCards = this.props.data.map(function (card, cid) {
+                        //console.log("Got Card...", card);
                         return (
-                            React.createElement(Publicity.PosterCard, {key:  cid, dataOrientation: "left", dataSize: "normal"})
+                            React.createElement(Publicity.PosterCard, {key:  cid, data:  card, dataOrientation: "left", dataSize: "normal", dataOffset:  cid })
 
-                            );
+                        );
                     });
                     return (
-                        React.createElement("div", {className: "card-arrangement", ref: "myArrangement", "data-load-more": this.props.loadMore == true ? true : false, "data-load-count": this.props.loadCount}, 
+                        React.createElement("div", {className: "card-arrangement", ref: "myArrangement", 
+                             "data-load-more": this.props.loadMore == true ? true : false, 
+                             "data-load-count": this.props.loadCount, 
+                             "data-load-offset": this.props.loadOffset}, 
+
                             posterCards, 
                             React.createElement("div", {className: "cf"}), 
                             this.props.loadMore ? React.createElement(Publicity.ArrangementLoader, {onClick: this.loadMoreCards}) : ''
                         )
-                        );
+                    );
                 }
 
             });
@@ -396,7 +526,6 @@
                 componentDidMount: function () {
 
                 },
-
                 componentDidUpdate: function () {
                     if (this.state.load_more == true) {
 
@@ -404,7 +533,6 @@
                         // Trigger Parent Component's Loading handler... (Routed through click event)
                         if (this.isMounted()) {
                             this.props.onClick();
-
                             this.setState({load_more: false});
                             $(this.getDOMNode()).find('.spinner').hide();
                         }
@@ -420,131 +548,132 @@
                     }
                 },
                 render: function () {
-                    /*var moreCards = this.state.moreCards.map(function (card, cid) {
-                     return (
-                     <Publicity.PosterCard key={ cid } dataOrientation="left" dataSize="normal" />
-
-                     );
-                     });*/
                     return (
 
                         React.createElement("div", {className: "load-more"}, 
-                            React.createElement("div", {className: "spinner left", style: {display: "none"}}, "LOADING ..."
-                                ), 
-                                    React.createElement("div", {id: "adPortal", className: "ad-portal"}), 
-                                    React.createElement("a", {className: "load-btn btn btn-small btn-pill right", style: {fontSize: '12px', margin: '18px 10px'}, onClick: this.LoadCards}, "LOAD MORE"), 
-                                    React.createElement("div", {className: "cf"})
-                                )
+                            React.createElement("div", {className: "spinner left", style: {display: "none"}}, "LOADING"
+                            ), 
 
-                            );
-                            }
-                            });
+                            React.createElement("div", {id: "adPortal", className: "ad-portal"}), 
+                            React.createElement("a", {className: "load-btn btn btn-small btn-pill right", 
+                               style: {fontSize: '12px', margin: '18px 10px'}, onClick: this.LoadCards}, "LOAD MORE"), 
 
-                            // ------------------------------------
+                            React.createElement("div", {className: "cf"})
+                        )
 
-                            // PosterCard Main Component (Ad Unit)
-                            Publicity.PosterCard = React.createClass({displayName: "PosterCard",
-                                render: function () {
-                                return (
-                                /*<Publicity.ReactCSSTransitionGroup transitionName="example" transitionAppear={true}>*/
-                                React.createElement("div", {className: (this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone'}, 
-                                    React.createElement("div", {className: ((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal'), "data-count": this.state.internal_count, "data-offset": this.state.internal_offset, "data-sp-count": this.state.sponsored_count, "data-sp-offset": this.state.sponsored_offset}, 
-                                        React.createElement("span", {className: "card-icon restore-card"}, 
-                                            React.createElement("i", {className: "oi", "data-glyph": "arrow-circle-top"})
-                                        ), 
+                    );
 
-                                        React.createElement("span", {className: "card-icon snooze-card"}, 
-                                            React.createElement("i", {className: "oi", "data-glyph": "timer"})
-                                        ), 
+                }
 
-                                        React.createElement(Publicity.PosterCard.Close, null), 
+            });
 
-                                        React.createElement(Publicity.PosterCard.Loader, null), 
+            // PosterCard Main Component (Ad Unit)
+            Publicity.PosterCard = React.createClass({displayName: "PosterCard",
+                render: function () {
+                    return (
+                        React.createElement("div", {
+                            className: (this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone'}, 
+                            React.createElement("div", {
+                                className: ((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal'), 
+                                "data-count": this.state.internal_count, "data-offset": this.props.dataOffset || this.state.internal_offset, 
+                                "data-sp-count": this.state.sponsored_count, "data-sp-offset": this.state.sponsored_offset}, 
+                                    React.createElement("span", {className: "card-icon restore-card"}, 
+                                        React.createElement("i", {className: "oi", "data-glyph": "arrow-circle-top"})
+                                    ), 
 
-                                        React.createElement(Publicity.PosterCard.Dismissal, null), 
+                                    React.createElement("span", {className: "card-icon snooze-card"}, 
+                                        React.createElement("i", {className: "oi", "data-glyph": "timer"})
+                                    ), 
 
-                                        React.createElement(Publicity.PosterCard.Action, {data: this.state.data})
+                                React.createElement(Publicity.PosterCard.Close, null), 
 
-                                    )
-                                )
-                            /*</Publicity.ReactCSSTransitionGroup>
-                        */
-                        );
-                        },
-                        getInitialState: function(){
-                            var initial_state = {
-                            data: [],
-                            internal_count: 1,
-                            internal_offset: 0,
-                            sponsored_count: 1,
-                            sponsored_offset: 0,
-                            orientation: 'left',
-                            size: 'normal'
-                            };
-                        return initial_state;
-                        },
-                        componentDidMount: function() {
-                            this.refreshCard(this);
-                            //setInterval(this.refreshCard, this.props.pollInterval);
-                            },
-                        componentDidUpdate: function(){
-                            //$(this.getDOMNode()).height($(this).find('.image').height());
-                            Publicity.deactivateLoader($(this.getDOMNode()));
-                            //console.log("Updated!", $(this.getDOMNode()));
-                            },
-                        refreshCard: function(component){
+                                React.createElement(Publicity.PosterCard.Loader, null), 
 
-                            // NOTE: The PosterCard Component is injected here as last argument...
-                            // $(this.getDOMNode()).attr('data-offset'), $(this.getDOMNode()).attr('data-count'), $(this.getDOMNode()).attr('data-sp-offset') , $(this.getDOMNode()).attr('data-sp-count')
+                                React.createElement(Publicity.PosterCard.Dismissal, null), 
 
-                            Publicity.fetchCard($(this.getDOMNode()), null, null, null, null, component);
-                            }
-                        });
+                                /*<Publicity.PosterCard.Action data={this.state.data}/>*/ 
+                                React.createElement(Publicity.PosterCard.Action, {data: this.props.data})
 
-                        // Preloader Sub-component
-                        Publicity.PosterCard.Loader = React.createClass({displayName: "Loader",
-                            render: function () {
-                            return (
-                            React.createElement("div", {className: "loader"}, 
+                            )
+                        )
+
+                    );
+                },
+                getInitialState: function () {
+                    var initial_state = {
+                        data: {},
+                        internal_count: 1,
+                        internal_offset: 0,
+                        sponsored_count: 1,
+                        sponsored_offset: 0,
+                        orientation: 'left',
+                        size: 'normal'
+                    };
+                    return initial_state;
+                },
+                componentDidMount: function () {
+                    //this.refreshCard(this);
+                    //setInterval(this.refreshCard, this.props.pollInterval);
+                    Publicity.deactivateLoader($(this.getDOMNode()));
+                },
+                componentDidUpdate: function () {
+                    //$(this.getDOMNode()).height($(this).find('.image').height());
+                    Publicity.deactivateLoader($(this.getDOMNode()));
+                    //console.log("Updated!", $(this.getDOMNode()));
+                },
+                refreshCard: function (component) {
+
+                    // NOTE: The PosterCard Component is injected here as last argument...
+                    // $(this.getDOMNode()).attr('data-offset'), $(this.getDOMNode()).attr('data-count'), $(this.getDOMNode()).attr('data-sp-offset') , $(this.getDOMNode()).attr('data-sp-count')
+
+                    Publicity.fetchCard($(this.getDOMNode()), null, null, null, null, component);
+                }
+            });
+
+            // Preloader Sub-component
+            Publicity.PosterCard.Loader = React.createClass({displayName: "Loader",
+                render: function () {
+                    return (
+                        React.createElement("div", {className: "loader"}, 
                             React.createElement("div", {className: "loading"}, 
-                            React.createElement("h2", null, "think bigger ..."), 
-                            React.createElement("span", null), 
-                            React.createElement("span", null), 
-                            React.createElement("span", null), 
-                            React.createElement("span", null), 
-                            React.createElement("span", null), 
-                            React.createElement("span", null), 
-                            React.createElement("span", null)
+                                React.createElement("h2", null, "think bigger ..."), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null)
                             )
-                            )
-                            );
-                            }
-                        });
+                        )
+                    );
+                }
+            });
 
-                        // Dismissal Sub-component
-                        Publicity.PosterCard.Dismissal = React.createClass({displayName: "Dismissal",
-                            render: function () {
-                            return (
-                            React.createElement("div", {className: "dismissal off"}, 
+            // Dismissal Sub-component
+            Publicity.PosterCard.Dismissal = React.createClass({displayName: "Dismissal",
+                render: function () {
+                    return (
+                        React.createElement("div", {className: "dismissal off"}, 
                             React.createElement("strong", null, "PLEASE CHOOSE A REASON ..."), 
                             React.createElement("ul", null, 
-                            React.createElement("li", {className: "selected"}, "This ad is misleading"), 
-                            React.createElement("li", null, "I am unable to view it"), 
-                            React.createElement("li", null, "Another reason here"), 
-                            React.createElement("li", null, "TV killed the Radio")
+                                React.createElement("li", {className: "selected"}, "This ad is misleading"), 
+                                React.createElement("li", null, "I am unable to view it"), 
+                                React.createElement("li", null, "Another reason here"), 
+                                React.createElement("li", null, "TV killed the Radio")
                             ), 
                             React.createElement("a", {className: "btn btn-small btn-danger btn-primary remove-ad"}, "REMOVE"), 
                             React.createElement("a", {className: "btn btn-small btn-success btn-secondary close-dismissal"}, "CANCEL")
-                            )
-                            );
-                            }
-                        });
+                        )
+                    );
+                }
+            });
 
-                        // Action Sub-component (CTA)
-                        Publicity.PosterCard.Action = React.createClass({displayName: "Action",
-                            render: function () {
-                            return (
-                            React.createElement("a", {href:  this.props.data.url || '#', className: "cta"}, 
+            // Action Sub-component (CTA)
+            Publicity.PosterCard.Action = React.createClass({displayName: "Action",
+                render: function () {
+                    return (
+                        React.createElement("a", {href:  this.props.data.url || '#', className: "cta"}, 
 
                             React.createElement("div", {className: "image"}, 
                                 React.createElement("img", {className: "image", src:  this.props.data.image || 'http://placehold.it/320x240'})
@@ -553,7 +682,7 @@
                             React.createElement("div", {className: "overlay"})
 
                         )
-                        );
+                    );
                 }
             });
 
@@ -563,7 +692,7 @@
                 render: function () {
                     return (
                         React.createElement("span", {className: "card-icon close-card"}, "×")
-                        );
+                    );
                 }
             });
 
@@ -576,7 +705,9 @@
         buildCard: function (cardNode) {
             if (cardNode != '') {
                 React.render(
-                    React.createElement(Publicity.PosterCard, {pollInterval: 15000, dataOrientation:  $(cardNode).data('orientation') || 'left', dataSize: $(cardNode).data('size') || 'normal'}),
+                    React.createElement(Publicity.PosterCard, {pollInterval: 15000, 
+                                          dataOrientation:  $(cardNode).data('orientation') || 'left', 
+                                          dataSize: $(cardNode).data('size') || 'normal'}),
                     cardNode
                 );
             }
@@ -594,24 +725,56 @@
                 var rows = parseInt($(gridNode).data('rows'));
                 var cols = parseInt($(gridNode).data('cols'));
                 var load_more = $(gridNode).data('load-more') == 'true' || $(gridNode).data('load-more') == true ? true : false;
-                console.log($(gridNode).data('load-more'));
                 var poster_count = rows * cols;
-                var ads = [];
-                for (var i = 0; i < poster_count; i++) {
-                    // Pushing empty object for now, state properties are setup after AJAX....
-                    ads.push({});
-                }
+
+                Publicity.retrieveAds(poster_count, 0, cols, load_more, gridNode, Publicity.renderArrangement);
+
+                console.log("Got These ads...", Publicity.getStack());
+                /*
+                 for (var i = 0; i < poster_count; i++) {
+                 // Pushing empty object for now, state properties are setup after AJAX....
+                 ads.push({});
+                 }
+                 */
 
                 //Publicity.foo = ads;
 
-                // Render Arrangement
-                React.render(
-                    React.createElement(Publicity.PosterArrangement, {data:  ads, loadMore: load_more, loadCount: cols}),
-                    gridNode
-                );
+                // Default Render
+                /*React.render(
+                 <Publicity.PosterArrangement data={ ads } loadMore={load_more} loadCount={cols} />,
+                 gridNode
+                 );*/
 
+
+                // Render Arrangement
+                /*var __render = function(ads){
+                 console.log("Running render with stack...", ads);
+                 React.render(
+                 <Publicity.PosterArrangement data={ ads } loadMore={load_more} loadCount={cols} />,
+                 gridNode
+                 );
+                 };*/
 
             }
+
+        },
+        /**
+         * Render Arrangement
+         *
+         * @param {Object} ads the stack of ad objects from api (JSON)
+         * @param {Bool} load_more flag to see if more ads were requested
+         * @param {String} cols number of columns
+         * @param gridNode DOM Element to attach component after render
+         */
+        renderArrangement: function (ads, load_more, cols, offset, gridNode) {
+            console.log("Running render with stack...", ads);
+            console.log("NODE: ", gridNode);
+console.log("offset!", offset);
+            React.render(
+                React.createElement(Publicity.PosterArrangement, {data:  ads, loadMore: load_more, loadCount: cols, loadOffset:  offset }),
+                gridNode
+            );
+
 
         }
 
@@ -620,5 +783,6 @@
 
     // Initialize Publicity
     Publicity.init();
+    //Publicity.init();
 
 }(jQuery, window, document, React));
