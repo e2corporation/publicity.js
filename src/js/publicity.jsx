@@ -38,6 +38,11 @@
     var Publicity = {
         ReactCSSTransitionGroup: React.addons.CSSTransitionGroup,
         stack: [],
+        emptyCard: {
+            headline: '',
+            url: '#',
+            image: 'http://placehold.it/320x240'
+        },
         getStack: function () {
             return this.stack;
         },
@@ -60,18 +65,18 @@
             Publicity.createComponents();
 
             // Build Example Poster Card
-            ///// Publicity.buildCard(document.getElementById('example_card'));
+            //Publicity.buildCard(document.getElementById('example_card'));
 
             // Build Publicity Cards
             $.each($('.publicity-card'), function (cid, card) {
-                //Publicity.buildCard(card);
+                Publicity.buildCard(card);
             });
 
             // Build Example Arrangement (4x3)
             Publicity.buildArrangement(document.getElementById('example_grid'));
 
             // Build Example Arrangement (1x2)
-            /////Publicity.buildArrangement(document.getElementById('example_grid_1x2'));
+            Publicity.buildArrangement(document.getElementById('example_grid_1x2'));
 
             // Apply Bindings + Post processing
             Publicity.configureCards();
@@ -160,7 +165,7 @@
                 },
                 success: function (ad_response) {
                     //$('#card_response').text(JSON.stringify(ad_response));
-
+                    //console.log("Got Ad Response...", ad_response);
 
                     if (ad_response.length > 0) {
 
@@ -175,13 +180,15 @@
 
                         if (typeof posterComponent == 'object') {
                             if (posterComponent.isMounted()) {
+                                console.log("Mounted Card!", posterComponent, Publicity.stack[Publicity.stack.length - 1]);
                                 posterComponent.setState({
-                                    data: Publicity.stack.shift(),
+                                    data: Publicity.stack[Publicity.stack.length - 1],
                                     internal_count: Publicity.internal_count,
                                     internal_offset: Publicity.internal_offset,
                                     sponsored_count: Publicity.sponsored_count,
                                     sponsored_offset: Publicity.sponsored_offset
                                 });
+                                posterComponent.setProps({data: Publicity.stack[Publicity.stack.length - 1]});
 
                                 //Publicity.deactivateLoader($(posterComponent.getDOMNode()));
                             }
@@ -313,9 +320,9 @@
                 /*rotateY: '180deg',*/
 
             }, 800, 'easeOutQuad', function () {
-                card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.1)'}, 350, 'easeInOutCirc', function () {
+                //card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.9)'}, 350, 'easeInOutCirc', function () {
 
-                });
+                //});
                 $(this).addClass('activated').removeClass('deactivated')
 
             });
@@ -324,20 +331,23 @@
         },
         deactivateLoader: function (card) {
 
-            $(card).find('.loader').transition({
+            card.find('.loader').transition({
                 //perspective: 100 + 'px'
                 /*perspective: '100px',
                  rotate3d: '1,1,0,180deg', */
-                x: -700,
-                y: -700,
-                opacity: 0
+                x: 700,
+                y: -700
+                /*opacity: 0*/
                 /*rotateY: '180deg',*/
 
-            }, 1000, 'easeOutQuad', function () {
-                card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.1)'}, 450, 'easeInOutCirc', function () {
-
+            }, 700, 'easeOutQuad', function () {
+                var the_loader = this;
+                //console.log("Using Overlay..",  card.find('.overlay'));
+                card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.1)'}, 1350, 'easeInOutQuint', function () {
+                    //console.log("Overlay transition done....");
+                    the_loader.addClass('deactivated').removeClass('activated');
                 });
-                //$(this).addClass('deactivated').removeClass('activated');
+
 
             });
             //card.find('.loader').animate({'marginTop': '-1600px', 'marginLeft': '-1000px'}, 1800, 'easeInExpo', function () {
@@ -423,6 +433,11 @@
              *  -- an arrangement consists of one or more poster cards
              */
             Publicity.PosterArrangement = React.createClass({
+                componentDidMount: function(){
+                  if(this.isMounted()){
+                      Publicity.configureCards();
+                  }
+                },
                 componentDidUpdate: function () {
                     Publicity.configureCards();
                     $(this.getDOMNode()).find('.spinner').css({
@@ -492,7 +507,7 @@
                     var posterCards = this.props.data.map(function (card, cid) {
                         //console.log("Got Card...", card);
                         return (
-                            <Publicity.PosterCard key={ cid } data={ card } dataOrientation="left" dataSize="normal" dataOffset={ cid } />
+                            <Publicity.PosterCard key={ cid } data={ card } dataOrientation="left" dataSize="normal" dataOffset={ cid } dataAutofill="false" />
 
                         );
                     });
@@ -576,6 +591,7 @@
                             <div
                                 className={((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal') }
                                 data-count={this.state.internal_count} data-offset={this.props.dataOffset || this.state.internal_offset}
+                                data-autofill={this.props.dataAutofill || this.state.autofill}
                                 data-sp-count={this.state.sponsored_count} data-sp-offset={this.state.sponsored_offset}>
                                     <span className="card-icon restore-card">
                                         <i className="oi" data-glyph="arrow-circle-top"></i>
@@ -600,21 +616,48 @@
                     );
                 },
                 getInitialState: function () {
+
                     var initial_state = {
-                        data: {},
+                        data: {
+                            headline: 'Headline',
+                            url: '#',
+                            image: 'http://placehold.it/320x240'
+                        },
                         internal_count: 1,
                         internal_offset: 0,
                         sponsored_count: 1,
                         sponsored_offset: 0,
                         orientation: 'left',
-                        size: 'normal'
+                        size: 'normal',
+                        autofill: false
                     };
                     return initial_state;
+                },
+                componentWillReceiveProps: function(){
+
+                },
+                componentWillMount: function(){
+
                 },
                 componentDidMount: function () {
                     //this.refreshCard(this);
                     //setInterval(this.refreshCard, this.props.pollInterval);
-                    Publicity.deactivateLoader($(this.getDOMNode()));
+                    //alert("Mounted!");
+                    Publicity.activateLoader($(this.getDOMNode()));
+                    var __component = this;
+                    if(__component.isMounted()){
+                        if(true === this.props.dataAutofill  || this.props.dataAutofill == 'true') {
+                            //console.log("AutoFilling TRUE !!!! ", this);
+                            this.refreshCard(this);
+                        }
+                        //setTimeout(function(){
+                            Publicity.deactivateLoader($(__component.getDOMNode()));
+                        //}, 1000);
+                    }
+
+                },
+                componentWillUpdate: function(){
+
                 },
                 componentDidUpdate: function () {
                     //$(this.getDOMNode()).height($(this).find('.image').height());
@@ -625,7 +668,6 @@
 
                     // NOTE: The PosterCard Component is injected here as last argument...
                     // $(this.getDOMNode()).attr('data-offset'), $(this.getDOMNode()).attr('data-count'), $(this.getDOMNode()).attr('data-sp-offset') , $(this.getDOMNode()).attr('data-sp-count')
-
                     Publicity.fetchCard($(this.getDOMNode()), null, null, null, null, component);
                 }
             });
@@ -673,12 +715,12 @@
             Publicity.PosterCard.Action = React.createClass({
                 render: function () {
                     return (
-                        <a href={ this.props.data.url || '#' } className="cta">
+                        <a href={ this.props.data.url != undefined ? this.props.data.url : this.state.data.url } className="cta">
 
                             <div className="image">
-                                <img className="image" src={ this.props.data.image || 'http://placehold.it/320x240' }/>
+                                <img className="image" src={ this.props.data.image != undefined ? this.props.data.image : this.state.data.image }/>
                             </div>
-                            <div className="headline">{ this.props.data.headline }</div>
+                            <div className="headline">{ this.props.data.headline != undefined ? this.props.data.headline : this.state.data.headline }</div>
                             <div className="overlay"></div>
 
                         </a>
@@ -704,14 +746,26 @@
          */
         buildCard: function (cardNode) {
             if (cardNode != '') {
-                React.render(
-                    <Publicity.PosterCard pollInterval={15000}
-                                          dataOrientation={ $(cardNode).data('orientation') || 'left'}
-                                          dataSize={$(cardNode).data('size') || 'normal'}/>,
-                    cardNode
-                );
+                Publicity.renderCard(cardNode);
             }
 
+        },
+        /**
+         * Render Card
+         *
+         * @param cardNode DOM Element to attach component after render
+         */
+        renderCard: function(cardNode){
+            var empty_object = Publicity.emptyCard;
+            //console.log("AutoFill Default: " , $(cardNode).attr('data-autofill') || false);
+            React.render(
+                <Publicity.PosterCard pollInterval={15000}
+                                      dataAutofill={ $(cardNode).attr('data-autofill') ||  'false'}
+                                      dataOrientation={ $(cardNode).attr('data-orientation') || 'left'}
+                                      data={ empty_object }
+                                      dataSize={$(cardNode).attr('data-size') || 'normal'}/>,
+                cardNode
+            );
         },
         /**
          * Build an Arragement of Poster Cards (REACT)
@@ -767,9 +821,10 @@
          * @param gridNode DOM Element to attach component after render
          */
         renderArrangement: function (ads, load_more, cols, offset, gridNode) {
-            console.log("Running render with stack...", ads);
-            console.log("NODE: ", gridNode);
-console.log("offset!", offset);
+            //console.log("Running render with stack...", ads);
+            //console.log("NODE: ", gridNode);
+            //console.log("offset!", offset);
+
             React.render(
                 <Publicity.PosterArrangement data={ ads } loadMore={load_more} loadCount={cols} loadOffset={ offset }/>,
                 gridNode

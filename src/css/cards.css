@@ -159,10 +159,10 @@
     background-color: rgba(0, 0, 0, 0.5);
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
     z-index: 150;
-    transition: all 1s ease;
+    /*transition: all 1s ease;
     -webkit-transition: all 1s ease;
     -moz-transition: all 1s ease;
-    -o-transition: all 1s ease;
+    -o-transition: all 1s ease;*/
 }
 
 .card .dismissal {
