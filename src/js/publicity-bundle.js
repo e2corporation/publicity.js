@@ -1062,7 +1062,7 @@
             //console.log("offset!", offset);
 
             React.render(
-                React.createElement(Publicity.PosterArrangement, {data:  ads, loadMore: load_more, loadCount: cols, loadOffset:  offset }),
+                React.createElement(Publicity.PosterArrangement, {data:  ads, loadMore: load_more, loadCount:  (ads.length / cols) * cols, loadOffset:  offset }),
                 gridNode
             );
 

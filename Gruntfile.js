@@ -62,16 +62,16 @@ module.exports = function (grunt) {
                     ]
                 }
             }
-        }/*,
+        },
         browserify:     {
             options:      {
                 transform:  [ require('grunt-react').browserify ]
             },
             app:          {
-                src:        'path/to/source/main.js',
-                dest:       'path/to/target/output.js'
+                src:        'src/js/publicity-bundle.js',
+                dest:       'src/js/publicity-combined.js'
             }
-        }*/
+        }
     });
 
     // Uglify
@@ -87,9 +87,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-react');
 
     // Browserify
-    //grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-browserify');
 
     // Register Default task(s).
-    grunt.registerTask('default', ['react', 'uglify', 'cssmin', 'imagemin']);
+    grunt.registerTask('default', ['react', 'browserify', 'uglify', 'cssmin', 'imagemin']);
 
 };

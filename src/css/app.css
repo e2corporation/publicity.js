@@ -61,6 +61,9 @@
     color: #ffffff;
 }
 
+#navbar .btn {
+    margin-top: 2px;
+}
 
 .btn.btn-readme {
     font-weight: 200;
@@ -275,13 +278,14 @@ iPad 3
 /* Desktops and laptops ----------- */
 @media only screen  and (min-width : 1224px) {
     /* Styles */
-    .card {
+
+    /*.card {
         max-width: 320px;
         height: 240px;
     }
     .card .image img {
         width: 100%;
-    }
+    }*/
 
     #s1.section {
         margin: 0;
