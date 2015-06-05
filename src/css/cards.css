@@ -12,6 +12,7 @@
  * @license     Private, Copyright (c) Julien Chinapen
  * @todo        Minify and Compress
  * @todo        Handle text-overflows with Card Headlines
+ * @todo        Support different card aspect ratios
  */
 
 
@@ -57,13 +58,13 @@
 
 .publicity-arrangement[data-cols="3"] .card-arrangement .card-zone {
     width: 33% !important;
-    max-width: 33%;
     height: auto;
     margin: 0 !important;
 }
 .publicity-arrangement[data-cols="3"] .card-arrangement .card-zone .card {
     margin: 5px;
     max-width: 100%;
+    wdith: 100%;
     height: auto;
 }
 .publicity-arrangement[data-cols="3"][data-flush="true"] .card-arrangement .card-zone .card {
@@ -125,6 +126,21 @@
     font-family: "proxima-nova-extra-condensed", sans-serif;
 }
 
+.card.large {
+    width: 640px;
+    height: 480px;
+}
+
+.card.medium {
+    width: 320px;
+    height: 240px;
+}
+
+.card.default {
+    width: 420px;
+    height: 315px;
+}
+
 .card.small {
     width: 160px;
     height: 120px;
@@ -132,7 +148,7 @@
 
 .card.small .headline {
     font-size: 18px;
-    line-height: 2em;
+    line-height: 1.3em;
 }
 
 
@@ -581,7 +597,7 @@
 /* iPads (portrait) ----------- */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
 
-    /* 4 Columns */
+    /* 4 Columns iPad Portrait */
     .publicity-arrangement[data-cols="4"] {
 
     }
@@ -601,7 +617,7 @@
         margin: 0 !important;
     }
 
-    /* 3 Columns */
+    /* 3 Columns iPad Portrait */
     .publicity-arrangement[data-cols="3"] {
 
     }
@@ -640,6 +656,86 @@ iPad 3
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) and (-webkit-min-device-pixel-ratio : 2) {
     /* Styles */
 }
+
+/* Compact Desktop */
+@media only screen and (min-width : 320px) and (max-width : 767px) {
+    /* 4 Columns Compact Desktop */
+    .publicity-arrangement[data-cols="4"] {
+
+    }
+
+    .publicity-arrangement[data-cols="4"] .card-arrangement .card-zone {
+        width: 50% !important;
+        max-width: 50%;
+        height: auto;
+        margin: 0 !important;
+    }
+    .publicity-arrangement[data-cols="4"] .card-arrangement .card-zone .card {
+        margin: 5px;
+        max-width: 100%;
+        height: auto;
+    }
+    .publicity-arrangement[data-cols="4"][data-flush="true"] .card-arrangement .card-zone .card {
+        margin: 0 !important;
+    }
+
+    /* 3 Columns Compact Desktop */
+    .publicity-arrangement[data-cols="3"] {
+
+    }
+
+    .publicity-arrangement[data-cols="3"] .card-arrangement .card-zone {
+        width: 100% !important;
+        max-width: 100%;
+        height: auto;
+        margin: 0 !important;
+    }
+    .publicity-arrangement[data-cols="3"] .card-arrangement .card-zone .card {
+        margin: 5px;
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+    }
+    .publicity-arrangement[data-cols="3"][data-flush="true"] .card-arrangement .card-zone .card {
+        margin: 0 !important;
+    }
+
+    .publicity-arrangement[data-cols="3"] .card-arrangement .card-zone .card img {
+        height: 100%;
+    }
+
+
+}
+
+    /* Small Desktop */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+
+    /* 3 Columns Small Desktop */
+    .publicity-arrangement[data-cols="3"] {
+
+    }
+
+    .publicity-arrangement[data-cols="3"] .card-arrangement .card-zone {
+        width: 50% !important;
+        max-width: 50%;
+        height: auto;
+        margin: 0 !important;
+    }
+    .publicity-arrangement[data-cols="3"] .card-arrangement .card-zone .card {
+        margin: 5px;
+        max-width: 100%;
+        height: auto;
+    }
+    .publicity-arrangement[data-cols="3"][data-flush="true"] .card-arrangement .card-zone .card {
+        margin: 0 !important;
+    }
+
+    .publicity-arrangement[data-cols="3"] .card-arrangement .card-zone .card img {
+        height: 100%;
+    }
+
+}
+
 /* Desktops and laptops ----------- */
 @media only screen  and (min-width : 1224px) {
     .publicity-arrangement[data-cols="2"] .card-arrangement .card-zone .card .headline {
@@ -666,7 +762,7 @@ iPad 3
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio : 2) {
 
 
-    /* 4 Columns */
+    /* 4 Columns iPhone 4 */
     .publicity-arrangement[data-cols="4"] {
 
     }
@@ -686,7 +782,7 @@ iPad 3
         margin: 0 !important;
     }
 
-    /* 3 Columns */
+    /* 3 Columns iPhone 4 */
     .publicity-arrangement[data-cols="3"] {
 
     }
@@ -709,6 +805,7 @@ iPad 3
     .publicity-arrangement[data-cols="3"] .card-arrangement .card-zone .card img {
         height: 100%;
     }
+
 
 
 

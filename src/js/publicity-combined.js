@@ -1,3 +1,42 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * App.js
+ * REV2 API Contenst 2015
+ *
+ * @filesource  app.js
+ * @author      Julien Chinapen <julien@revcontent.com>
+ * @version     1.0.0
+ * @category    api-contest
+ * @package     publicity
+ * @subpackage  javascripts
+ * @license     Private, Copyright (c) Julien Chinapen
+ * @todo        Compress and Uglify
+ */
+
+;
+(function ($, window, document, Headroom, hljs, undefined) {
+
+
+    var App = {
+        init: function () {
+
+
+            $('#footer').headroom();
+            $('#nav').headroom({
+                offset: 800
+            });
+
+
+            hljs.initHighlightingOnLoad();
+        }
+
+    };
+
+
+    $(document).ready(App.init);
+
+
+}(jQuery, window, document, Headroom, hljs));
 /**
  * Publicity.jsx
  * ---
@@ -580,7 +619,7 @@
              *  Poster Arrangement (Ad Grid)
              *  -- an arrangement consists of one or more poster cards
              */
-            Publicity.PosterArrangement = React.createClass({
+            Publicity.PosterArrangement = React.createClass({displayName: "PosterArrangement",
                 getInitialState: function () {
                     return {
                         revised_stack: []
@@ -664,9 +703,9 @@
                     var posterCards = this.props.data.map(function (card, cid) {
                         //console.log("Got Card...", card);
                         return (
-                            <Publicity.PosterCard key={ cid } data={ card } dataOrientation="left" dataSize="normal"
-                                                  dataOffset={ cid } dataAutofill="false" myKey={ cid }
-                                                  myArrangement={ this_arrangement } ref="myCard"/>
+                            React.createElement(Publicity.PosterCard, {key:  cid, data:  card, dataOrientation: "left", dataSize: "normal", 
+                                                  dataOffset:  cid, dataAutofill: "false", myKey:  cid, 
+                                                  myArrangement:  this_arrangement, ref: "myCard"})
 
                         );
                     });
@@ -675,15 +714,15 @@
                         posterCards = this.state.revised_stack;
                     }
                     return (
-                        <div className="card-arrangement" ref="myArrangement"
-                             data-load-more={this.props.loadMore == true ? true : false}
-                             data-load-count={this.props.loadCount}
-                             data-load-offset={this.props.loadOffset}>
+                        React.createElement("div", {className: "card-arrangement", ref: "myArrangement", 
+                             "data-load-more": this.props.loadMore == true ? true : false, 
+                             "data-load-count": this.props.loadCount, 
+                             "data-load-offset": this.props.loadOffset}, 
 
-                            {posterCards}
-                            <div className="cf"></div>
-                            {this.props.loadMore ? <Publicity.ArrangementLoader onClick={this.loadMoreCards}/> : ''}
-                        </div>
+                            posterCards, 
+                            React.createElement("div", {className: "cf"}), 
+                            this.props.loadMore ? React.createElement(Publicity.ArrangementLoader, {onClick: this.loadMoreCards}) : ''
+                        )
                     );
                 }
 
@@ -693,7 +732,7 @@
              * Load More Trigger (Lazy-load)
              * @type {*}
              */
-            Publicity.ArrangementLoader = React.createClass({
+            Publicity.ArrangementLoader = React.createClass({displayName: "ArrangementLoader",
                 getInitialState: function () {
                     return {'load_more': false}
                 },
@@ -728,16 +767,16 @@
                 render: function () {
                     return (
 
-                        <div className="load-more">
-                            <div className="spinner left" style={{display: "none"}}>LOADING
-                            </div>
+                        React.createElement("div", {className: "load-more"}, 
+                            React.createElement("div", {className: "spinner left", style: {display: "none"}}, "LOADING"
+                            ), 
 
-                            <div id="adPortal" className="ad-portal"></div>
-                            <a className="load-btn btn btn-small btn-pill right"
-                               style={{fontSize: '12px', margin: '18px 10px'}} onClick={this.LoadCards}>LOAD MORE</a>
+                            React.createElement("div", {id: "adPortal", className: "ad-portal"}), 
+                            React.createElement("a", {className: "load-btn btn btn-small btn-pill right", 
+                               style: {fontSize: '12px', margin: '18px 10px'}, onClick: this.LoadCards}, "LOAD MORE"), 
 
-                            <div className="cf"></div>
-                        </div>
+                            React.createElement("div", {className: "cf"})
+                        )
 
                     );
 
@@ -746,38 +785,38 @@
             });
 
             // PosterCard Main Component (Ad Unit)
-            Publicity.PosterCardComponent = Publicity.PosterCard = React.createClass({
+            Publicity.PosterCardComponent = Publicity.PosterCard = React.createClass({displayName: "PosterCard",
                 render: function () {
                     return (
-                        <div ref="myPosterCard"
-                             className={(this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone' }>
+                        React.createElement("div", {ref: "myPosterCard", 
+                             className: (this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone'}, 
 
-                            <div
-                                className={((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal') }
-                                data-key={this.props.key}
-                                data-count={this.state.internal_count}
-                                data-offset={this.props.dataOffset || this.state.internal_offset}
-                                data-autofill={this.props.dataAutofill || this.state.autofill}
-                                data-sp-count={this.state.sponsored_count} data-sp-offset={this.state.sponsored_offset}>
-                                    <span className="card-icon restore-card">
-                                        <i className="oi" data-glyph="arrow-circle-top"></i>
-                                    </span>
+                            React.createElement("div", {
+                                className: ((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal'), 
+                                "data-key": this.props.key, 
+                                "data-count": this.state.internal_count, 
+                                "data-offset": this.props.dataOffset || this.state.internal_offset, 
+                                "data-autofill": this.props.dataAutofill || this.state.autofill, 
+                                "data-sp-count": this.state.sponsored_count, "data-sp-offset": this.state.sponsored_offset}, 
+                                    React.createElement("span", {className: "card-icon restore-card"}, 
+                                        React.createElement("i", {className: "oi", "data-glyph": "arrow-circle-top"})
+                                    ), 
 
-                                    <span className="card-icon snooze-card">
-                                        <i className="oi" data-glyph="timer"></i>
-                                    </span>
+                                    React.createElement("span", {className: "card-icon snooze-card"}, 
+                                        React.createElement("i", {className: "oi", "data-glyph": "timer"})
+                                    ), 
 
-                                <Publicity.PosterCard.Close />
+                                React.createElement(Publicity.PosterCard.Close, null), 
 
-                                <Publicity.PosterCard.Loader />
+                                React.createElement(Publicity.PosterCard.Loader, null), 
 
-                                <Publicity.PosterCard.Dismissal cardComponent={ this }/>
+                                React.createElement(Publicity.PosterCard.Dismissal, {cardComponent:  this }), 
 
-                                { /*<Publicity.PosterCard.Action data={this.state.data}/>*/ }
-                                <Publicity.PosterCard.Action data={this.props.data}/>
+                                /*<Publicity.PosterCard.Action data={this.state.data}/>*/ 
+                                React.createElement(Publicity.PosterCard.Action, {data: this.props.data})
 
-                            </div>
-                        </div>
+                            )
+                        )
 
                     );
                 },
@@ -847,27 +886,27 @@
             });
 
             // Preloader Sub-component
-            Publicity.PosterCard.Loader = React.createClass({
+            Publicity.PosterCard.Loader = React.createClass({displayName: "Loader",
                 render: function () {
                     return (
-                        <div className="loader">
-                            <div className="loading">
-                                <h2>think bigger ...</h2>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </div>
+                        React.createElement("div", {className: "loader"}, 
+                            React.createElement("div", {className: "loading"}, 
+                                React.createElement("h2", null, "think bigger ..."), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null), 
+                                React.createElement("span", null)
+                            )
+                        )
                     );
                 }
             });
 
             // Dismissal Sub-component
-            Publicity.PosterCard.Dismissal = React.createClass({
+            Publicity.PosterCard.Dismissal = React.createClass({displayName: "Dismissal",
                 getInitialState: function () {
                     return {
                         dismissal_title: 'Select a Reason',
@@ -889,49 +928,49 @@
                 },
                 render: function () {
                     return (
-                        <div className="dismissal off">
-                            <strong className="dismissal-title">{ this.state.dismissal_title }</strong>
-                            <ul>
-                                <li className="selected">This ad is misleading</li>
-                                <li>I am unable to view it</li>
-                                <li>Another reason here</li>
-                                <li>TV killed the Radio</li>
-                            </ul>
-                            <a className="btn btn-small btn-danger btn-primary remove-ad"
-                               onClick={ this.dismissCard }>{ this.state.buttons.remove.label }</a>
-                            <a className="btn btn-small btn-success btn-secondary close-dismissal">{ this.state.buttons.cancel.label }</a>
-                        </div>
+                        React.createElement("div", {className: "dismissal off"}, 
+                            React.createElement("strong", {className: "dismissal-title"},  this.state.dismissal_title), 
+                            React.createElement("ul", null, 
+                                React.createElement("li", {className: "selected"}, "This ad is misleading"), 
+                                React.createElement("li", null, "I am unable to view it"), 
+                                React.createElement("li", null, "Another reason here"), 
+                                React.createElement("li", null, "TV killed the Radio")
+                            ), 
+                            React.createElement("a", {className: "btn btn-small btn-danger btn-primary remove-ad", 
+                               onClick:  this.dismissCard},  this.state.buttons.remove.label), 
+                            React.createElement("a", {className: "btn btn-small btn-success btn-secondary close-dismissal"},  this.state.buttons.cancel.label)
+                        )
                     );
                 }
             });
 
             // Action Sub-component (CTA)
-            Publicity.PosterCard.Action = React.createClass({
+            Publicity.PosterCard.Action = React.createClass({displayName: "Action",
                 render: function () {
                     return (
-                        <a href={ this.props.data.url != undefined ? this.props.data.url : this.state.data.url }
-                           className="cta">
+                        React.createElement("a", {href:  this.props.data.url != undefined ? this.props.data.url : this.state.data.url, 
+                           className: "cta"}, 
 
-                            <div className="image">
-                                <img className="image"
-                                     src={ this.props.data.image != undefined ? this.props.data.image : this.state.data.image }/>
-                            </div>
-                            <div className="headline">
-                                { this.props.data.headline != undefined ? this.props.data.headline : this.state.data.headline }</div>
+                            React.createElement("div", {className: "image"}, 
+                                React.createElement("img", {className: "image", 
+                                     src:  this.props.data.image != undefined ? this.props.data.image : this.state.data.image})
+                            ), 
+                            React.createElement("div", {className: "headline"}, 
+                                 this.props.data.headline != undefined ? this.props.data.headline : this.state.data.headline), 
 
-                            <div className="overlay"></div>
+                            React.createElement("div", {className: "overlay"})
 
-                        </a>
+                        )
                     );
                 }
             });
 
 
             // Close Trigger Sub-component (Calls Dismissal)
-            Publicity.PosterCard.Close = React.createClass({
+            Publicity.PosterCard.Close = React.createClass({displayName: "Close",
                 render: function () {
                     return (
-                        <span className="card-icon close-card">&times;</span>
+                        React.createElement("span", {className: "card-icon close-card"}, "×")
                     );
                 }
             });
@@ -957,11 +996,11 @@
             var empty_object = Publicity.emptyCard;
             //console.log("AutoFill Default: " , $(cardNode).attr('data-autofill') || false);
             React.render(
-                <Publicity.PosterCard pollInterval={15000}
-                                      dataAutofill={ $(cardNode).attr('data-autofill') ||  'false'}
-                                      dataOrientation={ $(cardNode).attr('data-orientation') || 'left'}
-                                      data={ empty_object }
-                                      dataSize={$(cardNode).attr('data-size') || 'normal'}/>,
+                React.createElement(Publicity.PosterCard, {pollInterval: 15000, 
+                                      dataAutofill:  $(cardNode).attr('data-autofill') ||  'false', 
+                                      dataOrientation:  $(cardNode).attr('data-orientation') || 'left', 
+                                      data:  empty_object, 
+                                      dataSize: $(cardNode).attr('data-size') || 'normal'}),
                 cardNode
             );
         },
@@ -1024,7 +1063,7 @@
             //console.log("offset!", offset);
 
             React.render(
-                <Publicity.PosterArrangement data={ ads } loadMore={load_more} loadCount={ (ads.length / cols) * cols} loadOffset={ offset }/>,
+                React.createElement(Publicity.PosterArrangement, {data:  ads, loadMore: load_more, loadCount:  (ads.length / cols) * cols, loadOffset:  offset }),
                 gridNode
             );
 
@@ -1041,3 +1080,4 @@
     //Publicity.init();
 
 }(jQuery, window, document, React));
+},{}]},{},[1]);
