@@ -158,7 +158,7 @@
     display: block;
     background-color: rgba(0, 0, 0, 0.5);
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
-    z-index: 150;
+    z-index: 160;
     /*transition: all 1s ease;
     -webkit-transition: all 1s ease;
     -moz-transition: all 1s ease;
@@ -310,7 +310,7 @@
     background-image: linear-gradient(to bottom right, #123740, #60BF78);
     letter-spacing: 2px;
     color: #ffffff;
-    z-index: 150;
+    z-index: 180;
     /*transition: all 1s ease;*/
     z-index: 500;
     font-size: 12px;
@@ -337,10 +337,15 @@
     -moz-box-shadow: 0px 0px 7px 0px rgba(100, 100, 100, 1);
     box-shadow: 0px 0px 7px 0px rgba(100, 100, 100, 1);
 }
+.card:hover .overlay.hover {
+    /*background-color: rgba(0,0,0,0.1);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7));*/
+}
 
 .card:hover .overlay {
-    /*background-color: rgba(0,0,0,0.1); */
+    background-color: rgba(0,0,0,0.1);
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7));
+    /*opacity: 0;*/
 }
 
 .card:hover .close-card {
@@ -362,7 +367,7 @@
     text-shadow: 1px 1px 1px rgba(50, 50, 50, 0.4);
     padding: 10px 18px;
     text-overflow: "ellipsis";
-    z-index: 160;
+    z-index: 150;
     transition: all 0.6s ease;
     -webkit-transition: all 0.6s ease;
     max-width: 100%;
