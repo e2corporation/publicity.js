@@ -19,6 +19,7 @@
  * @todo        Future: Enable Card Action Cloaking (URL Juggle )
  * @todo        Make card component animations configurable
  * @todo        Consider giving each card or component it's own Animation FX Queue...
+ * @todo        Properly configure internal and sponsored parameters
  */
 
 (function ($, window, document, React, undefined) {
@@ -90,6 +91,12 @@
 
         },
         /**
+         * React on a touch device such as a phone or tablet,
+         */
+        enableTouchEventHandling: function () {
+            React.initializeTouchEvents(true);
+        },
+        /**
          * Fetch One or more Advertisement Cards from REV2
          *
          * @param card
@@ -152,6 +159,7 @@
                     //'user_agent': '',
                 },
                 beforeSend: function () {
+                    Publicity.hideDismissal($card);
                     Publicity.activateLoader($card);
 
 
@@ -168,7 +176,7 @@
                 success: function (ad_response) {
                     //$('#card_response').text(JSON.stringify(ad_response));
                     //console.log("Got Ad Response...", ad_response);
-
+                    console.log(ad_response);
                     if (ad_response.length > 0) {
 
                         //if(ad_response.length == 1) {
@@ -192,7 +200,10 @@
                                 });
                                 posterComponent.setProps({data: Publicity.stack[Publicity.stack.length - 1]});
                                 //Publicity.configureCards(card);
-                                //Publicity.deactivateLoader($(posterComponent.getDOMNode()));
+                                if (!$(posterComponent.getDOMNode()).find('.loader').hasClass('deactivated')) {
+                                    Publicity.deactivateLoader($(posterComponent.getDOMNode()));
+                                }
+
                             }
 
                         }
@@ -311,8 +322,15 @@
              //$(this).find('.card-spinner').append(Publicity.createSpinner());
              $(this).addClass('activated').removeClass('deactivated').animate({'padding': '18px'}, 600, 'easeInQuad');
              }); */
-            card.find('.overlay').css({'z-index': 160});
-            card.find('.headline').css({'z-index': 150}).animate({'opacity': 0}, 500, 'easeOutCirc');
+            //card.find('.overlay').css({'z-index': 160});
+            card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.9)'}, 350, 'easeInOutCirc', function () {
+
+            });
+            card.find('.headline').css({
+                'opacity': 0,
+                'z-index': 150,
+                'bottom': '-50px'
+            }).animate({}, 240, 'easeInQuad');
             card.find('.loader').transition({
                 //perspective: 100 + 'px'
                 /*perspective: '100px',
@@ -323,9 +341,7 @@
                 /*rotateY: '180deg',*/
 
             }, 800, 'easeOutQuad', function () {
-                card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.9)'}, 350, 'easeInOutCirc', function () {
 
-                });
                 $(this).addClass('activated').removeClass('deactivated');
 
             });
@@ -334,7 +350,7 @@
         },
         deactivateLoader: function (card) {
 
-            card.find('.loader').transition({
+            card.find('.loader').delay(1000).transition({
                 x: 700,
                 y: -700
             }, 700, 'easeOutBack', function () {
@@ -344,11 +360,12 @@
                 card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.1)'}, 1000, 'easeInOutQuint', function () {
                     //console.log("Overlay transition done....");
                     the_loader.addClass('deactivated').removeClass('activated');
-                    $(this).css({'z-index': 150});
+                    //$(this).css({'z-index': 150});
                     card.find('.headline').hide().css({
-                        'z-index': 160,
-                        'opacity': 0
-                    }).show().animate({'opacity': 1}, 550, 'easeInCirc');
+                        'z-index': 161,
+                        'opacity': 0,
+                        'bottom': 0
+                    }).show().animate({'opacity': 1}, 327, 'easeOutExpo');
 
                 });
 
@@ -636,11 +653,12 @@
             });
 
             // PosterCard Main Component (Ad Unit)
-            Publicity.PosterCard = React.createClass({displayName: "PosterCard",
+            Publicity.PosterCardComponent = Publicity.PosterCard = React.createClass({displayName: "PosterCard",
                 render: function () {
                     return (
-                        React.createElement("div", {
+                        React.createElement("div", {ref: "myPosterCard", 
                             className: (this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone'}, 
+
                             React.createElement("div", {
                                 className: ((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal'), 
                                 "data-count": this.state.internal_count, 
@@ -659,7 +677,7 @@
 
                                 React.createElement(Publicity.PosterCard.Loader, null), 
 
-                                React.createElement(Publicity.PosterCard.Dismissal, null), 
+                                React.createElement(Publicity.PosterCard.Dismissal, {cardComponent:  this }), 
 
                                 /*<Publicity.PosterCard.Action data={this.state.data}/>*/ 
                                 React.createElement(Publicity.PosterCard.Action, {data: this.props.data})
@@ -705,25 +723,27 @@
                             this.refreshCard(this);
 
                         }
-                        //Publicity.configureCards($(this.getDOMNode()));
-                        //setTimeout(function(){
-                        Publicity.deactivateLoader($(__component.getDOMNode()));
-                        Publicity.configureCards($(__component.getDOMNode()))
-                        //}, 1000);
+                        else {
+                            if (!$(__component.getDOMNode()).find('.loader').hasClass('deactivated')) {
+                                Publicity.deactivateLoader($(__component.getDOMNode()));
+                            }
+                        }
+
+                        Publicity.configureCards($(__component.getDOMNode()));
                     }
 
                 },
                 componentWillUpdate: function () {
-
                 },
                 componentDidUpdate: function () {
+                    console.log("Detected Update!", this.props.children);
                     //$(this.getDOMNode()).height($(this).find('.image').height());
                     Publicity.deactivateLoader($(this.getDOMNode()));
                     //Publicity.configureCards($(this.getDOMNode()));
                     //console.log("Updated!", $(this.getDOMNode()));
                 },
                 refreshCard: function (component) {
-
+                    if(!component){ component = this; }
                     // NOTE: The PosterCard Component is injected here as last argument...
                     // $(this.getDOMNode()).attr('data-offset'), $(this.getDOMNode()).attr('data-count'), $(this.getDOMNode()).attr('data-sp-offset') , $(this.getDOMNode()).attr('data-sp-count')
                     Publicity.fetchCard($(this.getDOMNode()), null, null, null, null, component);
@@ -752,18 +772,38 @@
 
             // Dismissal Sub-component
             Publicity.PosterCard.Dismissal = React.createClass({displayName: "Dismissal",
+                getInitialState: function () {
+                    return {
+                        dismissal_title: 'Select a Reason',
+                        dismissed: false,
+                        buttons: {
+                            remove: {
+                                "label": "REMOVE"
+                            },
+                            cancel: {
+                                "label": "CANCEL"
+                            }
+                        }
+                    }
+                },
+                dismissCard: function (event) {
+                    console.log("Dismiss request RECEIVED!", $(this.getDOMNode()).closest('.card'));
+                    this.setState({dismissed: true});
+                    Publicity.fetchCard($(this.getDOMNode()).closest('.card'), null, null, null, null, this.props.cardComponent);
+                },
                 render: function () {
                     return (
                         React.createElement("div", {className: "dismissal off"}, 
-                            React.createElement("strong", null, "PLEASE CHOOSE A REASON ..."), 
+                            React.createElement("strong", {className: "dismissal-title"},  this.state.dismissal_title), 
                             React.createElement("ul", null, 
                                 React.createElement("li", {className: "selected"}, "This ad is misleading"), 
                                 React.createElement("li", null, "I am unable to view it"), 
                                 React.createElement("li", null, "Another reason here"), 
                                 React.createElement("li", null, "TV killed the Radio")
                             ), 
-                            React.createElement("a", {className: "btn btn-small btn-danger btn-primary remove-ad"}, "REMOVE"), 
-                            React.createElement("a", {className: "btn btn-small btn-success btn-secondary close-dismissal"}, "CANCEL")
+                            React.createElement("a", {className: "btn btn-small btn-danger btn-primary remove-ad", 
+                               onClick:  this.dismissCard},  this.state.buttons.remove.label), 
+                            React.createElement("a", {className: "btn btn-small btn-success btn-secondary close-dismissal"},  this.state.buttons.cancel.label)
                         )
                     );
                 }
@@ -780,8 +820,9 @@
                                 React.createElement("img", {className: "image", 
                                      src:  this.props.data.image != undefined ? this.props.data.image : this.state.data.image})
                             ), 
-                            React.createElement("div", {
-                                className: "headline"},  this.props.data.headline != undefined ? this.props.data.headline : this.state.data.headline), 
+                            React.createElement("div", {className: "headline"}, 
+                                 this.props.data.headline != undefined ? this.props.data.headline : this.state.data.headline), 
+
                             React.createElement("div", {className: "overlay"})
 
                         )

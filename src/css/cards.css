@@ -72,6 +72,8 @@
 
 .publicity-arrangement[data-cols="3"] .card-arrangement .card-zone .card img {
     height: 100%;
+    max-width: none;
+    width: 100% !important;
 }
 
 
@@ -101,6 +103,10 @@
     height: 100%;
 }
 
+.publicity-arrangement[data-cols="2"] .card-arrangement .card-zone .card .dismissal ul {
+
+}
+
 /* Poster Cards */
 
 .card-zone,
@@ -123,6 +129,35 @@
     width: 160px;
     height: 120px;
 }
+
+.card.small .headline {
+    font-size: 18px;
+    line-height: 2em;
+}
+
+
+.card.small .dismissal {
+    padding: 8px;
+    font-size: 11px;
+}
+
+.card.small .dismissal  ul {
+    display: none;
+}
+
+.card.small .dismissal .btn {
+    font-size: 9px;
+    float: none;
+    clear: both;
+    width: auto;
+    display: inline-block;
+    margin: 3px 6px;
+}
+
+.card.small .dismissal .dismissal-title {
+    display: none;
+}
+
 
 .card.left {
     float: left;
@@ -158,7 +193,7 @@
     display: block;
     background-color: rgba(0, 0, 0, 0.5);
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
-    z-index: 160;
+    z-index: 150;
     /*transition: all 1s ease;
     -webkit-transition: all 1s ease;
     -moz-transition: all 1s ease;
@@ -333,9 +368,9 @@
 }
 
 .card:hover {
-    -webkit-box-shadow: 0px 0px 7px 0px rgba(100, 100, 100, 1);
-    -moz-box-shadow: 0px 0px 7px 0px rgba(100, 100, 100, 1);
-    box-shadow: 0px 0px 7px 0px rgba(100, 100, 100, 1);
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(100, 100, 100, .8);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(100, 100, 100, .8);
+    box-shadow: 0px 0px 5px 0px rgba(100, 100, 100, .8);
 }
 .card:hover .overlay.hover {
     /*background-color: rgba(0,0,0,0.1);
@@ -343,7 +378,7 @@
 }
 
 .card:hover .overlay {
-    background-color: rgba(0,0,0,0.1);
+    /*background-color: rgba(0,0,0,0.1);*/
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7));
     /*opacity: 0;*/
 }
@@ -367,7 +402,7 @@
     text-shadow: 1px 1px 1px rgba(50, 50, 50, 0.4);
     padding: 10px 18px;
     text-overflow: "ellipsis";
-    z-index: 150;
+    z-index: 160;
     transition: all 0.6s ease;
     -webkit-transition: all 0.6s ease;
     max-width: 100%;
@@ -610,6 +645,15 @@ iPad 3
     .publicity-arrangement[data-cols="2"] .card-arrangement .card-zone .card .headline {
         font-size: 1em;
         line-height: normal;
+    }
+    .publicity-arrangement[data-cols="2"] .card-arrangement .card-zone .card .dismissal {
+        padding: 36px;
+    }
+    .publicity-arrangement[data-cols="2"] .card-arrangement .card-zone .card .dismissal ul {
+
+    }
+    .publicity-arrangement[data-cols="2"] .card-arrangement .card-zone .card .dismissal ul li {
+        font-size: 1.2em;
     }
 }
 

@@ -61,7 +61,8 @@ body {
     margin: 0;
     display: block;
     width: 100%;
-    height: 100%;
+    height: auto;
+    min-height: 100%;
 }
 
 .section .padder {
