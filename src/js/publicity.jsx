@@ -24,6 +24,7 @@
 
 (function ($, window, document, React, undefined) {
 
+    'use strict';
     // RC Namespace
     var RevContent = {
         API: {
@@ -105,6 +106,8 @@
          * @param sp_o
          * @param sp_ct
          * @param posterComponent
+         * @param arrangementComponent The Grid the poster card belongs to
+         * @param arrangementKey
          */
         fetchCard: function (card, in_o, in_ct, sp_o, sp_ct, posterComponent) {
             if (!card) {
@@ -140,6 +143,7 @@
             //Publicity.sponsored_offset = sp_o + (sp_ct || 1);
             Publicity.sponsored_offset++;
 
+            // Fetch Card w/ AJAX Request
             var fetch_card = $.ajax({
                 url: RevContent.API.endpoint,
                 type: 'get',
@@ -187,18 +191,35 @@
                         //}
 
                         // Setup Component State/Properties
-
                         if (typeof posterComponent == 'object') {
                             if (posterComponent.isMounted()) {
                                 //console.log("Mounted Card!", posterComponent, Publicity.stack[Publicity.stack.length - 1]);
                                 posterComponent.setState({
-                                    data: Publicity.stack[Publicity.stack.length - 1],
+                                    //data: Publicity.stack[Publicity.stack.length - 1],
                                     internal_count: Publicity.internal_count,
                                     internal_offset: Publicity.internal_offset,
                                     sponsored_count: Publicity.sponsored_count,
                                     sponsored_offset: Publicity.sponsored_offset
                                 });
-                                posterComponent.setProps({data: Publicity.stack[Publicity.stack.length - 1]});
+                                if (typeof posterComponent.props.myArrangement == 'object') {
+                                    // Get current data stack..
+                                    var current_cards = posterComponent.props.myArrangement.props.data;
+                                    // Replace the existing card directly in place...
+                                    var position_key = posterComponent.props.myKey;
+                                    if (isNaN(position_key)) {
+                                        position_key = current_cards.length;
+                                    }
+                                    current_cards[position_key] = Publicity.stack[Publicity.stack.length - 1];
+                                    // Re-establish data property to triggere a re-render....
+                                    posterComponent.props.myArrangement.setProps({data: current_cards});
+                                    //posterComponent.props.myArrangement.setState({revised_stack: current_cards});
+                                } else {
+                                    console.log(posterComponent);
+                                    // For Individual Card Requests, replace the Data stack to trigger re-render....
+                                    posterComponent.setProps({data: Publicity.stack[Publicity.stack.length - 1]});
+                                }
+
+
                                 //Publicity.configureCards(card);
                                 if (!$(posterComponent.getDOMNode()).find('.loader').hasClass('deactivated')) {
                                     Publicity.deactivateLoader($(posterComponent.getDOMNode()));
@@ -304,33 +325,40 @@
             //}
 
         },
+        /**
+         * Show Dismissal Panel
+         * @param card Element to operate on (DOM Node)
+         * @returns {Publicity}
+         */
         showDismissal: function (card) {
-            card.find('.dismissal').animate({'margin-top': 0}, 700, 'easeOutQuart', function () {
+            card.find('.dismissal').animate({'margin-top': 0}, 600, 'easeOutQuart', function () {
                 $(this).addClass('on').removeClass('off');
             });
-
+            return this;
         },
+        /**
+         * Hide Dismissal Panel
+         * @param card Element to operate on (DOM Node)
+         * @returns {Publicity}
+         */
         hideDismissal: function (card) {
-            card.find('.dismissal').animate({'margin-top': '-600px'}, 700, 'easeInQuart', function () {
+            card.find('.dismissal').animate({'margin-top': '-600px'}, 500, 'easeInQuart', function () {
                 $(this).removeClass('on').addClass('off');
             });
-
+            return this;
         },
+        /**
+         * Activate Card Preloader
+         * @param card
+         * @returns {Publicity}
+         */
         activateLoader: function (card) {
 
-            /*card.find('.loader').animate({'marginTop': 0}, 400, 'easeOutSine', function () {
-             //$(this).find('.card-spinner').append(Publicity.createSpinner());
-             $(this).addClass('activated').removeClass('deactivated').animate({'padding': '18px'}, 600, 'easeInQuad');
-             }); */
-            //card.find('.overlay').css({'z-index': 160});
-            card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.9)'}, 350, 'easeInOutCirc', function () {
+            /*card.find('.overlay').animate({'backgroundColor': 'rgba(0,0,0,0.9)'}, 350, 'easeInOutCirc', function () {
 
-            });
-            card.find('.headline').css({
-                'opacity': 0,
-                'z-index': 150,
-                'bottom': '-50px'
-            }).animate({}, 240, 'easeInQuad');
+             });*/
+            card.find('.overlay').css({'backgroundColor': 'rgba(0,0,0,0.8)'});
+            Publicity.dropHeadline(card);
             card.find('.loader').transition({
                 //perspective: 100 + 'px'
                 /*perspective: '100px',
@@ -340,7 +368,7 @@
                 opacity: 1
                 /*rotateY: '180deg',*/
 
-            }, 800, 'easeOutQuad', function () {
+            }, 100, 'easeOutQuad', function () {
 
                 $(this).addClass('activated').removeClass('deactivated');
 
@@ -348,12 +376,17 @@
 
             return this;
         },
+        /**
+         * Deactivate Card Preloader
+         * @param card
+         * @returns {Publicity}
+         */
         deactivateLoader: function (card) {
 
-            card.find('.loader').delay(1000).transition({
+            card.find('.loader').delay(660).transition({
                 x: 700,
                 y: -700
-            }, 700, 'easeOutBack', function () {
+            }, 660, 'easeInQuad', function () {
                 var the_loader = this;
                 //console.log("Using Overlay..",  card.find('.overlay'));
 
@@ -361,11 +394,7 @@
                     //console.log("Overlay transition done....");
                     the_loader.addClass('deactivated').removeClass('activated');
                     //$(this).css({'z-index': 150});
-                    card.find('.headline').hide().css({
-                        'z-index': 161,
-                        'opacity': 0,
-                        'bottom': 0
-                    }).show().animate({'opacity': 1}, 327, 'easeOutExpo');
+                    Publicity.raiseHeadline(card);
 
                 });
 
@@ -382,6 +411,37 @@
             //});
             return this;
         },
+        /**
+         * Raise Headline
+         * @param card
+         * @returns {Publicity}
+         */
+        raiseHeadline: function (card) {
+            card.find('.headline').hide().css({
+                'z-index': 161,
+                'opacity': 0,
+                'bottom': 0
+            }).show().animate({'opacity': 1}, 327, 'easeOutExpo');
+            return this;
+        },
+        /**
+         * Drop Headline
+         * @param card
+         * @returns {Publicity}
+         */
+        dropHeadline: function (card) {
+            card.find('.headline').css({
+                'opacity': 0,
+                'z-index': 150,
+                'bottom': '-50px'
+            }).animate({}, 240, 'easeInQuad');
+            return this;
+        },
+        /**
+         * Dock Poster Card
+         * @param card
+         * @returns {Publicity}
+         */
         dockCard: function (card) {
             Publicity.hideDismissal(card);
             card.animate({
@@ -395,6 +455,11 @@
             }, 5000);
             return this;
         },
+        /**
+         * Reveal Poster Card
+         * @param card
+         * @returns {Publicity}
+         */
         revealCard: function (card) {
             card.animate({
                 'margin-bottom': 0,
@@ -405,17 +470,31 @@
             });
             return this;
         },
+        /**
+         * Restore Poster Card
+         * @param card
+         */
         restoreCard: function (card) {
             card.removeClass('fixed').removeClass('docked').animate({
                 'margin-bottom': 0,
                 'opacity': 0.5,
-                'left': 0,
-                'opacity': 1.0
+                'left': 0
             });
+            return this;
         },
+        /**
+         * Get Next Card
+         * @param card
+         */
         nextCard: function (card) {
             //Publicity.fetchCard(card);
         },
+        /**
+         * Switch Card Overlay ON/OFF
+         * @param mode
+         * @param card
+         * @returns {Publicity}
+         */
         switchOverlay: function (mode, card) {
             switch (mode) {
                 case 'on':
@@ -429,6 +508,7 @@
                     });
                     break;
             }
+            return this;
         },
         /**
          * Configure Card Components (Setup General Bindings)
@@ -501,6 +581,11 @@
              *  -- an arrangement consists of one or more poster cards
              */
             Publicity.PosterArrangement = React.createClass({
+                getInitialState: function () {
+                    return {
+                        revised_stack: []
+                    }
+                },
                 componentDidMount: function () {
                     if (this.isMounted()) {
                         //Publicity.configureCards();
@@ -565,6 +650,8 @@
 
                         },
                         success: function (more_cards) {
+                            //("Load more success! about to set props!", more_cards);
+
                             arrangement.setProps({data: existing_cards.concat(more_cards)});
 
                         }
@@ -573,14 +660,20 @@
 
                 },
                 render: function () {
+                    var this_arrangement = this;
                     var posterCards = this.props.data.map(function (card, cid) {
                         //console.log("Got Card...", card);
                         return (
                             <Publicity.PosterCard key={ cid } data={ card } dataOrientation="left" dataSize="normal"
-                                                  dataOffset={ cid } dataAutofill="false"/>
+                                                  dataOffset={ cid } dataAutofill="false" myKey={ cid }
+                                                  myArrangement={ this_arrangement } ref="myCard"/>
 
                         );
                     });
+                    if (this.state.revised_stack.length > 0) {
+                        alert("Revising Stack!");
+                        posterCards = this.state.revised_stack;
+                    }
                     return (
                         <div className="card-arrangement" ref="myArrangement"
                              data-load-more={this.props.loadMore == true ? true : false}
@@ -657,10 +750,11 @@
                 render: function () {
                     return (
                         <div ref="myPosterCard"
-                            className={(this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone' }>
+                             className={(this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone' }>
 
                             <div
                                 className={((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal') }
+                                data-key={this.props.key}
                                 data-count={this.state.internal_count}
                                 data-offset={this.props.dataOffset || this.state.internal_offset}
                                 data-autofill={this.props.dataAutofill || this.state.autofill}
@@ -677,7 +771,7 @@
 
                                 <Publicity.PosterCard.Loader />
 
-                                <Publicity.PosterCard.Dismissal cardComponent={ this } />
+                                <Publicity.PosterCard.Dismissal cardComponent={ this }/>
 
                                 { /*<Publicity.PosterCard.Action data={this.state.data}/>*/ }
                                 <Publicity.PosterCard.Action data={this.props.data}/>
@@ -736,14 +830,16 @@
                 componentWillUpdate: function () {
                 },
                 componentDidUpdate: function () {
-                    console.log("Detected Update!", this.props.children);
+                    //console.log("Detected Update!", this.props.children);
                     //$(this.getDOMNode()).height($(this).find('.image').height());
                     Publicity.deactivateLoader($(this.getDOMNode()));
                     //Publicity.configureCards($(this.getDOMNode()));
                     //console.log("Updated!", $(this.getDOMNode()));
                 },
                 refreshCard: function (component) {
-                    if(!component){ component = this; }
+                    if (!component) {
+                        component = this;
+                    }
                     // NOTE: The PosterCard Component is injected here as last argument...
                     // $(this.getDOMNode()).attr('data-offset'), $(this.getDOMNode()).attr('data-count'), $(this.getDOMNode()).attr('data-sp-offset') , $(this.getDOMNode()).attr('data-sp-count')
                     Publicity.fetchCard($(this.getDOMNode()), null, null, null, null, component);
@@ -787,7 +883,7 @@
                     }
                 },
                 dismissCard: function (event) {
-                    console.log("Dismiss request RECEIVED!", $(this.getDOMNode()).closest('.card'));
+                    //console.log("Dismiss request RECEIVED!", $(this.getDOMNode()).closest('.card'));
                     this.setState({dismissed: true});
                     Publicity.fetchCard($(this.getDOMNode()).closest('.card'), null, null, null, null, this.props.cardComponent);
                 },
@@ -940,8 +1036,8 @@
 
     // Initialize Publicity
     //$(document).ready(Publicity.init);
-    $(window).load(Publicity.init);
-    //Publicity.init();
+    //$(window).load(Publicity.init);
+    Publicity.init();
     //Publicity.init();
 
 }(jQuery, window, document, React));
