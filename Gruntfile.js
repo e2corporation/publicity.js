@@ -53,9 +53,25 @@ module.exports = function (grunt) {
                         ext: '.js'
                     }
                 ]
+            },
+            bundled: {
+                files: {
+                    'src/js/publicity-bundle.js': [
+                        'src/js/app.js',
+                        'src/js/publicity.jsx'
+                    ]
+                }
             }
-
-        }
+        }/*,
+        browserify:     {
+            options:      {
+                transform:  [ require('grunt-react').browserify ]
+            },
+            app:          {
+                src:        'path/to/source/main.js',
+                dest:       'path/to/target/output.js'
+            }
+        }*/
     });
 
     // Uglify
@@ -69,6 +85,9 @@ module.exports = function (grunt) {
 
     // React/JSX Compilation
     grunt.loadNpmTasks('grunt-react');
+
+    // Browserify
+    //grunt.loadNpmTasks('grunt-browserify');
 
     // Register Default task(s).
     grunt.registerTask('default', ['react', 'uglify', 'cssmin', 'imagemin']);

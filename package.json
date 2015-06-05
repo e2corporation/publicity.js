@@ -20,6 +20,7 @@
   "license": "Private",
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-browserify": "^3.8.0",
     "grunt-contrib-cssmin": "^0.12.3",
     "grunt-contrib-imagemin": "^0.9.4",
     "grunt-contrib-jshint": "^0.11.2",
