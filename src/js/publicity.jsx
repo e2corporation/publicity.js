@@ -23,7 +23,7 @@
  */
 
 (function ($, window, document, React, undefined) {
-
+    'use strict';
     // RC Namespace
     var RevContent = {
         API: {
@@ -105,6 +105,8 @@
          * @param sp_o
          * @param sp_ct
          * @param posterComponent
+         * @param arrangementComponent The Grid the poster card belongs to
+         * @param arrangementKey
          */
         fetchCard: function (card, in_o, in_ct, sp_o, sp_ct, posterComponent) {
             if (!card) {
@@ -198,7 +200,20 @@
                                     sponsored_count: Publicity.sponsored_count,
                                     sponsored_offset: Publicity.sponsored_offset
                                 });
-                                posterComponent.setProps({data: Publicity.stack[Publicity.stack.length - 1]});
+                                if (typeof posterComponent == 'object' && posterComponent.props.myArrangement == 'object') {
+                                    var current_cards = this.props.data;
+                                    // Replace the existing card directly in place...
+                                    position_key = posterComponent.props.myKey;
+                                    if (isNaN(position_key)) {
+                                        position_key = current_cards.length;
+                                    }
+                                    current_cards[position_key] = Publicity.stack[Publicity.stack.length - 1];
+                                    posterComponent.myArrangement.setProps({data: current_cards});
+                                } else {
+                                    posterComponent.setProps({data: Publicity.stack[Publicity.stack.length - 1]});
+                                }
+
+
                                 //Publicity.configureCards(card);
                                 if (!$(posterComponent.getDOMNode()).find('.loader').hasClass('deactivated')) {
                                     Publicity.deactivateLoader($(posterComponent.getDOMNode()));
@@ -577,7 +592,8 @@
                         //console.log("Got Card...", card);
                         return (
                             <Publicity.PosterCard key={ cid } data={ card } dataOrientation="left" dataSize="normal"
-                                                  dataOffset={ cid } dataAutofill="false"/>
+                                                  dataOffset={ cid } dataAutofill="false" myKey={ cid }
+                                                  myArrangement={ this }/>
 
                         );
                     });
@@ -657,10 +673,11 @@
                 render: function () {
                     return (
                         <div ref="myPosterCard"
-                            className={(this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone' }>
+                             className={(this.props.dataOrientation || this.state.orientation) != '' ? 'card-zone ' + this.props.dataOrientation : 'card-zone' }>
 
                             <div
                                 className={((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal') }
+                                data-key={this.props.key}
                                 data-count={this.state.internal_count}
                                 data-offset={this.props.dataOffset || this.state.internal_offset}
                                 data-autofill={this.props.dataAutofill || this.state.autofill}
@@ -677,7 +694,7 @@
 
                                 <Publicity.PosterCard.Loader />
 
-                                <Publicity.PosterCard.Dismissal cardComponent={ this } />
+                                <Publicity.PosterCard.Dismissal cardComponent={ this }/>
 
                                 { /*<Publicity.PosterCard.Action data={this.state.data}/>*/ }
                                 <Publicity.PosterCard.Action data={this.props.data}/>
@@ -743,7 +760,9 @@
                     //console.log("Updated!", $(this.getDOMNode()));
                 },
                 refreshCard: function (component) {
-                    if(!component){ component = this; }
+                    if (!component) {
+                        component = this;
+                    }
                     // NOTE: The PosterCard Component is injected here as last argument...
                     // $(this.getDOMNode()).attr('data-offset'), $(this.getDOMNode()).attr('data-count'), $(this.getDOMNode()).attr('data-sp-offset') , $(this.getDOMNode()).attr('data-sp-count')
                     Publicity.fetchCard($(this.getDOMNode()), null, null, null, null, component);
