@@ -1,0 +1,40 @@
+{
+  "name": "publicity.js",
+  "version": "1.0.0",
+  "authors": [
+    "Julien Chinapen <j.c@shogun.io>"
+  ],
+  "description": "API Contest: Publicity.js",
+  "main": "index.html",
+  "moduleType": [
+    "es6",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "API",
+    "JSX",
+    "Javascript",
+    "HTML",
+    "CSS",
+    "MVC",
+    "React",
+    "RESTFul"
+  ],
+  "license": "Private",
+  "homepage": "http://publicity-556fbd6dbeac3.bluestallion.net",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "open-iconic": "~1.1.1",
+    "react": "~0.13.3",
+    "reset-css": "~2.0.20110126",
+    "slippry": "~1.2.9",
+    "style-buttons": "*"
+  }
+}
