@@ -1,0 +1,45 @@
+{
+  "name": "slippry",
+  "version": "1.2.9",
+  "homepage": "http://slippry.com",
+  "authors": [
+    "Lukas Jakob Hafner - @saftsaak",
+    "Thomas Hurd - @SeenNotHurd"
+  ],
+  "description": "Responsive content slider for jQuery",
+  "main": [
+    "dist/slippry.min.js",
+    "dist/slippry.css",
+    "images/arrows.svg",
+    "images/sy-loader.gif"
+  ],
+  "keywords": [
+    "content",
+    "slider",
+    "responsive",
+    "picture",
+    "carousel",
+    "html5"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "demo",
+    "node_modules",
+    ".gitignore",
+    ".jshintrc",
+    "config.rb",
+    "Gruntfile.js",
+    "index.html",
+    "package.json"
+  ],
+  "_release": "1.2.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.2.9",
+    "commit": "1226e16207041c49e815db50dba3db4071e9827b"
+  },
+  "_source": "git://github.com/booncon/slippry.git",
+  "_target": "~1.2.9",
+  "_originalSource": "slippry",
+  "_direct": true
+}
