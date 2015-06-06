@@ -166,6 +166,7 @@ pre {
     }
 
     pre.attached code {
+        margin: 0 !important;
         padding: 12px 30px !important;
         border: 0 !important;
         box-shadow: none;
