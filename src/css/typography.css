@@ -72,6 +72,7 @@ h6.mockup {
     font-family: "BLOKKNeue-Regular", serif;
     font-size: inherit;
     font-weight: normal;
+    line-height: 1em;
     margin-bottom: 18px;
 }
 
@@ -83,6 +84,50 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-size: 2.5em
+}
+
+h2 {
+
+}
+
+h2 small {
+    clear: both;
+    font-size: 15px;
+    color: #777777;
+    display: inline-block;
+    border-bottom: 1px dashed #f0f0f0;
+    line-height: 25px;
+    vertical-align: top;
+}
+
+h5 {
+    font-family: "azo-sans-web", sans-serif;
+    margin: 12px 0 0 0;
+    padding: 0 12px;
+    font-size: 15px;
+    background-color: #f5f5f5;
+    line-height: 2.5em;
+    border: 1.0px solid rgba(150,150,150,0.3);
+    border-radius: 4px;
+    box-shadow: 0px 0px 4px 0px rgba(200,200,200,0.35);
+    font-weight: 300;
+    color: rgba(52,152,219,1)
+
+}
+
+h5 .oi {
+    line-height: 2.8em;
+    margin-right: 5px;
+    display: inline-block;
+    float: left;
+}
+
+h5 em {
+    color: #888888;
+}
+
+h5 strong {
+    font-weight: 500;
 }
 
 h6 {
@@ -113,9 +158,19 @@ strong {
 
 pre {
     margin: 18px 0 !important;
-    padding: 0 !important;
-
 }
+    pre.attached {
+        margin: -3px 0 18px 0 !important;
+        padding: 0 !important;
+        border-top: 0;
+    }
+
+    pre.attached code {
+        padding: 12px 30px !important;
+        border: 0 !important;
+        box-shadow: none;
+        background-color: #fafafa !important;
+    }
 
 code {
     /*
@@ -133,7 +188,7 @@ code {
     margin: 36px 0;
     padding: 18px 36px !important;
     font-size: 15px;
-    border-radius: 3px;
+    border-radius: 4px;
 
 }
 

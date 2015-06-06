@@ -19,12 +19,10 @@
     var App = {
         init: function () {
 
-
             $('#footer').headroom();
             $('#nav').headroom({
                 offset: 800
             });
-
 
             hljs.initHighlightingOnLoad();
         }

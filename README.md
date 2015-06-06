@@ -1,10 +1,12 @@
 # API Contest for REV2
 
+Built with React.js, Publicity uses a flexible Poster Card as the fundamental building block to allow creation various widgets, and even grids.
+Using a Virtual DOM, we can utilize a model architecture for better performance.
+
+To see the latest running build, please visit http://publicity-556fbd6dbeac3.bluestallion.net
 
 From React's documentation, here are a couple key points about the React Framework. When you're ready to dabble with the code,
 checkout the *Getting Started* section to get up and running quickly http://facebook.github.io/react/docs/getting-started.html.
-
-To see the latest running build, please visit http://publicity-556fbd6dbeac3.bluestallion.net
 
 #### Simple
 Simply express how your app should look at any given point in time, and React will automatically manage all UI updates when your underlying data changes.
@@ -25,56 +27,64 @@ React is all about building reusable components. In fact, with React the only th
 
 ## Technology Stack
 
-* NPM
-* Node.JS + Express.js
-* Derby.js MVC for Express.js
+* NPM (http://npmjs.org)
 * RevContent API (http://www.revcontent.com)
 * Bower (http://bower.io)
-* Redis (http://redis.io)
-* MongoDB (http://)
+* React.js (https://facebook.github.io/react/)
+* jQuery (http://jquery.com)
+
+### Future Toolkits to be Integrated
+
+* Node.JS + Express.js
+* Derby.js MVC for Express.js
 * Jade Template lang
 * Stylus CSS Preprocessor
-* React.js (https://facebook.github.io/react/)
-
+* Redis (http://redis.io)
+* MongoDB (http://)
 
 ## Package Contents
 
 ```
-shogun:Publicity Julien$ ls -la
-total 48
-drwxr-xr-x  12 Julien  staff    408 Jun  2 12:09 .
-drwxr-xr-x  67 Julien  staff   2278 Jun  2 12:09 ..
-drwxr-xr-x  13 Julien  staff    442 Jun  2 13:00 .git
--rw-r--r--   1 Julien  staff     27 Jun  2 12:09 .gitignore
-drwxr-xr-x   8 Julien  staff    272 Jun  2 12:09 .idea
--rw-r--r--   1 Julien  staff   3929 Jun  2 12:59 README.md
-drwxr-xr-x   7 Julien  staff    238 Jun  2 12:09 bower_components
-drwxr-xr-x   5 Julien  staff    170 Jun  2 12:09 build
-drwxr-xr-x   4 Julien  staff    136 Jun  2 12:09 fonts
--rw-r--r--   1 Julien  staff  10734 Jun  2 12:54 index.html
--rw-r--r--   1 Julien  staff   1382 Jun  2 12:09 intro.html
-drwxr-xr-x   5 Julien  staff    170 Jun  2 12:09 src
+➜  publicity.js git:(development) ✗ ls -la
+total 96
+drwxr-xr-x   15 shogun  staff    510 Jun  5 23:43 .
+drwxr-xr-x  152 shogun  staff   5168 Jun  2 09:11 ..
+drwxr-xr-x   14 shogun  staff    476 Jun  5 23:44 .git
+-rw-r--r--    1 shogun  staff     41 Jun  2 20:15 .gitignore
+drwxr-xr-x   13 shogun  staff    442 Jun  4 20:14 .idea
+-rw-r--r--    1 shogun  staff   2670 Jun  5 20:04 Gruntfile.js
+-rw-r--r--    1 shogun  staff   8592 Jun  5 23:43 README.md
+drwxr-xr-x    7 shogun  staff    238 Jun  2 09:43 bower_components
+drwxr-xr-x    6 shogun  staff    204 Jun  2 20:15 build
+drwxr-xr-x    4 shogun  staff    136 Jun  2 20:15 fonts
+-rw-r--r--    1 shogun  staff  19718 Jun  5 23:34 index.html
+-rw-r--r--    1 shogun  staff   1382 Jun  2 09:43 intro.html
+drwxr-xr-x    8 shogun  staff    272 Jun  2 20:16 node_modules
+-rw-r--r--    1 shogun  staff    718 Jun  5 20:04 package.json
+drwxr-xr-x    6 shogun  staff    204 Jun  2 20:15 src
 
 ```
 
 
-### Derby
-For Derby you need:
+### Pre-requisites
 
-* Node.js (>=0.10)
-* MongoDB
-* Redis (>=2.6) is optional (used to scale past one server process)
+**A functioning LAMP Stack is required to run this application**. Please ensure you have a healthy development environment before proceeding with installing this application.
+
+### Apache HTTPd Server
+Apache must be installed and compiled with PHP5 + MySQL Support.
+
+
+#### PHP5 Special Configuration
+Please ensure that the **Short_Open** directive is set to **ON** in your system's **php.ini** configuration to ensure proper rendering. This is usually set to off for production environments and default installations of PHP!
 
 
 #### Mac OS
-To install dependencies using Homebrew, run the following operations.
+To install dependencies using Homebrew, run the following operations. As of this build, mongodb and redis are optional.
 ```
 brew update
 brew install mongodb
 brew install redis
 ```
-
-
 
 
 ### Install NPM Dependencies
@@ -100,32 +110,31 @@ npm install grunt-contrib-sass --save-dev
 
 ```
 
-### Install Redis (OSX)
-Please install redis-server for OSX by using homebrew.
+### Setup HTTP Host
+
+Please see below for sample Virtual Host Configuration for use with Apache HTTPd. You will need to adjust the
+DocumentRoot and Directory properties to match your local environment.
 
 ```
-brew install redis
+<VirtualHost *:80>
+    ServerAdmin j.c@shogun.io
+    DocumentRoot "/www/publicity.js"
+    ServerName publicity.js
+    ServerAlias www.publicity.js
+    ErrorLog "/private/var/log/apache2/publicity-error_log"
+    CustomLog "/private/var/log/apache2/publicity-access_log" common
+        <Directory "/www/publicity.js">
+        AllowOverride All
+        Options Indexes MultiViews FollowSymlinks
+        Order allow,deny
+        Allow from all
+        #Header Set Cache-Control no-cache
+        </Directory>
+</VirtualHost>
 ```
 
 
-### Start Mongo DB Server
-
-Mongo db is setup to run from [APP]/data.
-
-```
-# Start Mongo DB Server
- mongod --dbpath=./data &
-```
-
-
-### Running the Application
-Before attempting to run the app, ensure the Npm dependencies are met, Redis and Mongo DB are running.
-After successfully starting the index gateway with Node, the app will be available at http://localhost:3000.
-
-```
-node server.js
-```
-
+# MVC Design Overview
 
 
 # Poster Card
@@ -186,6 +195,14 @@ The close component is the "x" icon that is responsible for starting the ad dism
 ### Image (Creative)
 
 
+# Testing
+
+## UNIT Tests
+
+## Functional Tests
+
+## Issue Tickets
+
 
 # Documentation
 
@@ -195,16 +212,50 @@ The close component is the "x" icon that is responsible for starting the ad dism
 #### More About Refs
 https://facebook.github.io/react/docs/more-about-refs.html
 
+### Future Development Configurations
 
+### Derby
+For Derby you need:
+
+* Node.js (>=0.10)
+* MongoDB
+* Redis (>=2.6) is optional (used to scale past one server process)
+
+
+### Install Redis (OSX)
+Please install redis-server for OSX by using homebrew.
+
+```
+brew install redis
+```
+
+
+### Start Mongo DB Server
+
+Mongo db is setup to run from [APP]/data.
+
+```
+# Start Mongo DB Server
+ mongod --dbpath=./data &
+```
+
+
+### Running the Application
+Before attempting to run the app, ensure the Npm dependencies are met, Redis and Mongo DB are running.
+After successfully starting the index gateway with Node, the app will be available at http://localhost:3000.
+
+```
+node server.js
+```
 
 
 # Credits
 
 # License
 
-Released under the a Private non-commercial license.
+Private license, Copyright &copy; 2015 SHOGUN.IO™.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software with restriction, limited to the rights to use, copy, modify this software for educational and learning purposes, and to permit persons to whom the Software is furnished to do so. Permission is not granted to publish, distribute, sublicense, and/or sell copies of this Software. Use of this software is subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software with restriction, limited to the rights to use, copy, modify this software for educational and learning purposes. Permission is not granted to publish, distribute, sublicense, and/or sell copies of this Software. Use of this software is subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 

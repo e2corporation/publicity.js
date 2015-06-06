@@ -1,7 +1,7 @@
 /**
- * Publicity.jsx
+ * Publicity.jsx (BETA)
  * ---
- * Built on React and JSX
+ * Built on React with JSX Syntax
  *
  * @filesource  publicity.jsx
  * @author      Julien Chinapen <julien@revcontent.com>
@@ -531,13 +531,7 @@
                 });
 
                 $(card).on('mouseleave', function () {
-                    /*$(this).animate({'background': 'linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7))'}, 500, 'linear');*/
-
-
-                    //if($(this).hasClass('hover')) {
                     Publicity.switchOverlay('on', $(this));
-
-                    //}
                 });
 
 
@@ -659,6 +653,10 @@
                     });
 
                 },
+                /**
+                 * RENDER Grid Arrangement (REACT)
+                 * @returns {XML}
+                 */
                 render: function () {
                     var this_arrangement = this;
                     var posterCards = this.props.data.map(function (card, cid) {
@@ -725,6 +723,10 @@
 
                     }
                 },
+                /**
+                 * RENDER Poster Card
+                 * returns {XML}
+                 */
                 render: function () {
                     return (
 
@@ -774,7 +776,7 @@
                                 React.createElement(Publicity.PosterCard.Dismissal, {cardComponent:  this }), 
 
                                 /*<Publicity.PosterCard.Action data={this.state.data}/>*/ 
-                                React.createElement(Publicity.PosterCard.Action, {data: this.props.data})
+                                React.createElement(Publicity.PosterCard.Action, {data: this.props.data, creative: this.props.dataCreative})
 
                             )
                         )
@@ -807,6 +809,10 @@
                 },
                 componentDidMount: function () {
                     //this.refreshCard(this);
+                    // Enable Auto-poll if requested, above 15 seconds only
+                    if(true === this.props.autoPoll && this.props.pollInterval >= 15000){
+                        setInterval(this.refreshCard, this.props.pollInterval);
+                    }
                     //setInterval(this.refreshCard, this.props.pollInterval);
                     //alert("Mounted!");
                     Publicity.activateLoader($(this.getDOMNode()));
@@ -914,7 +920,7 @@
 
                             React.createElement("div", {className: "image"}, 
                                 React.createElement("img", {className: "image", 
-                                     src:  this.props.data.image != undefined ? this.props.data.image : this.state.data.image})
+                                     src:  this.props.creative !="" && this.props.creative != undefined ? this.props.creative : (this.props.data.image != undefined ? this.props.data.image : this.state.data.image) })
                             ), 
                             React.createElement("div", {className: "headline"}, 
                                  this.props.data.headline != undefined ? this.props.data.headline : this.state.data.headline), 
@@ -957,11 +963,13 @@
             var empty_object = Publicity.emptyCard;
             //console.log("AutoFill Default: " , $(cardNode).attr('data-autofill') || false);
             React.render(
-                React.createElement(Publicity.PosterCard, {pollInterval: 15000, 
+                React.createElement(Publicity.PosterCard, {pollInterval:  parseInt($(cardNode).attr('data-poll')) || 15000, 
+                                      autoPoll:  $(cardNode).attr('data-poll') != undefined && !isNaN($(cardNode).attr('data-poll')) ? true : false, 
                                       dataAutofill:  $(cardNode).attr('data-autofill') ||  'false', 
                                       dataOrientation:  $(cardNode).attr('data-orientation') || 'left', 
                                       data:  empty_object, 
-                                      dataSize: $(cardNode).attr('data-size') || 'normal'}),
+                                      dataCreative:  $(cardNode).attr('data-creative') || false, 
+                                      dataSize:  $(cardNode).attr('data-size') || 'normal'}),
                 cardNode
             );
         },
@@ -980,16 +988,6 @@
                 var poster_count = rows * cols;
 
                 Publicity.retrieveAds(poster_count, 0, cols, load_more, gridNode, Publicity.renderArrangement);
-
-                //console.log("Got These ads...", Publicity.getStack());
-                /*
-                 for (var i = 0; i < poster_count; i++) {
-                 // Pushing empty object for now, state properties are setup after AJAX....
-                 ads.push({});
-                 }
-                 */
-
-                //Publicity.foo = ads;
 
                 // Default Render
                 /*React.render(
@@ -1024,7 +1022,8 @@
             //console.log("offset!", offset);
 
             React.render(
-                React.createElement(Publicity.PosterArrangement, {data:  ads, loadMore: load_more, loadCount:  (ads.length / cols) * cols, loadOffset:  offset }),
+                React.createElement(Publicity.PosterArrangement, {data:  ads, loadMore: load_more, loadCount:  (ads.length / cols) * cols, 
+                                             loadOffset:  offset }),
                 gridNode
             );
 

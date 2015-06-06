@@ -126,6 +126,26 @@
     font-size: 2em;
 }
 
+#s_credits {
+    padding: 96px 0;
+    background-color: #fafafa;
+    font-size:1em;
+}
+
+#s_credits h1 {
+    text-align: center;
+    margin: 72px;
+}
+
+#s_credits h2 {
+    font-size: 1.3em;
+    font-weight: 400;
+}
+
+#s_credits p {
+    font-size: 1em;
+}
+
 #footer {
     position: fixed;
     bottom: 0;
