@@ -48,7 +48,7 @@
                 &nbsp; ••• &nbsp; Julien Chinapen
             </div>
 
-            <p>Intelligent Ad cards that lets you place them semanticly without worrying about looks. Built with
+            <p>Intelligent Ad cards that lets you place them semantically without worrying about looks. Built with
                 <strong>React.js</strong>,
                 each card is a stateful and flexible advertisement component.</p>
 
@@ -87,7 +87,7 @@
         </div>
     </div>
 </div>
-<div class="section" id="s2">
+<div class="section section-2" id="s2">
     <div class="padder">
         <div class="wrapper">
 
@@ -134,7 +134,7 @@
             </code></pre>
             <!-- A Single Poster Card -->
             <div id="example_card" class="publicity-card" data-orientation="left" data-autofill="true"
-                 data-poll="15000"></div>
+                 data-poll="15000" data-branding="true"></div>
             <div id="lipsum">
                 <p></p>
 
@@ -210,13 +210,13 @@
                 </p>
 
 
-                <h2><strong>3x5 Arrangement</strong> <em style="color:#aaaaaa">(Grid)</em></h2>
+                <h2><strong>4x3 Arrangement</strong> <em style="color:#aaaaaa">(Grid)</em></h2>
 
                 <p class="leading">Creating a set of poster cards is as easy as specifying the rows and columns you want
-                    using <strong>data-*</strong> attributes.</p>
+                    using <strong>data-*</strong> attributes. <strong>Brand</strong> name can also be turned on. </p>
 
                 <p>The matrix size will be delivered to screens that support it, for different devices and resolutions
-                    the cards will adjust automatically. </p>
+                    the cards will adjust automatically. If you don't want spacing around the cards just enable <em>flush-mode</em> with <code class="inline">data-flush="true"</code> </p>
                 <!-- An Arrangement: 3x4 -->
                 <h5><i class="oi" data-glyph="cog"></i> <strong>HTML</strong> Snippet <em>&mdash; 4x3 Arrangement +
                     Lazy-loading </em></h5>
@@ -227,7 +227,7 @@
 
                 <!-- 4x3 Arrangement -->
                 <div id="example_grid" class="publicity-arrangement" data-rows="5" data-cols="3"
-                     data-flush="false" data-load-more="true"></div>
+                     data-flush="false" data-load-more="true" data-branding="false"></div>
                 <h5><i class="oi" data-glyph="cog"></i> <strong>Javascript/JSX</strong> Snippet <em>&mdash; Dynamic
                     Arrangements</em></h5>
                 <pre class="attached"><code class="jsx">
@@ -305,18 +305,18 @@
                 roof party Portland cold-pressed.</p>
 
             <!-- 1x2 Arrangement -->
-            <h2><strong>1x2</strong> Arrangement</h2>
+            <h2><strong>1x2</strong> Arrangement </h2>
 
             <p class="leading">Each Card arrangement will adapt automatically to screen and device type. Want more ads?
                 just click on <strong>Load more</strong>.</p>
-            <h5><i class="oi" data-glyph="cog"></i> <strong>HTML</strong> Snippet <em>&mdash; <strong>1x2</strong> Arrangement + Load More </em></h5>
+            <h5><i class="oi" data-glyph="cog"></i> <strong>HTML</strong> Snippet <em>&mdash; <strong>1x2</strong> Arrangement + Load More & Branding </em></h5>
             <pre class="attached"><code class="html">
                 &lt;div id="example_grid_1x2" class="publicity-arrangement" data-rows="1" data-cols="2"
-                data-flush="false" data-load-more="true"&gt;&lt;/div&gt;
+                data-flush="false" data-load-more="true" data-branding="true"&gt;&lt;/div&gt;
             </code></pre>
 
             <div id="example_grid_1x2" class="publicity-arrangement" data-rows="1" data-cols="2"
-                 data-flush="false" data-load-more="true"></div>
+                 data-flush="false" data-load-more="true" data-branding="true"></div>
 
 
             <p>Craft beer Kickstarter McSweeney's direct trade polaroid. Sustainable jean shorts drinking vinegar Godard
@@ -348,7 +348,7 @@
         <p>The #1 Fastest Growing Network<br/> <a href="http://www.revcontent.com"
                                                   target="_blank">http://www.revcontent.com</a></p>
 
-        <div class="" style="padding:8px;color:#555555;font-weight:400;font-size: 13px;">© 2002-2015 RevContent, LLC
+        <div class="" style="padding:8px;opacity:0.6;font-weight:400;font-size: 13px;">© 2002-2015 RevContent, LLC
             <p>The RESTful RevContent API enables you to receive the same ad fill you would see in our traditional ad
                 placements in a more flexible format, including json and xml. This separation of algorithmically
                 selected placement content from our user interface design allows you to integrate our high ECPM
@@ -360,9 +360,16 @@
         <p>A Javascirpt library for building user interfaces<br/><a href="https://facebook.github.io/react"
                                                                     target="_blank">https://facebook.github.io/react</a>
             <br/>
-
-        <div class="" style="padding:8px;color:#555555;font-weight:400;font-size: 13px;">© 2013–2015 Facebook Inc.</div>
         </p>
+        <div class="" style="padding:8px;opacity:0.6;font-weight:400;font-size: 13px;">© 2013–2015 Facebook Inc.<p></p></div>
+
+        <h2>jQuery</h2>
+
+        <p>Write less, do more. <br/><a href="http://jquery.com/"
+                                        target="_blank">http://jquery.com/</a>
+            <br/>
+        </p>
+        <div class="" style="padding:8px;opacity:0.6;font-weight:400;font-size: 13px;">Copyright &copy; 2015 The jQuery Foundation.<p></p></div>
 
 
         <h2>Headroom.js</h2>
@@ -373,21 +380,26 @@
 </div>
 
 <div id="footer" class="footer">
-    <div class="wrapper">
-        <div class="east">
-            <p>Copyright &copy; <strong>SHOGUN.IO</strong>™ &middot;&middot;&middot; &lt; julien@revcontent.com /&gt;
-            </p>
-        </div>
-        <div class="west">
-            <p>API-CONTEST 2015<br/>
-                Powered by THE <strong>RevContent™ API</strong></p>
+    <div class="display">
+        <div class="wrapper">
+            <div class="east">
+                <p>Copyright &copy; <strong>SHOGUN.IO</strong>™ <br /> &lt; julien@revcontent.com /&gt;
+                </p>
+            </div>
+            <div class="west">
+                <p>API-CONTEST 2015<br/>
+                    Powered by THE <strong>RevContent™ API</strong></p>
+            </div>
         </div>
     </div>
+    <div class="wall"></div>
 </div>
 
+<!-- React JS -->
 <script src="bower_components/react/react-with-addons.js"></script>
 <script src="bower_components/react/JSXTransformer.js"></script>
 
+<!-- ScrollMagic -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
 
