@@ -276,7 +276,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                                         posterComponent.props.myArrangement.setProps({data: current_cards});
                                         //posterComponent.props.myArrangement.setState({revised_stack: current_cards});
                                     } else {
-                                        console.log(posterComponent);
+                                        //console.log(posterComponent);
                                         // For Individual Card Requests, replace the Data stack to trigger re-render....
                                         posterComponent.setProps({data: Publicity.stack[Publicity.stack.length - 1]});
                                     }
