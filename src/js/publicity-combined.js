@@ -59,9 +59,15 @@
  * @todo        Properly configure internal and sponsored parameters
  */
 
+
+/**
+ * PublicityJS Singleton
+ * @type {{getInstance}}
+ */
 var PublicityJS = (function ($, window, document, React, undefined) {
 
-    'use strict';
+    //'use strict';
+
     // RC Namespace
     var RevContent = {
         API: {
@@ -715,11 +721,13 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                      */
                     render: function () {
                         var this_arrangement = this;
+                        var option_branding = this.props.branding;
                         var posterCards = this.props.data.map(function (card, cid) {
                             //console.log("Got Card...", card);
                             return (
                                 React.createElement(Publicity.PosterCard, {key:  cid, data:  card, dataOrientation: "left", dataSize: "normal", 
                                                       dataOffset:  cid, dataAutofill: "false", myKey:  cid, 
+                                                      dataBranding: true === option_branding ? true : false, 
                                                       myArrangement:  this_arrangement, ref: "myCard"})
 
                             );
@@ -730,6 +738,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                         }
                         return (
                             React.createElement("div", {className: "card-arrangement", ref: "myArrangement", 
+                                 "data-branding": true === this.props.dataBranding ? "true" : "false", 
                                  "data-load-more": this.props.loadMore == true ? true : false, 
                                  "data-load-count": this.props.loadCount, 
                                  "data-load-offset": this.props.loadOffset}, 
@@ -814,6 +823,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                                 React.createElement("div", {
                                     className: ((this.props.dataOrientation || this.state.orientation) != '' ? 'card ' + this.props.dataOrientation : 'card') + ' ' + (this.props.dataSize != '' ? this.props.dataSize : 'normal'), 
                                     "data-key": this.props.key, 
+                                    "data-branding": this.props.dataBranding == true ? true : this.state.branding, 
                                     "data-count": this.state.internal_count, 
                                     "data-offset": this.props.dataOffset || this.state.internal_offset, 
                                     "data-autofill": this.props.dataAutofill || this.state.autofill, 
@@ -837,7 +847,10 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                                     React.createElement(Publicity.PosterCard.Action, {data: this.props.data, 
                                                                  creative: this.props.dataCreative})
 
-                                )
+
+
+                                ), 
+                                this.props.dataBranding ?React.createElement(Publicity.PosterCard.Brand, {data: this.props.data}) : ''
                             )
 
                         );
@@ -856,6 +869,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                             sponsored_offset: 0,
                             orientation: 'left',
                             size: 'normal',
+                            branding: false,
                             autofill: false
                         };
                         return initial_state;
@@ -1001,7 +1015,18 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                     }
                 });
 
+                // Brand Name Sub-component
+                Publicity.PosterCard.Brand = React.createClass({displayName: "Brand",
+                    render: function () {
 
+                        return (
+                            React.createElement("div", {className: "card-branding"}, 
+                                React.createElement("span", {className: "brand-name"},  this.props.data.brand), 
+                                React.createElement("div", {clasName: "cf"})
+                            )
+                        );
+                    }
+                });
             },
             /**
              * Build a Poster Card (REACT)
@@ -1025,16 +1050,17 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                     React.createElement(Publicity.PosterCard, {pollInterval:  parseInt($(cardNode).attr('data-poll')) || 15000, 
                                           autoPoll:  $(cardNode).attr('data-poll') != undefined && !isNaN($(cardNode).attr('data-poll')) ? true : false, 
                                           dataAutofill:  $(cardNode).attr('data-autofill') ||  'false', 
+                                          dataBranding:  $(cardNode).attr('data-branding') != '' ? true :  false, 
                                           dataOrientation:  $(cardNode).attr('data-orientation') || 'left', 
                                           data:  empty_object, 
-                                          dataCreative:  $(cardNode).attr('data-creative') || false, 
+                                          dataCreative:  $(cardNode).attr('data-creative') != '' ?  $(cardNode).attr('data-creative') : false, 
                                           dataSize:  $(cardNode).attr('data-size') || 'normal'}),
                     cardNode
                 );
             },
             /**
              * Build an Arragement of Poster Cards (REACT)
-             * @param gridNode
+             * @param gridNode to attach when rendering to the DOM
              */
             buildArrangement: function (gridNode) {
 
@@ -1079,11 +1105,12 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                 //console.log("Running render with stack...", ads);
                 //console.log("NODE: ", gridNode);
                 //console.log("offset!", offset);
-
+                var option_branding = $(gridNode).attr('data-branding') != "" &&  $(gridNode).attr('data-branding') != "false" ? true : false;
                 React.render(
+
                     React.createElement(Publicity.PosterArrangement, {data:  ads, loadMore: load_more, 
                                                  loadCount:  (ads.length / cols) * cols, 
-                                                 loadOffset:  offset }),
+                                                 loadOffset:  offset, branding:  true === option_branding ? true : false}),
                     gridNode
                 );
 

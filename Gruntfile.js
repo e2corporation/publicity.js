@@ -58,7 +58,7 @@ module.exports = function (grunt) {
                 files: {
                     'src/js/publicity-bundle.js': [
                         'src/js/app.js',
-                        'src/js/publicity.jsx'
+                        'src/js/publicity.js'
                     ]
                 }
             }

@@ -17,7 +17,7 @@
 
 
 
-
+/* Card Arrangements (Grids) */
 .card-arrangement {
 
 }
@@ -31,7 +31,7 @@
     margin: 0 !important;
 }
 
-/* 4 Columns */
+/* 4 Column Arrangement */
 .publicity-arrangement[data-cols="4"] {
 
 }
@@ -51,7 +51,7 @@
      margin: 0 !important;
  }
 
-/* 3 Columns */
+/* 3 Column Arrangement */
 .publicity-arrangement[data-cols="3"] {
 
 }
@@ -79,7 +79,7 @@
 
 
 
-/* 2 Columns */
+/* 2 Column Arrangement */
 .publicity-arrangement[data-cols="2"] {
 
 }
@@ -110,9 +110,13 @@
 
 /* Poster Cards */
 
+.card-arrangement {
+    font-size: 1em;
+}
+
 .card-zone,
 .card-zone .card {
-
+    font-size: 1em !important;
 }
 
 .card {
@@ -124,6 +128,7 @@
     box-shadow: 0px 0px 7px 0px rgba(194, 194, 194, 1);
     height: 240px;
     font-family: "proxima-nova-extra-condensed", sans-serif;
+    font-size: 1em;
 }
 
 .card.large {
@@ -323,6 +328,31 @@
 .card .image img {
 
 }
+
+
+.card-zone .card-branding {
+    color: #777777 !important;
+    font-weight: 300 !important;
+    line-height: 16px !important;
+    font-size: 11px !important;
+    clear: both !important;
+    height: 16px !important;
+    display:block !important;
+    width: 100%;
+    position: relative;
+}
+.card-zone .card-branding span.brand-name {
+   position: absolute;
+    right: 4%;
+    top: 0px;
+}
+
+.publicity-card .card-zone.left .card-branding span.brand-name,
+.publicity-card .card-zone.right .card-branding span.brand-name {
+    top: -9px;
+    right: 6%;
+}
+
 
 .card .card-icon {
     opacity: 1.0;
