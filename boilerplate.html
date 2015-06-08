@@ -6,12 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-    <!-- Import Stylesheets -->
-    <link type="text/css" rel="stylesheet" href="bower_components/style-buttons/buttons.css" media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="bower_components/open-iconic/font/css/open-iconic.min.css"
+    <!-- Highlight.js (Code Syntaxing) -->
+    <!-- <link type="text/css" class="codestyle" rel="stylesheet" href="src/css/hljs/zenburn.css"
+          media="screen,projection"/> -->
+    <link type="text/css" class="codestyle" rel="stylesheet" href="src/css/hljs/color-brewer.css"
           media="screen,projection"/>
+    <!-- Stock HLJS Theme: <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css"> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
 
-    <!-- Publicity.CSS -->
+    <!-- Publicity.CSS (Stylsheets) -->
     <link type="text/css" rel="stylesheet" href="src/css/publicity.css" media="screen,projection"/>
     <!-- PRODUCTION: <link type="text/css" rel="stylesheet" href="build/css/publicity.min.css" media="screen,projection"/> -->
 
@@ -19,6 +22,7 @@
     <link type="text/css" rel="stylesheet" href="src/css/app.css" media="screen,projection"/>
     <!-- PRODUCTION: <link type="text/css" rel="stylesheet" href="build/css/app.min.css" media="screen,projection"/> -->
 
+    <!-- jQuery -->
     <script type="text/javascript" src="src/js/jquery.js"></script>
     <script type="text/javascript" src="src/js/jquery-ui.js"></script>
 
@@ -43,12 +47,20 @@
 
 </div>
 
-<!-- React + JSX (Remove JSXTransformer with going to Production)-->
+<!-- React JS -->
 <script src="bower_components/react/react-with-addons.js"></script>
 <script src="bower_components/react/JSXTransformer.js"></script>
 
+<!-- ScrollMagic -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
+
+<!-- jQuery Headroom -->
+<script src="src/js/headroom.js"></script>
+<script src="src/js/jquery-headroom.js"></script>
+
 <!-- Transit.js -->
-<script src="src/js/jquery.transit.min.js"></script>
+<script src="build/js/jquery-transit.min.js"></script>
 
 <!-- Publicity.js (Powered by RevContent API) -->
 <script type="text/jsx" src="src/js/publicity.jsx"></script>

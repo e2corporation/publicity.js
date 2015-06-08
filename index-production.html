@@ -214,7 +214,8 @@
                 <h2><strong>4x3 Arrangement</strong> <em style="color:#aaaaaa">(Grid)</em></h2>
 
                 <p class="leading">Creating a set of poster cards is as easy as specifying the rows and columns you want
-                    using <strong>data-*</strong> attributes. <strong>Brand</strong> name can also be turned on. </p>
+                    using <strong>data-*</strong> attributes. <strong>Brand</strong> name can also be turned on. Use a
+                    class of <strong>.publicity-arrangement</strong> to generate a grid. </p>
 
                 <p>The matrix size will be delivered to screens that support it, for different devices and resolutions
                     the cards will adjust automatically. If you don't want spacing around the cards just enable <em>flush-mode</em> with <code class="inline">data-flush="true"</code> </p>
@@ -401,8 +402,10 @@
 <!-- DEV: JSX Transformer <script src="bower_components/react/JSXTransformer.js"></script>   -->
 
 <!-- jQuery Headroom -->
-<script src="src/js/jQuery.headroom.js"></script>
+<!-- DEV: <script src="src/js/headroom.js"></script> -->
+<!-- DEV: <script src="src/js/jquery-headroom.js"></script> -->
 <script src="build/js/headroom.min.js"></script>
+<script src="build/js/jquery-headroom.min.js"></script>
 
 <!-- Transit.js -->
 <script src="build/js/jquery-transit.min.js"></script>
@@ -414,3 +417,7 @@
 <!-- App JS (Showcase/UI) -->
 <!-- DEV: <script type="text/javascript" src="src/js/app.js"></script>   -->
 <script type="text/javascript" src="build/js/app.min.js"></script>
+
+
+</body>
+</html>
