@@ -57,8 +57,10 @@ module.exports = function (grunt) {
             bundled: {
                 files: {
                     'src/js/publicity-bundle.js': [
-                        'src/js/app.js',
-                        'src/js/publicity.js'
+                        'bower_components/react/react-with-addons.js',
+                        'src/js/publicity.js',
+                        'src/js/app.js'
+
                     ]
                 }
             }
