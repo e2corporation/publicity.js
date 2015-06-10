@@ -1,7 +1,7 @@
 # Save as .codeclimate.yml (note leading .) in project root directory
 languages:
   JavaScript: true
-  PHP: true
+  # PHP: true
 exclude_paths:
   - "node_modules/*"
   - "bower_components/*"
