@@ -21698,13 +21698,13 @@ var PublicityJS = (function ($, window, document, React, undefined) {
 
     function __getInstance() {
         if (!PublicityInstance) {
-            PublicityInstance = new initializePublicity();
+            PublicityInstance = new InitializePublicity();
         }
 
         return PublicityInstance;
     }
 
-    function initializePublicity() {
+    function InitializePublicity() {
 
         var Publicity = {
             ReactCSSTransitionGroup: React.addons.CSSTransitionGroup,
@@ -21729,7 +21729,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
             init: function () {
 
                 // Merge Global Options
-                // Publicity.options = $.extend({}, Publicity.options, PUBLICITY_OPTIONS != undefined ? PUBLICITY_OPTIONS : {});
+                // Publicity.options = $.extend({}, Publicity.options, PUBLICITY_OPTIONS !== undefined ? PUBLICITY_OPTIONS : {});
 
                 // Build React Components and Subcomponents
                 Publicity.createComponents();
@@ -21779,26 +21779,29 @@ var PublicityJS = (function ($, window, document, React, undefined) {
              * @param arrangementKey
              */
             fetchCard: function (card, in_o, in_ct, sp_o, sp_ct, posterComponent) {
-                if (!card) {
-                    var $card = $('.card:first');
+                var $card = null;
+                if (!card || $card == null) {
+                    $card = $('.card:first');
                 } else {
-                    var $card = card;
+                    $card = card;
                 }
-                if (!in_o) {
-                    //offset = parseInt($card.attr('data-offset'));
-                    in_o = parseInt($card.attr('data-offset'));
-                }
-                if (!in_ct) {
-                    //offset = parseInt($card.attr('data-offset'));
-                    in_ct = parseInt($card.attr('data-count'));
-                }
-                if (!sp_o) {
-                    //offset = parseInt($card.attr('data-offset'));
-                    sp_o = parseInt($card.attr('data-sp-offset'));
-                }
-                if (!sp_ct) {
-                    //offset = parseInt($card.attr('data-offset'));
-                    sp_ct = parseInt($card.attr('data-sp-count'));
+                if($card.length > 0) {
+                    if (!in_o) {
+                        //offset = parseInt($card.attr('data-offset'));
+                        in_o = parseInt($card.attr('data-offset'));
+                    }
+                    if (!in_ct) {
+                        //offset = parseInt($card.attr('data-offset'));
+                        in_ct = parseInt($card.attr('data-count'));
+                    }
+                    if (!sp_o) {
+                        //offset = parseInt($card.attr('data-offset'));
+                        sp_o = parseInt($card.attr('data-sp-offset'));
+                    }
+                    if (!sp_ct) {
+                        //offset = parseInt($card.attr('data-offset'));
+                        sp_ct = parseInt($card.attr('data-sp-count'));
+                    }
                 }
 
                 //console.log("FETCHING CARD...", card, in_o, in_ct, sp_o, sp_ct);
@@ -21860,7 +21863,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                             //}
 
                             // Setup Component State/Properties
-                            if (typeof posterComponent == 'object') {
+                            if (typeof posterComponent === 'object') {
                                 if (posterComponent.isMounted()) {
                                     //console.log("Mounted Card!", posterComponent, Publicity.stack[Publicity.stack.length - 1]);
                                     posterComponent.setState({
@@ -21870,7 +21873,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                                         sponsored_count: Publicity.sponsored_count,
                                         sponsored_offset: Publicity.sponsored_offset
                                     });
-                                    if (typeof posterComponent.props.myArrangement == 'object') {
+                                    if (typeof posterComponent.props.myArrangement === 'object') {
                                         // Get current data stack..
                                         var current_cards = posterComponent.props.myArrangement.props.data;
                                         // Replace the existing card directly in place...
@@ -21972,12 +21975,12 @@ var PublicityJS = (function ($, window, document, React, undefined) {
 
                             Publicity.stack.concat(ad_response);
                             //console.log(typeof callback, callback);
-                            if (typeof callback == 'function') {
-                                Publicity.advanceCounters(sp_o, sp_ct, sp_o, sp_ct)
+                            if (typeof callback === 'function') {
+                                Publicity.advanceCounters(sp_o, sp_ct, sp_o, sp_ct);
                                 callback(ad_response, load_more, cols, sp_o, gridNode);
-                            } else {
+                            } /*else {
 
-                            }
+                            }*/
                         }
                     },
                     error: function () {
@@ -22229,7 +22232,6 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                         });
                     });
 
-                    $('')
 
                 });
             },
@@ -22247,7 +22249,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                     getInitialState: function () {
                         return {
                             revised_stack: []
-                        }
+                        };
                     },
                     componentDidMount: function () {
                         if (this.isMounted()) {
@@ -22340,7 +22342,6 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                             );
                         });
                         if (this.state.revised_stack.length > 0) {
-                            alert("Revising Stack!");
                             posterCards = this.state.revised_stack;
                         }
                         return (
@@ -22365,7 +22366,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                  */
                 Publicity.ArrangementLoader = React.createClass({displayName: "ArrangementLoader",
                     getInitialState: function () {
-                        return {'load_more': false}
+                        return {'load_more': false};
                     },
                     LoadCards: function (event) {
 
@@ -22375,7 +22376,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
 
                     },
                     componentDidUpdate: function () {
-                        if (this.state.load_more == true) {
+                        if (this.state.load_more === true) {
 
                             //var outlet = $($(this.getDOMNode()).find('.ad-portal'));
                             // Trigger Parent Component's Loading handler... (Routed through click event)
@@ -22391,9 +22392,9 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                             //this.props.arrangementData.push({});
                             //this.props.arrangementData.push({});
                             //console.log(this.props.arrangementData);
-                        } else {
+                        } /*else {
 
-                        }
+                        }*/
                     },
                     /**
                      * RENDER Poster Card
@@ -22566,7 +22567,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                                     "label": "CANCEL"
                                 }
                             }
-                        }
+                        };
                     },
                     dismissCard: function (event) {
                         //console.log("Dismiss request RECEIVED!", $(this.getDOMNode()).closest('.card'));
@@ -22595,15 +22596,15 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                 Publicity.PosterCard.Action = React.createClass({displayName: "Action",
                     render: function () {
                         return (
-                            React.createElement("a", {href:  this.props.data.url != undefined ? this.props.data.url : this.state.data.url, 
+                            React.createElement("a", {href:  this.props.data.url !== undefined ? this.props.data.url : this.state.data.url, 
                                className: "cta"}, 
 
                                 React.createElement("div", {className: "image"}, 
                                     React.createElement("img", {className: "image", 
-                                         src:  this.props.creative !="" && this.props.creative != undefined ? this.props.creative : (this.props.data.image != undefined ? this.props.data.image : this.state.data.image) })
+                                         src:  this.props.creative !="" && this.props.creative !== undefined ? this.props.creative : (this.props.data.image !== undefined ? this.props.data.image : this.state.data.image) })
                                 ), 
                                 React.createElement("div", {className: "headline"}, 
-                                     this.props.data.headline != undefined ? this.props.data.headline : this.state.data.headline), 
+                                     this.props.data.headline !== undefined ? this.props.data.headline : this.state.data.headline), 
 
                                 React.createElement("div", {className: "overlay"})
 
@@ -22655,7 +22656,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                 //console.log("AutoFill Default: " , $(cardNode).attr('data-autofill') || false);
                 React.render(
                     React.createElement(Publicity.PosterCard, {pollInterval:  parseInt($(cardNode).attr('data-poll')) || 15000, 
-                                          autoPoll:  $(cardNode).attr('data-poll') != undefined && !isNaN($(cardNode).attr('data-poll')) ? true : false, 
+                                          autoPoll:  $(cardNode).attr('data-poll') !== undefined && !isNaN($(cardNode).attr('data-poll')) ? true : false, 
                                           dataAutofill:  $(cardNode).attr('data-autofill') ||  'false', 
                                           dataBranding:  $(cardNode).attr('data-branding') != '' ? true :  false, 
                                           dataOrientation:  $(cardNode).attr('data-orientation') || 'left', 
@@ -22712,7 +22713,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                 //console.log("Running render with stack...", ads);
                 //console.log("NODE: ", gridNode);
                 //console.log("offset!", offset);
-                var option_branding = $(gridNode).attr('data-branding') != "" &&  $(gridNode).attr('data-branding') != "false" ? true : false;
+                var option_branding = $(gridNode).attr('data-branding') !== "" &&  $(gridNode).attr('data-branding') != "false" ? true : false;
                 React.render(
 
                     React.createElement(Publicity.PosterArrangement, {data:  ads, loadMore: load_more, 
@@ -22740,7 +22741,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
 }(jQuery, window, document, React));
 
 // Boot Publicity
-Publicity = PublicityJS.getInstance();
+var Publicity = PublicityJS.getInstance();
 /**
  * App.js
  * REV2 API Contenst 2015
