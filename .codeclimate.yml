@@ -1,0 +1,12 @@
+# Save as .codeclimate.yml (note leading .) in project root directory
+languages:
+  JavaScript: true
+  PHP: true
+exclude_paths:
+  - "node_modules/*"
+  - "bower_components/*"
+  - "src/fonts/*"
+  - "src/js/headroom.js"
+  - "src/js/jquery*.js"
+  - "build/js/jquery*"
+  - "build/js/headroom.min.js"
