@@ -22517,6 +22517,7 @@ var PublicityJS = (function ($, window, document, React, undefined) {
                     componentDidUpdate: function () {
                         //console.log("Detected Update!", this.props.children);
                         //$(this.getDOMNode()).height($(this).find('.image').height());
+                        Publicity.hideDismissal($(this.getDOMNode()));
                         Publicity.deactivateLoader($(this.getDOMNode()));
                         //Publicity.configureCards($(this.getDOMNode()));
                         //console.log("Updated!", $(this.getDOMNode()));
